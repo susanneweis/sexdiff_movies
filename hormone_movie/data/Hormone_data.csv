@@ -1,0 +1,56 @@
+PCode	sex	gender	age	Sexuelle Orientierung	höchster Bildungsstand	Nur für Frauen: nehmen Sie die Pille (oder andere Hormonpräparate)?	Falls ja, welche?.1	Nur für Frauen: an welchem Tag des Zyklus befinden Sie sich (gezählt ab dem ersten Tag der Regel)?	Falls unklar, in welchem Viertel befinden Sie sich?	Cortisol_µg/dl_Sample-1	Cortisol_µg/dl_Sample-2	Differenz Cortisol	Estradiol_pg/ml_Sample-1	Estradiol_pg/ml_Sample-2	Differenz Estradiol	Progesteron_pg/ml_Sample-1	Progesteron_pg/ml_Sample-2	Differenz Progesteron	Testosteron_pg/ml_Sample-1	Testosteron_pg/ml_Sample-2	Differenz Testosteron	Cortisol_�g/dl_Mean	Estradiol_pg/ml_Mean	Progesterone_pg/ml_Mean	Testosterone_pg/ml_Mean
+P000247	1	männlich	20	bisexuell	Höhere Schule mit Abitur abgeschlossen					0.051	0.156	-0.105	4.58	14.71	-10.13	27.64	30.26	-2.62	80.79	75.19	5.6	0.104	9.645	28.95	77.99
+P000149	1	männlich	23	hetero	Höhere Schule mit Abitur abgeschlossen					0.071	0.152	-0.081	1.59	1.05	0.54	32.11	40.43	-8.32	61.31	84.71	-23.4	0.112	1.32	36.27	73.01
+P000147	1	männlich	21	hetero	Höhere Schule mit Abitur abgeschlossen					0.072	0.14	-0.068	1.89	2.45	-0.56	46.84	47.18	-0.34	110.24	108.8	1.44	0.106	2.17	47.01	109.52
+P000222	1	männlich	20	hetero sexuell	Höhere Schule mit Abitur abgeschlossen					0.073	0.111	-0.038	6.59	8.52	-1.93	31.21	18.85	12.36	115.93	98.57	17.36	0.092	7.555	25.03	107.25
+P000254	1	männlich	26	weiblich	Universitäts-, Hochschulabschluss					0.082	0.244	-0.162	3.02	3.02	0	18.41	30.82	-12.41	45.48	49.4	-3.92	0.163	3.02	24.615	47.44
+P000127	1	männlich	21	hetero	Höhere Schule mit Abitur abgeschlossen					0.085	0.109	-0.024	1.37	2.5	-1.13	18.5	20.92	-2.42	137.8	131.24	6.56	0.097	1.935	19.71	134.52
+P000167	1	männlich	21	hetero	Universitäts-, Hochschulabschluss					0.09	0.076	0.014	2.01	2.36	-0.35	48.05	36.44	11.61	70.09	83.8	-13.71	0.083	2.185	42.245	76.945
+P000340	1	männlich	21	hetero	Höhere Schule mit Abitur abgeschlossen					0.09	0.137	-0.047	3.54	2.65	0.89	37.09	44.26	-7.17	80.68	136.36	-55.68	0.114	3.095	40.675	108.52
+P000150	1	männlich	23	heterosexuell	Höhere Schule mit Abitur abgeschlossen					0.091	0.093	-0.002	2.58	3.8	-1.22	22.05	45.19	-23.14	92.25	148.04	-55.79	0.092	3.19	33.62	120.145
+P000300	1	männlich	20	heterosexuell	Höhere Schule mit Abitur abgeschlossen					0.094	0.097	-0.003	3.18	1.05	2.13	72.08	29.51	42.57	55.11	43.13	11.98	0.096	2.115	50.795	49.12
+P000221	1	männlich	20	Frauen	Pflichtschule oder Realschule abgeschlossen					0.101	0.02	0.081	9.7	2.15	7.55	146.78	50.55	96.23	190.41	145.62	44.79	0.061	5.925	98.665	168.015
+P000133	1	männlich	25	Heterosexuell	Universitäts-, Hochschulabschluss					0.12	0.071	0.049	0.76	1.45	-0.69	32.01	26.52	5.49	78.57	95.66	-17.09	0.096	1.105	29.265	87.115
+P000223	1	männlich	25	heterosexuell	Universitäts-, Hochschulabschluss	Nein				0.124	0.085	0.039	12.95	6.36	6.59	143.1	53.04	90.06	95.51	69.92	25.59	0.105	9.655	98.07	82.715
+P000308	1	männlich	20	Hetero	Höhere Schule mit Abitur abgeschlossen					0.131	0.133	-0.002	4.12	2.58	1.54	53.68	28.92	24.76	112.39	107.78	4.61	0.132	3.35	41.3	110.085
+P000290	1	männlich	24	heterosexuell	Universitäts-, Hochschulabschluss					0.143	0.334	-0.191	7.54	4.59	2.95	57.31	66.45	-9.14	64.87	44.54	20.33	0.239	6.065	61.88	54.705
+P000298	1	männlich	19	Homosexuell	Höhere Schule mit Abitur abgeschlossen					0.152	0.088	0.064	1.04	1.78	-0.74	34.89	12.31	22.58	59.38	50.57	8.81	0.12	1.41	23.6	54.975
+P000177	1	männlich	20	heterosexuell	Höhere Schule mit Abitur abgeschlossen	Nein	-	-	nicht zutreffend (Menopause o.ä.)	0.153	0.109	0.044	2.75	2.94	-0.19	125.4	133.56	-8.16	119.01	147.66	-28.65	0.131	2.845	129.48	133.335
+P000246	1	männlich	25	hetero	Universitäts-, Hochschulabschluss					0.174	0.118	0.056	2.81	2.77	0.04	15.58	161	-145.42	78.82	100.61	-21.79	0.146	2.79	88.29	89.715
+P000253	1	männlich	26	hetero	Höhere Schule mit Abitur abgeschlossen					0.187	0.222	-0.035	3.96	5.41	-1.45	65.46	47.73	17.73	110.29	119.7	-9.41	0.205	4.685	56.595	114.995
+P000190	1	männlich	21	heterosexuell	Universitäts-, Hochschulabschluss	Nein				0.232	0.204	0.028	3.51	3.27	0.24	18.85	33.11	-14.26	156.56	152.98	3.58	0.218	3.39	25.98	154.77
+P000338	1	männlich	21	heterosexuell	Höhere Schule mit Abitur abgeschlossen					0.24	0.101	0.139	1.91	2.35	-0.44	33.8	35.28	-1.48	146.36	122.78	23.58	0.17	2.13	34.54	134.57
+P000299	1	männlich	19	heterosexuell	Höhere Schule mit Abitur abgeschlossen					0.263	0.241	0.022	3.34	3.12	0.22	36.44	28.92	7.52	81.82	85.86	-4.04	0.252	3.23	32.68	83.84
+P000354	1	männlich	19	Hetero	Höhere Schule mit Abitur abgeschlossen					0.36	0.248	0.112	2.38	2.25	0.13	64.86	58.83	6.03	69.51	81.36	-11.85	0.304	2.315	61.845	75.435
+P000310	1	männlich	33	weiblich	Höhere Schule mit Abitur abgeschlossen					0.363	0.393	-0.03	4.15	3.9	0.25	70.67	67.17	3.5	108.77	98.44	10.33	0.378	4.025	68.92	103.605
+P000191	1	männlich	24	Hetero	Höhere Schule mit Abitur abgeschlossen					0.421	0.248	0.173	4.46	7.71	-3.25	47.23	53.86	-6.63	107.72	192.52	-84.8	0.335	6.085	50.545	150.12
+P000330	1	männlich	21	Hetero	Höhere Schule mit Abitur abgeschlossen					0.471	0.26	0.211	8.59	4.62	3.97	115.85	65.98	49.87	142.16	98.26	43.9	0.366	6.605	90.915	120.21
+P000271	1	männlich	24	Hetero	Höhere Schule mit Abitur abgeschlossen	nein				0.477	0.174	0.303	2.65	1.7	0.95	59.78	44.76	15.02	109.31	79.05	30.26	0.326	2.175	52.27	94.18
+P000263	1	männlich	30	heterosexuell	Universitäts-, Hochschulabschluss					0.488	0.189	0.299	2.97	2.81	0.16	60.03	42.47	17.56	73.49	72.15	1.34	0.339	2.89	51.25	72.82
+P000361	1	männlich	18	Heterosexuell	Höhere Schule mit Abitur abgeschlossen					0.562	0.17	0.392	4.2	3.1	1.1	41.42	35.05	6.37	118.38	177.85	-59.47	0.366	3.65	38.235	148.115
+P000237	1	männlich	21	bisexuell	Universitäts-, Hochschulabschluss					0.576	0.128	0.448	3.38	1.86	1.52	39.57	49.98	-10.41	46.97	75.52	-28.55	0.352	2.62	44.775	61.245
+P000309	2	weiblich	20	heterosexuell	Höhere Schule mit Abitur abgeschlossen	ja	Swingo 30 mite	3		0.045	0.052	-0.007	0.41	0.59	-0.18	11.1	13.98	-2.88	3.5	5.52	-2.02	0.049	0.5	12.54	4.51
+P000213	2	weiblich	25	Hetero	Höhere Schule mit Abitur abgeschlossen	ja	Pille (Leios)	9	erstes	0.05	0.134	-0.084	2.2	1.36	0.84	18.77	16.24	2.53	10.82	13.28	-2.46	0.092	1.78	17.505	12.05
+P000355	2	weiblich	18	heterosexuell	Höhere Schule mit Abitur abgeschlossen	ja	Maxim	67		0.05	0.074	-0.024	4.01	6.1	-2.09	29.05	38.8	-9.75	16.57	18.88	-2.31	0.062	5.055	33.925	17.725
+P000250	2	weiblich	27	heterosexuell	Universitäts-, Hochschulabschluss	ja	Evaluna	27.07.20		0.096	0.126	-0.03	5.73	10.04	-4.31	107.43	157.24	-49.81	14.03	25.32	-11.29	0.111	7.885	132.335	19.675
+P000272	2	weiblich	28	heterosexuell	Universitäts-, Hochschulabschluss	ja	Microgynon	23	viertes	0.111	0.163	-0.052	2.18	5.14	-2.96	24.29	60.06	-35.77	21.2	44.83	-23.63	0.137	3.66	42.175	33.015
+P000206	2	weiblich	25	hetero	Universitäts-, Hochschulabschluss	ja	Kleodina	4		0.137	0.276	-0.139	0	1.53	-1.53	33.77	148.36	-114.59	11.06	24.57	-13.51	0.207	0.765	91.065	17.815
+P000311	2	weiblich	21	heterosexuell	Höhere Schule mit Abitur abgeschlossen	ja	Femikadin 30	5		0.142	0.071	0.071	2.86	1.67	1.19	169.89	91.17	78.72	16.45	9.87	6.58	0.106	2.265	130.53	13.16
+P000258	2	weiblich	28	Männer	Universitäts-, Hochschulabschluss	ja	Aristell	-	nicht zutreffend (Menopause o.ä.)	0.191	0.138	0.053	0.83	1.37	-0.54	91.82	42.55	49.27	0.47	7.31	-6.84	0.165	1.1	67.185	3.89
+P000256	2	weiblich	30	hetero	Höhere Schule mit Abitur abgeschlossen	ja	Aristell	13		0.208	0.108	0.1	7.3	4.51	2.79	233.76	193.11	40.65	7.57	16.03	-8.46	0.158	5.905	213.435	11.8
+P000257	2	weiblich	23	hetero	Höhere Schule mit Abitur abgeschlossen	ja	Sibilla	Dauerzyklus der Pille	nicht zutreffend (Menopause o.ä.)	0.272	0.074	0.198	3.72	0.39	3.33	91.73	92.72	-0.99	6.33	8.02	-1.69	0.173	2.055	92.225	7.175
+P000176	2	weiblich	25	Männer	Universitäts-, Hochschulabschluss	ja	Levanonce, L-Thyroxin (88 mg, Hexal)	1		0.377	0.261	0.116	8.77	4.18	4.59	37.03	16.48	20.55	21.92	14.96	6.96	0.319	6.475	26.755	18.44
+P000160	2	weiblich	23	heterosexuell	Universitäts-, Hochschulabschluss	ja	Pille (Asumate 20)	keine Regel wegen durchgehender Pilleneinnahme		0.402	0.154	0.248	1.14	1.41	-0.27	41.42	34	7.42	13.97	8.49	5.48	0.278	1.275	37.71	11.23
+P000304	2	weiblich	28	hetero	Universitäts-, Hochschulabschluss	ja	Nuvaring	21	drittes	0.321	0.09	0.231	0.86	2.07	-1.21	39.37	50.69	-11.32	11.83	8.41	3.42	0.206	1.465	45.03	10.12
+P000192	2	weiblich	23	Heterosexuel	Höhere Schule mit Abitur abgeschlossen	ja	Die Spritze	ich bekomme meine Regel nicht	nicht zutreffend (Menopause o.ä.)	0.055	0.127	-0.072	2.28	2.25	0.03	23.64	52.06	-28.42	8.78	19.96	-11.18	0.091	2.265	37.85	14.37
+P000344	2	weiblich	20	heterosxuell	Höhere Schule mit Abitur abgeschlossen	nein		17		0.045	0.052	-0.007	2.18	1.39	0.79	131.25	55.99	75.26	4.95	4.74	0.21	0.049	1.785	93.62	4.845
+P000170	2	weiblich	24	männlich	Universitäts-, Hochschulabschluss	Nein		22		0.05	0.101	-0.051	3.86	9.59	-5.73	84.47	103.21	-18.74	19.19	19.03	0.16	0.076	6.725	93.84	19.11
+P000210	2	weiblich	20	heterosexuell	Höhere Schule mit Abitur abgeschlossen	Nein		19	drittes	0.062	0.142	-0.08	1.57	1.97	-0.4	27.26	27.81	-0.55	13.3	14.88	-1.58	0.102	1.77	27.535	14.09
+P000280	2	weiblich	20	heterosexuell	Höhere Schule mit Abitur abgeschlossen	nein		19		0.093	0.061	0.032	2.24	2.38	-0.14	120.38	60.72	59.66	11.67	10.36	1.31	0.077	2.31	90.55	11.015
+P000255	2	weiblich	29	hetero	Höhere Schule mit Abitur abgeschlossen	nein		17	drittes	0.107	0.071	0.036	3.31	2.23	1.08	138.32	81.99	56.33	30.11	32.66	-2.55	0.089	2.77	110.155	31.385
+P000264	2	weiblich	22	heterosexuell	Höhere Schule mit Abitur abgeschlossen	nein		27	viertes	0.107	0.078	0.029	1.99	2.53	-0.54	78.49	34.49	44	18.16	19.42	-1.26	0.093	2.26	56.49	18.79
+P000123	2	weiblich	22	Männlich	Höhere Schule mit Abitur abgeschlossen	Nein		19.09.19		0.109	0.151	-0.042	2.97	4.03	-1.06	757.2	615.52	141.68	32.14	30.39	1.75	0.13	3.5	686.36	31.265
+P000301	2	weiblich	23	hetero	Universitäts-, Hochschulabschluss	nein		10		0.126	0.169	-0.043	2.04	2.66	-0.62	45.66	40.5	5.16	11.03	11.27	-0.24	0.148	2.35	43.08	11.15
+P000362	2	weiblich	29	Heterosexuell	Universitäts-, Hochschulabschluss	nein		40		0.141	0.081	0.06	3.98	5.01	-1.03	126.74	89.96	36.78	46.16	24.37	21.79	0.111	4.495	108.35	35.265
+P000295	2	weiblich	29	heterosexuell	Universitäts-, Hochschulabschluss	nein		5	erstes	0.144	0.042	0.102	1.58	1.77	-0.19	22.07	17.46	4.61	6.69	3.35	3.34	0.093	1.675	19.765	5.02
+P000279	2	weiblich	29	heterosexuell	Universitäts-, Hochschulabschluss	nein		26	drittes	0.244	0.091	0.153	2.82	4.06	-1.24	99.51	116.39	-16.88	16.52	15.15	1.37	0.167	3.44	107.95	15.835
