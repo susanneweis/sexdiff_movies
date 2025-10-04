@@ -8,8 +8,8 @@ def get_hormone_reference_ranges():
     return {
         'Cortisol': ('Cortisol_µg/dl_Mean', (0.116, 0.478)),  # Non-sex-specific
         'Estradiol': ('Estradiol_pg/ml_Mean', {'female': (3.1, 11.9), 'male': (2.1, 4.1)}),
-        'Progesterone': ('Progesteron_pg/ml_Mean', {'female': (30.3, 544.3), 'male': (0, 58)}),
-        'Testosterone': ('Testosteron_pg/ml_Mean', {'female': (7.1, 42.5), 'male': (28.57, 117.91)})
+        'Progesterone': ('Progesterone_pg/ml_Mean', {'female': (30.3, 544.3), 'male': (0, 58)}),
+        'Testosterone': ('Testosterone_pg/ml_Mean', {'female': (7.1, 42.5), 'male': (28.57, 117.91)})
     }
 
 # SD-based outlier detection function
