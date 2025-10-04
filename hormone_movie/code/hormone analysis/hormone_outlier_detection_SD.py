@@ -148,7 +148,7 @@ def load_and_filter_data(base_path):
     # Combine excluded subjects from both sexes
     all_exclusions = pd.concat([female_exclusion, male_exclusion]).drop_duplicates()
 
-    # Manual decision for exclusion list
+    # Manual decision for exclusion list xx
     all_exclusions = manual_exclusion_decision(all_exclusions)
 
     # Save the updated list of excluded subjects after manual confirmation
