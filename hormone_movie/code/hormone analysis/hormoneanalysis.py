@@ -32,9 +32,9 @@ def load_and_prepare_data(base_path):
     Loads hormone and participant data from CSV files,
     filters the hormone data to include only validated participants
     """
-    hormone_path = f"{base_path}/Hormone_data.csv"
-    complete_path = f"{base_path}/complete_participants.csv" # Participants which completed all movies
-    exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv" # Participants excluded due to outliers
+    hormone_path = f"{base_path}data/Hormone_data.csv"
+    complete_path = f"{base_path}data/complete_participants.csv" # Participants which completed all movies
+    exclude_path = f"{base_path}results/outlier_results/excluded_subjects.csv" # Participants excluded due to outliers
     
     # Check if files exist
     for path in [hormone_path, complete_path, exclude_path]:
@@ -369,7 +369,7 @@ def save_spearman_results(results, output_path):
     
 # Main Execution: Load Data, run all tests and save results
 def main():
-    base_path = "/Users/kbauer/Desktop/master thesis/codes/fMRIdata"
+    base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/"
     
     # Hormone column names from the dataset
     hormone_columns = [
