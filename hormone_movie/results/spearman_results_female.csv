@@ -1,0 +1,7 @@
+Hormone Pair,Sex,Spearman's rho,p-value
+Cortisol & Estradiol,female,0.0019777503694606994,0.9928542539137716
+Cortisol & Progesterone,female,0.15076620724816078,0.4922915851356102
+Cortisol & Testosterone,female,0.08502225457929068,0.6997091078841826
+Estradiol & Progesterone,female,0.39436620922245574,0.06258455524063135
+Estradiol & Testosterone,female,0.6256486477138208,0.0014084835531320815
+Progesterone & Testosterone,female,0.25790513833992096,0.2347842514259735

@@ -404,15 +404,15 @@ def main():
     mannwhitney_results = run_mannwhitney_tests(hormones, hormone_matrices)
     
     # Generate and save boxplots for the hormone data (with significance stars)
-    boxplot_output_dir = os.path.join(base_path, 'boxplots')
+    boxplot_output_dir = os.path.join(base_path,'results','boxplots')
     os.makedirs(boxplot_output_dir, exist_ok=True)
     plot_boxplots(hormone_matrices, hormones, boxplot_output_dir, mannwhitney_results)
 
-    output_spearman_base = os.path.join(base_path, "spearman_results")
+    output_spearman_base = os.path.join(base_path,'results',"spearman_results")
     save_spearman_results(all_results, output_spearman_base)
 
     # Define the output path for saving all the statistical results as CSV
-    output_file = os.path.join(base_path, "hormone_statistical_results.csv")
+    output_file = os.path.join(base_path,'results',"hormone_statistical_results.csv")
     save_results(all_results, output_file)
 
 # Execute script
