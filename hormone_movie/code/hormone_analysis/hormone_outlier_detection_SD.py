@@ -139,6 +139,7 @@ def load_and_filter_data(base_path):
 
     # Create output directory if it doesn't exist
     output_path = os.path.join(base_path,"results","outlier_results")
+    exclude_path = os.path.join(base_path,"results")
     os.makedirs(output_path, exist_ok=True)
 
     # Filter and create boxplots for both sexes
@@ -152,7 +153,7 @@ def load_and_filter_data(base_path):
     all_exclusions = manual_exclusion_decision(all_exclusions)
 
     # Save the updated list of excluded subjects after manual confirmation
-    all_exclusions.to_csv(os.path.join(output_path, 'excluded_subjects.csv'), index=False)
+    all_exclusions.to_csv(os.path.join(exclude_path, 'excluded_subjects.csv'), index=False)
 
     # Return filtered data
     filtered_df = pd.concat([female_df, male_df])
