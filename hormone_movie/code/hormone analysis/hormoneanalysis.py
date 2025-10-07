@@ -389,7 +389,7 @@ def main():
     hormone_matrices = split_hormones_by_sex(hormone_df, hormone_columns)
 
     # Define the output path for the summary table
-    output_file = os.path.join(base_path, "hormone_summary_table.csv")
+    output_file = os.path.join(base_path,"results","hormone_summary_table.csv")
     
     # Save the summary table to CSV
     save_hormone_summary_table(hormones, hormone_matrices, output_file)
