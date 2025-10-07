@@ -1,7 +1,0 @@
-Hormone Pair,Sex,Spearman's rho,p-value
-Cortisol & Estradiol,male,0.26980413324839997,0.1569407147190639
-Cortisol & Progesterone,male,0.39226317820224,0.03531991753340654
-Cortisol & Testosterone,male,0.12664778492207998,0.5126846466348387
-Estradiol & Progesterone,male,0.2492610837438423,0.1922463191173183
-Estradiol & Testosterone,male,0.24433497536945803,0.20147109367017868
-Progesterone & Testosterone,male,-0.0167487684729064,0.9312809622118853
