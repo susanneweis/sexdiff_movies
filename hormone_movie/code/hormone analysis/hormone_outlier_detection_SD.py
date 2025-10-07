@@ -160,6 +160,7 @@ def load_and_filter_data(base_path):
     return filtered_df, all_exclusions
 
 # Main function
+# finished checking this
 def main():
     base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/"
     filtered_df, excluded_subjects_df = load_and_filter_data(base_path)
