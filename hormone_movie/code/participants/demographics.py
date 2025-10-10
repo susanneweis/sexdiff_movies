@@ -5,12 +5,13 @@ import matplotlib.ticker as ticker
 
 
 # Define file paths
-base_path = "/Users/kbauer/Desktop/master thesis/codes/fMRIdata"
+base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/data"
 hormone_path = f"{base_path}/Hormone_data.csv"
 complete_path = f"{base_path}/complete_participants.csv"
-exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv"
-demographic_path = f"{base_path}/demographics_table.csv"
-hist_path = f"{base_path}/cycle_day_histogram_females.png"
+results_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results"
+exclude_path = f"{results_path}/excluded_subjects.csv"
+demographic_path = f"{results_path}/demographics_table.csv"
+hist_path = f"{results_path}/cycle_day_histogram_females.png"
 
 # Load datasets
 hormone_df = pd.read_csv(hormone_path, sep="\t", encoding="windows-1252")
