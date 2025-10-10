@@ -2,8 +2,10 @@ import pandas as pd
 import os
 
 # Define paths
-base_path = "/Users/kbauer/Desktop/master thesis/codes/fMRIdata/"
-hormone_data_path = "/Users/kbauer/Desktop/master thesis/Dataset_movie_project_completeness.csv"
+base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/data"
+#renamed ! 
+fmri_path = f"{base_path}/fMRIdata"
+hormone_data_path = f"{base_path}//Dataset_movie_project_completeness.csv"
 phenotype_path = f"{base_path}/movies_phenotype_results.csv"
 
 # Load hormone and phenotype data
@@ -73,7 +75,7 @@ def check_subject_validity(subject, df, movie_params):
 # Process each movie dataset
 for movie, params in movies.items():
     print(f"\n--- Checking Movie: {movie} ---")
-    bold_path = f"{base_path}BOLD_Schaefer400_subcor36_mean_task-{movie}_MOVIES_INM7.csv"
+    bold_path = f"{fmri_path}/BOLD_Schaefer400_subcor36_mean_task-{movie}_MOVIES_INM7.csv"
 
     if not os.path.exists(bold_path):
         print(f"File not found: {bold_path}")
@@ -121,7 +123,7 @@ for subject in manual_exclusions:
 complete_subjects = complete_subjects - set(excluded_subjects.keys())
 
 # Save valid participants (those in complete_subjects)
-complete_path = f"{base_path}complete_participants.csv"
+complete_path = f"{base_path}/complete_participants.csv"
 pd.DataFrame(list(complete_subjects), columns=["subject"]).to_csv(complete_path, index=False)
 print(f"\n List of valid participants saved to: {complete_path}")
 
@@ -134,6 +136,6 @@ for subject, data in excluded_subjects.items():
         ", ".join(sorted(data["reasons"]))
     ])
 exclusion_df = pd.DataFrame(excluded_data, columns=["subject", "movies", "reason"])
-exclusion_log_path = f"{base_path}excluded_participants_log.csv"
+exclusion_log_path = f"{base_path}/excluded_participants_log.csv"
 exclusion_df.to_csv(exclusion_log_path, index=False)
 print(f" Exclusion log saved to: {exclusion_log_path}")
