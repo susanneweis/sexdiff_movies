@@ -22,7 +22,7 @@ def phase_randomize(x, rng):
     Xr[0] = Xr[0].real + 0j
     return np.fft.irfft(Xr, n=n)
 
-def crosscorr_phase_test(y_f, y_m, dt=2.0, n_perm=5000, seed=7, zscore=True):
+def crosscorr_phase_test(y_f, y_m, dt, n_perm, seed, zscore):
     rng = np.random.default_rng(seed)
     y_f = np.asarray(y_f, float)
     y_m = np.asarray(y_m, float)
@@ -139,7 +139,7 @@ def main():
         y_m = mal[r]
         if y_f.size != y_m.size:
             length_warnings.append((r, y_f.size, y_m.size))
-        res = crosscorr_phase_test(y_f, y_m, dt=TR, n_perm=n_perm, seed=seed, zscore=True)
+        res = crosscorr_phase_test(y_f, y_m, TR, n_perm, seed, True)
         rows.append(dict(
             region=r,
             n_samples=int(min(y_f.size, y_m.size)),
