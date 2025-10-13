@@ -73,39 +73,23 @@ def crosscorr_phase_test(y_f, y_m, dt=2.0, n_perm=5000, seed=7, zscore=True):
 # =============================
 # Long/stacked CSV loader
 # =============================
-def build_region_series_from_long(
-    csv_path,
-    region_col="region",
-    value_col="PC score 1",
-    time_col=None
-):
-    """
-    Reconstruct per-region 1D time series from a long/stacked CSV.
-    - If `time_col` is provided, sort within each region by that column.
-    - Otherwise, preserve the original file order.
-    Returns: dict {region_name: np.array([...])}
-    """
+def build_region_series_from_long(csv_path,region_col,value_col):
+    # Reconstruct per-region 1D time series from a long/stacked CSV.
+    # Returns: dict {region_name: np.array([...])}
+
     df = pd.read_csv(csv_path)
-    # Tolerant header matching
-    cols_lower = {c.lower(): c for c in df.columns}
-    region_col = cols_lower.get(region_col.lower(), region_col)
-    value_col  = cols_lower.get(value_col.lower(),  value_col)
-    time_col   = cols_lower.get(time_col.lower(), time_col) if time_col else None
 
     assert region_col in df.columns, f"'{region_col}' not found in {csv_path}"
     assert value_col  in df.columns, f"'{value_col}' not found in {csv_path}"
 
     # Keep only needed columns; add row order index for stable ordering
-    df = df[[region_col, value_col] + ([time_col] if time_col else [])].copy()
+    df = df[[region_col, value_col]].copy()
     df["_row_order_"] = np.arange(len(df))
 
     series_map = {}
     # groupby preserves input order by default; we enforce it explicitly
     for reg, g in df.groupby(region_col, sort=False):
-        if time_col:
-            g = g.sort_values(by=time_col, kind="mergesort")  # stable
-        else:
-            g = g.sort_values(by="_row_order_", kind="mergesort")
+        g = g.sort_values(by="_row_order_", kind="mergesort")
         arr = pd.to_numeric(g[value_col], errors="coerce").to_numpy()
         series_map[str(reg)] = arr
     return series_map
@@ -113,19 +97,38 @@ def build_region_series_from_long(
 # =============================
 # Batch over regions + FDR
 # =============================
-def analyze_long_stacked_csvs(
-    female_csv,
-    male_csv,
-    TR=2.0,
-    n_perm=5000,
-    seed=7,
-    region_col="region",
-    value_col="PC score 1",
-    time_col=None,
-    out_csv="sex_diff_movie_region_stats.csv"
-):
-    fem = build_region_series_from_long(female_csv, region_col, value_col, time_col)
-    mal = build_region_series_from_long(male_csv,   region_col, value_col, time_col)
+def main():
+ #   female_csv,
+ #   male_csv,
+ #   TR=2.0,
+ #   n_perm=5000,
+ #   seed=7,
+ #   region_col="region",
+ #   value_col="PC score 1",
+ #   time_col=None,
+ #   out_csv="sex_diff_movie_region_stats.csv"
+#):
+    TR = 0.98
+    # for real make n_perm much larger, e.g. 5000
+    n_perm=100
+    seed = 7
+
+    outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses"
+    out_csv = f"{outpath}/results_sex_movie_phasecc.csv"
+
+    # CSVs
+    path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA" 
+    csv_f = "PC1_scores_female_allROI.csv"
+    csv_m = "PC1_scores_male_allROI.csv" 
+    
+    female_csv = f"{path}/{csv_f}"
+    male_csv = f"{path}/{csv_m}"
+
+    region_col = "Region"
+    value_col = "PC_score_1"
+
+    fem = build_region_series_from_long(female_csv, region_col, value_col)
+    mal = build_region_series_from_long(male_csv,   region_col, value_col)
 
     regions = sorted(set(fem.keys()).intersection(mal.keys()))
     rows = []
@@ -171,7 +174,10 @@ def analyze_long_stacked_csvs(
         if len(length_warnings) > 10:
             print(f"   ...and {len(length_warnings)-10} more regions")
 
-    return out
+# Execute script
+if __name__ == "__main__":
+    main()
+
 
 # -------------------------------
 # Example call:
