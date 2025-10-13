@@ -12,16 +12,19 @@ def main():
         description="Plot PCScores1 time course for a chosen brain region."
     )
     parser.add_argument(
+        "--path",
+        default = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA", 
+        help="Path to the CSV file (default: /data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA/)",
+    )
+    parser.add_argument(
         "--csv",
-        k_res_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA/"
-        default=f"{k_res_path}PC1_scores_female_allROI.csv",
-        # i have a feeling adding the path like this won't work 
         default="PC1_scores_female_allROI.csv",
-        help="Path to the CSV file (default: PC1_scores_female_allROI.csv)",
+        help="CSV file (default: PC1_scores_female_allROI.csv.csv)",
     )
     parser.add_argument(
         "--region",
-        required=True,
+        default = "17Networks_LH_DorsAttnA_ParOcc_1", 
+        # required=True,
         help="Exact region name to plot (must match a value in the 'Regions' column)",
     )
     parser.add_argument(
@@ -33,13 +36,13 @@ def main():
 
     # Load CSV
     try:
-        df = pd.read_csv(args.csv)
+        df = pd.read_csv( f"{args.path}/{args.csv}")
     except FileNotFoundError:
         print(f"Error: file not found: {args.csv}", file=sys.stderr)
         sys.exit(1)
 
     # Validate required columns
-    required_cols = {"Regions", "PCScores1"}
+    required_cols = {"Region", "PC_score_1"}
     missing = required_cols - set(df.columns)
     if missing:
         print(f"Error: CSV must contain columns {required_cols}, missing: {missing}", file=sys.stderr)
@@ -47,40 +50,33 @@ def main():
 
     # Filter rows for the chosen region
     region = args.region
-    sub = df[df["Regions"] == region].copy()
+    sub = df[df["Region"] == region].copy()
 
     if sub.empty:
         # Help the user with possible close matches
-        unique_regions = sorted(df["Regions"].dropna().unique())
+        unique_regions = sorted(df["Region"].dropna().unique())
         suggestions = get_close_matches(region, unique_regions, n=5, cutoff=0.6)
-        print(f"Error: region '{region}' not found in 'Regions' column.", file=sys.stderr)
+        print(f"Error: region '{region}' not found in 'Region' column.", file=sys.stderr)
         if suggestions:
             print("Did you mean one of:", ", ".join(suggestions), file=sys.stderr)
         else:
             print("Available regions (first 20):", ", ".join(unique_regions[:20]), file=sys.stderr)
         sys.exit(1)
 
-    # If there is a time column, use it; otherwise use sample index
-    time_col_candidates = [c for c in df.columns if c.lower() in {"time", "t", "frame", "index"}]
-    if time_col_candidates:
-        tcol = time_col_candidates[0]
-        t = sub[tcol].values
-        x_label = tcol
-    else:
-        # Use the original order as time index
-        # Keep the original row order as in the CSV
-        sub = sub.reset_index(drop=True)
-        t = sub.index.values
-        x_label = "Time (sample index)"
+    # Use the original order as time index
+    # Keep the original row order as in the CSV
+    sub = sub.reset_index(drop=True)
+    t = sub.index.values
+    x_label = "Time (sample index)"
 
-    y = sub["PCScores1"].astype(float).values
+    y = sub["PC_score_1"].astype(float).values
 
     # Plot
     plt.figure()
     plt.plot(t, y)
-    plt.title(f"{region} — PCScores1 time course")
+    plt.title(f"{region} — PC_score_1 time course")
     plt.xlabel(x_label)
-    plt.ylabel("PCScores1")
+    plt.ylabel("PC_score_1")
     plt.grid(True)
     plt.tight_layout()
 
