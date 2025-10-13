@@ -13,6 +13,9 @@ def main():
     )
     parser.add_argument(
         "--csv",
+        k_res_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA/"
+        default=f"{k_res_path}PC1_scores_female_allROI.csv",
+        # i have a feeling adding the path like this won't work 
         default="PC1_scores_female_allROI.csv",
         help="Path to the CSV file (default: PC1_scores_female_allROI.csv)",
     )
