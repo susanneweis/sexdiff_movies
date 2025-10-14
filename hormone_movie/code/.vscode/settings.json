@@ -1,15 +1,4 @@
 {
-  "python.defaultInterpreterPath": "/Users/sweis/.venvs/hormone_env/bin/python",
-  "python.terminal.activateEnvironment": true,
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
-    "source.organizeImports": "always"
-  },
-  "python.analysis.typeCheckingMode": "basic",
-  "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": ["-q"],
-  "ruff.enable": true,
-  "ruff.organizeImports": true,
-  "ruff.lint.enable": true
+  "python.defaultInterpreterPath": "/Users/sweis/.venvs/hormone_env",
+  "python-envs.pythonProjects": []
 }
