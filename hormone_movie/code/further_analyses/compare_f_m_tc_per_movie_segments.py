@@ -3,9 +3,6 @@ import pandas as pd
 from scipy.signal import correlate, correlation_lags
 from pathlib import Path
 
-# base name for outputs (same root, now one-per-movie + a combined file)
-out_base   = "results_sex_movie_phasecc"
-
 # =============================
 # FDR (Benjamini–Hochberg) helper
 # =============================
@@ -44,7 +41,7 @@ def phase_randomize(x, rng):
     Xr[0] = Xr[0].real + 0j
     return np.fft.irfft(Xr, n=n)
 
-def crosscorr_phase_test(y_f, y_m, dt=2.0, n_perm=5000, seed=7, zscore=True):
+def crosscorr_phase_test(y_f, y_m, dt, n_perm, seed, zscore):
     rng = np.random.default_rng(seed)
     y_f = np.asarray(y_f, float)
     y_m = np.asarray(y_m, float)
@@ -156,7 +153,7 @@ def main():
         "tgtbtu": (2925,3431),
     }
 
-    movies_dict=MOVIES,
+    #movies_dict=MOVIES
 
     outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses"
     out_csv = f"{outpath}/results_sex_movie_phasecc_per_movie.csv"
@@ -172,6 +169,10 @@ def main():
     region_col = "Region"
     value_col = "PC_score_1"
 
+    # base name for outputs (same root, now one-per-movie + a combined file)
+    out_base   = "results_sex_movie_phasecc"
+    out_base_path  = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses"
+
     fem = build_region_series_from_long(female_csv, region_col, value_col)
     mal = build_region_series_from_long(male_csv,   region_col, value_col)
 
@@ -180,7 +181,7 @@ def main():
 
     combined_rows = []
 
-    for mv_label, (start_1b, end_1b) in movies_dict.items():
+    for mv_label, (start_1b, end_1b) in MOVIES.items():
         rows = []
         for r in regions:
             y_f_full = fem[r]
@@ -189,7 +190,7 @@ def main():
             y_f = slice_segment(y_f_full, start_1b, end_1b)
             y_m = slice_segment(y_m_full, start_1b, end_1b)
 
-            res = crosscorr_phase_test(y_f, y_m, dt=TR, n_perm=n_perm, seed=seed, zscore=True)
+            res = crosscorr_phase_test(y_f, y_m, TR, n_perm, seed, True)
             rows.append(dict(
                 movie=mv_label,
                 region=r,
@@ -219,7 +220,8 @@ def main():
                 df_mv[qcol] = np.nan
                 df_mv[scol] = False
 
-        out_path = Path(f"{out_base}__movie-{mv_label}.csv")
+
+        out_path = Path(f"{out_base_path}/{out_base}__movie-{mv_label}.csv")
         df_mv.to_csv(out_path, index=False)
         print(f"Saved: {out_path.resolve()}")
 
@@ -227,7 +229,7 @@ def main():
 
     # Also write a combined master CSV (movie-specific q/flags already in rows)
     df_all = pd.DataFrame(combined_rows).sort_values(["movie", "region"]).reset_index(drop=True)
-    out_all = Path(f"{out_base}__ALL_MOVIES.csv")
+    out_all = Path(f"{out_base_path}/{out_base}__ALL_MOVIES.csv")
     df_all.to_csv(out_all, index=False)
     print(f"Saved combined results: {out_all.resolve()}")
 
