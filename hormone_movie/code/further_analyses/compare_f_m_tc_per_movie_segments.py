@@ -3,30 +3,8 @@ import pandas as pd
 from scipy.signal import correlate, correlation_lags
 from pathlib import Path
 
-# =============================
-# CONFIG (keep your paths the same)
-# =============================
-female_csv = "female_long.csv"   # your existing female file path
-male_csv   = "male_long.csv"     # your existing male file path
-TR         = 2.0                 # your sampling interval (seconds)
-n_perm     = 5000
-seed       = 7
-region_col = "region"
-value_col  = "PC score 1"
-
 # base name for outputs (same root, now one-per-movie + a combined file)
 out_base   = "results_sex_movie_phasecc"
-
-# Movie segments (1-based inclusive -> will be converted to 0-based slices)
-MOVIES = {
-    "dd":     (1,   458),
-    "s":      (459, 898),
-    "dps":    (899, 1372),
-    "fg":     (1373,1958),
-    "dmw":    (1959,2475),
-    "lib":    (2476,2924),
-    "tgtbtu": (2925,3431),
-}
 
 # =============================
 # FDR (Benjamini–Hochberg) helper
@@ -116,11 +94,11 @@ def crosscorr_phase_test(y_f, y_m, dt=2.0, n_perm=5000, seed=7, zscore=True):
 # =============================
 # Loader for long/stacked CSV (no time column)
 # =============================
-def build_region_series_from_long(csv_path, region_col="region", value_col="PC score 1"):
+def build_region_series_from_long(csv_path, region_col, value_col):
+    # Reconstruct per-region 1D time series from a long/stacked CSV.
+    # Returns: dict {region_name: np.array([...])}
+
     df = pd.read_csv(csv_path)
-    cols_lower = {c.lower(): c for c in df.columns}
-    region_col = cols_lower.get(region_col.lower(), region_col)
-    value_col  = cols_lower.get(value_col.lower(),  value_col)
 
     assert region_col in df.columns, f"'{region_col}' not found in {csv_path}"
     assert value_col  in df.columns, f"'{value_col}' not found in {csv_path}"
@@ -151,10 +129,49 @@ def slice_segment(arr, start_1b, end_1b):
 # =============================
 # Analyze per movie, add FDR per movie, save
 # =============================
-def analyze_per_movie_segments(
-    female_csv, male_csv, movies_dict, TR=2.0, n_perm=5000, seed=7,
-    region_col="region", value_col="PC score 1", out_base="results_sex_movie_phasecc"
-):
+def main():
+    # female_csv, 
+    # male_csv, 
+    # movies_dict, 
+    # TR=2.0, 
+    # n_perm=5000, 
+    # seed=7,
+    # region_col="region", 
+    # value_col="PC score 1", 
+    # out_base="results_sex_movie_phasecc"
+
+    TR = 0.98
+    # for real make n_perm much larger, e.g. 5000
+    n_perm=100
+    seed = 7
+
+    # Movie segments (1-based inclusive -> will be converted to 0-based slices)
+    MOVIES = {
+        "dd":     (1,   458),
+        "s":      (459, 898),
+        "dps":    (899, 1372),
+        "fg":     (1373,1958),
+        "dmw":    (1959,2475),
+        "lib":    (2476,2924),
+        "tgtbtu": (2925,3431),
+    }
+
+    movies_dict=MOVIES,
+
+    outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses"
+    out_csv = f"{outpath}/results_sex_movie_phasecc_per_movie.csv"
+
+    # CSVs
+    path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA" 
+    csv_f = "PC1_scores_female_allROI.csv"
+    csv_m = "PC1_scores_male_allROI.csv" 
+    
+    female_csv = f"{path}/{csv_f}"
+    male_csv = f"{path}/{csv_m}"
+
+    region_col = "Region"
+    value_col = "PC_score_1"
+
     fem = build_region_series_from_long(female_csv, region_col, value_col)
     mal = build_region_series_from_long(male_csv,   region_col, value_col)
 
@@ -217,15 +234,20 @@ def analyze_per_movie_segments(
 # =============================
 # RUN
 # =============================
+# Execute script
 if __name__ == "__main__":
-    analyze_per_movie_segments(
-        female_csv=female_csv,
-        male_csv=male_csv,
-        movies_dict=MOVIES,
-        TR=TR,
-        n_perm=n_perm,
-        seed=seed,
-        region_col=region_col,
-        value_col=value_col,
-        out_base=out_base
-    )
+    main()
+
+
+#if __name__ == "__main__":
+#    analyze_per_movie_segments(
+#        female_csv=female_csv,
+#        male_csv=male_csv,
+#        movies_dict=MOVIES,
+#        TR=TR,
+#        n_perm=n_perm,
+#        seed=seed,
+#        region_col=region_col,
+#        value_col=value_col,
+#        out_base=out_base
+#    )
