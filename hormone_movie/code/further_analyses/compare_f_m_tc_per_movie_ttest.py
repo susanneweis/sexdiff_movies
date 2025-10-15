@@ -23,6 +23,7 @@ from scipy.stats import t as t_dist
 import os
 from scipy.stats import ttest_ind
 from scipy.stats import ttest_1samp
+from scipy.stats import pearsonr
 
 
 # =============================
@@ -201,9 +202,9 @@ def main():
         rows = []
         length_warnings = []
 
-        for r in regions:
-            y_f = fem[r]
-            y_m = mal[r]
+        for reg in regions:
+            y_f = fem[reg]
+            y_m = mal[reg]
 
             if y_f.size != y_m.size:
                 length_warnings.append((r, y_f.size, y_m.size))
@@ -212,15 +213,20 @@ def main():
             # y_m_norm = zscore(y_m)
             d_abs = np.abs(y_f - y_m)
             t_stat, p_val = ttest_1samp(d_abs, 0, nan_policy='omit')
+            r, p_r = pearsonr(y_f, y_m)
+            corr_sig = p_r <= 0.05
 
             rows.append(dict(
-                region=r,
+                region=reg,
                 n_samples=int(len(y_f)),
                 p_val=p_val,
-                t_stat=t_stat,    
+                t_stat=t_stat,  
+                corr = r, 
+                corr_p = p_r,  
+                corr_sig = corr_sig
             ))
 
-            out = pd.DataFrame(rows).sort_values(["region"]).reset_index(drop=True)
+            out = pd.DataFrame(rows)
 
             # ---- FDR per movie (across regions) ----
             if "p_val" in out.columns:

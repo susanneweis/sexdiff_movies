@@ -14,7 +14,7 @@ def main():
     
     parser.add_argument(
         "--region",
-        default = "17Networks_LH_DefaultA_PFCm_3", 
+        default = "17Networks_LH_VisPeri_ExStrInf_5", 
         # required=True,
         help="Exact region name to plot (must match a value in the 'Regions' column)",
     )
@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
 
     # Load CSV
-    path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA" 
+    path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/results_PCA/tgtbtu/" 
     csv_f = "PC1_scores_female_allROI.csv"
     csv_m = "PC1_scores_male_allROI.csv" 
 
@@ -77,7 +77,7 @@ def main():
     plt.legend()
     plt.tight_layout()
 
-    s_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/pca_plots"
+    s_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/pca_plots/tests"
     save_to = f"{s_path}/plot_f_m_{args.region}.png"
   
     plt.savefig(save_to, dpi=200, bbox_inches="tight")
