@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 from scipy.signal import correlate, correlation_lags
 from pathlib import Path
+import os
 
 # =============================
 # Helpers
