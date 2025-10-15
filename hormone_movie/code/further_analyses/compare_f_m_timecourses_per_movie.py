@@ -114,69 +114,71 @@ def main():
     n_perm=100
     seed = 7
 
-    curr_mov = "dps"
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
 
-    outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses/sep_PCAs"
-    os.makedirs(outpath, exist_ok=True)
-    out_csv = f"/{outpath}/results_sex_movie_phasecc_{curr_mov}.csv"
+    for curr_mov in movies:
 
-    # CSVs
-    path = f"/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/results_PCA/{curr_mov}" 
-    csv_f = "PC1_scores_female_allROI.csv"
-    csv_m = "PC1_scores_male_allROI.csv" 
-    
-    female_csv = f"{path}/{csv_f}"
-    male_csv = f"{path}/{csv_m}"
+        outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses/sep_PCAs"
+        os.makedirs(outpath, exist_ok=True)
+        out_csv = f"/{outpath}/results_sex_movie_phasecc_{curr_mov}.csv"
 
-    region_col = "Region"
-    value_col = "PC_score_1"
+        # CSVs
+        path = f"/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/results_PCA/{curr_mov}" 
+        csv_f = "PC1_scores_female_allROI.csv"
+        csv_m = "PC1_scores_male_allROI.csv" 
+        
+        female_csv = f"{path}/{csv_f}"
+        male_csv = f"{path}/{csv_m}"
 
-    fem = build_region_series_from_long(female_csv, region_col, value_col)
-    mal = build_region_series_from_long(male_csv,   region_col, value_col)
+        region_col = "Region"
+        value_col = "PC_score_1"
 
-    regions = sorted(set(fem.keys()).intersection(mal.keys()))
-    rows = []
-    length_warnings = []
+        fem = build_region_series_from_long(female_csv, region_col, value_col)
+        mal = build_region_series_from_long(male_csv,   region_col, value_col)
 
-    for r in regions:
-        y_f = fem[r]
-        y_m = mal[r]
-        if y_f.size != y_m.size:
-            length_warnings.append((r, y_f.size, y_m.size))
-        res = crosscorr_phase_test(y_f, y_m, TR, n_perm, seed, True)
-        rows.append(dict(
-            region=r,
-            n_samples=int(min(y_f.size, y_m.size)),
-            r_max_obs=res["r_max_obs"],
-            p_corr_strength=res["p_corr_strength"],
-            lag_obs_samples=res["lag_obs_samples"],
-            lag_obs_seconds=res["lag_obs_seconds"],
-            p_lag=res["p_lag"]
-        ))
+        regions = sorted(set(fem.keys()).intersection(mal.keys()))
+        rows = []
+        length_warnings = []
 
-    out = pd.DataFrame(rows).sort_values("region").reset_index(drop=True)
+        for r in regions:
+            y_f = fem[r]
+            y_m = mal[r]
+            if y_f.size != y_m.size:
+                length_warnings.append((r, y_f.size, y_m.size))
+            res = crosscorr_phase_test(y_f, y_m, TR, n_perm, seed, True)
+            rows.append(dict(
+                region=r,
+                n_samples=int(min(y_f.size, y_m.size)),
+                r_max_obs=res["r_max_obs"],
+                p_corr_strength=res["p_corr_strength"],
+                lag_obs_samples=res["lag_obs_samples"],
+                lag_obs_seconds=res["lag_obs_seconds"],
+                p_lag=res["p_lag"]
+            ))
 
-    # FDR across regions (two families)
-    for pcol in ["p_corr_strength", "p_lag"]:
-        mask = out[pcol].notna()
-        if mask.any():
-            rej, q = fdrcorrection(out.loc[mask, pcol].values, alpha=0.05)
-            out.loc[mask, pcol.replace("p_", "q_")] = q
-            out.loc[mask, pcol.replace("p_", "sig_")] = rej.astype(bool)
-        else:
-            out[pcol.replace("p_", "q_")] = np.nan
-            out[pcol.replace("p_", "sig_")] = False
+        out = pd.DataFrame(rows).sort_values("region").reset_index(drop=True)
 
-    out_path = Path(out_csv)
-    out.to_csv(out_path, index=False)
-    print(f"Saved: {out_path.resolve()}")
+        # FDR across regions (two families)
+        for pcol in ["p_corr_strength", "p_lag"]:
+            mask = out[pcol].notna()
+            if mask.any():
+                rej, q = fdrcorrection(out.loc[mask, pcol].values, alpha=0.05)
+                out.loc[mask, pcol.replace("p_", "q_")] = q
+                out.loc[mask, pcol.replace("p_", "sig_")] = rej.astype(bool)
+            else:
+                out[pcol.replace("p_", "q_")] = np.nan
+                out[pcol.replace("p_", "sig_")] = False
 
-    if length_warnings:
-        print("⚠️ Length mismatches (female vs male) — truncated to min length for testing:")
-        for r, lf, lm in length_warnings[:10]:
-            print(f"   {r}: female={lf}, male={lm}")
-        if len(length_warnings) > 10:
-            print(f"   ...and {len(length_warnings)-10} more regions")
+        out_path = Path(out_csv)
+        out.to_csv(out_path, index=False)
+        print(f"Saved: {out_path.resolve()}")
+
+        if length_warnings:
+            print("⚠️ Length mismatches (female vs male) — truncated to min length for testing:")
+            for r, lf, lm in length_warnings[:10]:
+                print(f"   {r}: female={lf}, male={lm}")
+            if len(length_warnings) > 10:
+                print(f"   ...and {len(length_warnings)-10} more regions")
 
 # Execute script
 if __name__ == "__main__":
