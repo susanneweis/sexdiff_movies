@@ -3,6 +3,7 @@ import pandas as pd
 from scipy.signal import correlate, correlation_lags
 from statsmodels.stats.multitest import fdrcorrection
 from pathlib import Path
+import os
 
 # =============================
 # Phase-randomized CC test
@@ -113,11 +114,14 @@ def main():
     n_perm=100
     seed = 7
 
-    outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses"
-    out_csv = f"{outpath}/results_sex_movie_phasecc.csv"
+    curr_mov = "dps"
+
+    outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses/sep_PCAs"
+    os.makedirs(outpath, exist_ok=True)
+    out_csv = f"/{outpath}/results_sex_movie_phasecc_{curr_mov}.csv"
 
     # CSVs
-    path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA" 
+    path = f"/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/results_PCA/{curr_mov}" 
     csv_f = "PC1_scores_female_allROI.csv"
     csv_m = "PC1_scores_male_allROI.csv" 
     
