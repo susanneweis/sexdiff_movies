@@ -40,7 +40,9 @@ if "cpu" in hostname: # Run on Juseless
         
 else:
     # Local setup for testing 
-    dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7", "BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 2 movies
+    # dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7", "BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 2 movies
+    dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 1 movies
+
     dataset = "BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7.csv" 
 
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie" 
@@ -127,7 +129,7 @@ for movie in dataset_list:
 if hostname == "cpu44":
     output_dir =r_rootdir # Remote root directory
 else:
-    output_dir = "results_PCA" # Local results directory
+    output_dir = f"{base_path}/results/results_PCA" # Local results directory
     os.makedirs(output_dir, exist_ok=True) # Create the output directory if it doesn't exist
 
 # Prepare lists for PCA results by gender 
