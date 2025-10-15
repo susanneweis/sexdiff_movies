@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from scipy.stats import t as t_dist
+import os
 
 # =============================
 # CONFIG (keep your paths/fields the same)
@@ -151,10 +152,50 @@ def slice_segment(arr, start_1b, end_1b):
 # =============================
 # Main per-movie analysis (HAC only)
 # =============================
-def analyze_per_movie_segments(
-    female_csv, male_csv, movies_dict, TR=2.0,
-    region_col="region", value_col="PC score 1", out_base="results_sex_movie_phasecc"
-):
+
+def main():
+# def analyze_per_movie_segments(
+#     female_csv, male_csv, movies_dict, TR=2.0,
+#     region_col="region", value_col="PC score 1", out_base="results_sex_movie_phasecc"
+# ):
+
+    TR = 0.98
+    # for real make n_perm much larger, e.g. 5000
+    n_perm=100
+    seed = 7
+
+    # Movie segments (1-based inclusive -> will be converted to 0-based slices)
+    MOVIES = {
+        "dd":     (1,   458),
+        "s":      (459, 898),
+        "dps":    (899, 1372),
+        "fg":     (1373,1958),
+        "dmw":    (1959,2475),
+        "lib":    (2476,2924),
+        "tgtbtu": (2925,3431),
+    }
+
+    #movies_dict=MOVIES
+
+    # outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses_hac"
+    # out_csv = f"{outpath}/results_sex_movie_hac_per_movie.csv"
+
+    # CSVs
+    path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/kristina/PCA" 
+    csv_f = "PC1_scores_female_allROI.csv"
+    csv_m = "PC1_scores_male_allROI.csv" 
+    
+    female_csv = f"{path}/{csv_f}"
+    male_csv = f"{path}/{csv_m}"
+
+    region_col = "Region"
+    value_col = "PC_score_1"
+
+    # base name for outputs (same root, now one-per-movie + a combined file)
+    out_base   = "results_sex_movie_hac"
+    out_base_path  = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses_hac"
+    os.makedirs(out_base_path, exist_ok=True)
+
     fem = build_region_series_from_long(female_csv, region_col, value_col)
     mal = build_region_series_from_long(male_csv,   region_col, value_col)
 
@@ -163,7 +204,7 @@ def analyze_per_movie_segments(
 
     combined_rows = []
 
-    for mv_label, (start_1b, end_1b) in movies_dict.items():
+    for mv_label, (start_1b, end_1b) in MOVIES.items():
         rows = []
         for r in regions:
             y_f_full = fem[r]
@@ -223,7 +264,7 @@ def analyze_per_movie_segments(
                 df_mv["q_hac_abs"] = np.nan
                 df_mv["sig_hac_abs"] = False
 
-        out_path = Path(f"{out_base}__movie-{mv_label}.csv")
+        out_path = Path(f"{out_base_path}/{out_base}__movie-{mv_label}.csv")
         df_mv.to_csv(out_path, index=False)
         print(f"Saved: {out_path.resolve()}")
 
@@ -231,20 +272,24 @@ def analyze_per_movie_segments(
 
     # Combined master CSV (movie-specific q/flags included)
     df_all = pd.DataFrame(combined_rows).sort_values(["movie", "region"]).reset_index(drop=True)
-    out_all = Path(f"{out_base}__ALL_MOVIES.csv")
+    out_all = Path(f"{out_base_path}/{out_base}__ALL_MOVIES.csv")
     df_all.to_csv(out_all, index=False)
     print(f"Saved combined results: {out_all.resolve()}")
+
+# Execute script
+if __name__ == "__main__":
+    main()
 
 # =============================
 # RUN
 # =============================
-if __name__ == "__main__":
-    analyze_per_movie_segments(
-        female_csv=female_csv,
-        male_csv=male_csv,
-        movies_dict=MOVIES,
-        TR=TR,
-        region_col=region_col,
-        value_col=value_col,
-        out_base=out_base
-    )
+# if __name__ == "__main__":
+#     analyze_per_movie_segments(
+#         female_csv=female_csv,
+#         male_csv=male_csv,
+#         movies_dict=MOVIES,
+#         TR=TR,
+#         region_col=region_col,
+#         value_col=value_col,
+#         out_base=out_base
+#     )
