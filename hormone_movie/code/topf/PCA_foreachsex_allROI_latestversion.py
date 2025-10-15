@@ -11,7 +11,7 @@ import re
 # Setup for paths
 hostname = socket.gethostname()
 if "cpu" in hostname: # Run on Juseless
-
+    # THIS PART NOT CHECKED YET !!!
     # Arguments 
     wkdir = sys.argv[1] # Project directory
     r_rootdir = sys.argv[2] # Result root directory
@@ -98,7 +98,7 @@ print(f"Number of included valid subjects after exclusion: {len(valid_subjects)}
 all_data = [] # List to store all movie data
 # Loop through each movie in the dataset list
 for movie in dataset_list:    
-    movie_path =  f"{base_path}/{movie}.csv" # Path to current movie data
+    movie_path =  f"{base_path}//data/fMRIdata/{movie}.csv" # Path to current movie data
     movie_abbrev = extract_movie_part(movie) # Extract movie abbrevation
     properties = movies_properties[movie_abbrev] # Get timepoint properties for the movie
     
