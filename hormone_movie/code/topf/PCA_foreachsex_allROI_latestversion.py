@@ -42,12 +42,13 @@ else:
     # Local setup for testing 
     dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7", "BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 2 movies
     dataset = "BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7.csv" 
-    base_path =  "/Users/kbauer/Desktop/master thesis/codes/fMRIdata" 
-    movie_path =  f"{base_path}/{dataset}" # Path to fMRI data
-    phenotype_path = f"{base_path}/movies_phenotype_results.csv"
-    complete_participants_path = f"{base_path}/complete_participants.csv"
-    exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv"
-    
+
+    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie" 
+    movie_path =  f"{base_path}/data/fMRIdata/{dataset}" # Path to fMRI data
+    phenotype_path = f"{base_path}/data/movies_phenotype_results.csv"
+    complete_participants_path = f"{base_path}/data/complete_participants.csv"
+    exclude_path = f"{base_path}/results/excluded_subjects.csv"
+
     for path in [movie_path, phenotype_path, complete_participants_path, exclude_path]:
         if not os.path.exists(path): 
             print(f"File not found: {path}")
