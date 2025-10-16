@@ -15,7 +15,7 @@ def main():
     schaefer_img = image.load_img(schaefer.maps)
     schaefer_labels = schaefer['labels']
     
-    schaefer_labels = [label.decode('utf-8') for label in schaefer['labels']]
+    # schaefer_labels = [label.decode('utf-8') for label in schaefer['labels']]
     
     # Load Harvard-Oxford Cortical and Subcortical atlases
     ho_cort = datasets.fetch_atlas_harvard_oxford('cort-maxprob-thr25-2mm')
