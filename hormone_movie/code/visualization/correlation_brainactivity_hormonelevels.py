@@ -8,15 +8,15 @@ from nilearn.plotting import plot_glass_brain
 from matplotlib import cm
 
 # Paths
-base_path = "/Users/kbauer/Desktop/master thesis/codes/fMRIdata"
-atlas_path = f"{base_path}/Susanne_Schaefer_436.nii"
+base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
+atlas_path = f"{base_path}/data/Susanne_Schaefer_436.nii"
 
-PC1_loadings_female_path = f"{base_path}/results-PCA/PC1_loadings_female_allROI.csv"
-PC1_loadings_male_path = f"{base_path}/results-PCA/PC1_loadings_male_allROI.csv"
+PC1_loadings_female_path = f"{base_path}/results/results-PCA/{mv_str}/PC1_loadings_female_allROI.csv"
+PC1_loadings_male_path = f"{base_path}/results/results-PCA/{mv_str}/PC1_loadings_male_allROI.csv"
 
-hormone_path = f"{base_path}/Hormone_data.csv"
-complete_path = f"{base_path}/complete_participants.csv" # Participants which completed all movies
-exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv" # Participants excluded due to outliers
+hormone_path = f"{base_path}/data/Hormone_data.csv"
+complete_path = f"{base_path}/data/complete_participants.csv" # Participants which completed all movies
+exclude_path = f"{base_path}/results/excluded_subjects.csv" # Participants excluded due to outliers
 
 # Check if files exist
 for path in [atlas_path, PC1_loadings_female_path, PC1_loadings_male_path, hormone_path, complete_path, exclude_path]:
