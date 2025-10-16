@@ -11,8 +11,9 @@ from matplotlib import cm
 base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
 atlas_path = f"{base_path}/data/Susanne_Schaefer_436.nii"
 
-PC1_loadings_female_path = f"{base_path}/results/results-PCA/{mv_str}/PC1_loadings_female_allROI.csv"
-PC1_loadings_male_path = f"{base_path}/results/results-PCA/{mv_str}/PC1_loadings_male_allROI.csv"
+mv_str = "dd"
+PC1_loadings_female_path = f"{base_path}/results/results_PCA/{mv_str}/PC1_loadings_female_allROI.csv"
+PC1_loadings_male_path = f"{base_path}/results/results_PCA/{mv_str}/PC1_loadings_male_allROI.csv"
 
 hormone_path = f"{base_path}/data/Hormone_data.csv"
 complete_path = f"{base_path}/data/complete_participants.csv" # Participants which completed all movies
@@ -24,7 +25,7 @@ for path in [atlas_path, PC1_loadings_female_path, PC1_loadings_male_path, hormo
         raise FileNotFoundError(f"File not found: {path}")
 
 # Load datasets
-PC1_loadings_female = pd.read_csv(PC1_loadings_female_path, sep=';')
+PC1_loadings_female = pd.read_csv(PC1_loadings_female_path)
 PC1_loadings_male = pd.read_csv(PC1_loadings_male_path)
 PC1_loadings_female.rename(columns={"Subject_ID": "PCode"}, inplace=True)
 PC1_loadings_male.rename(columns={"Subject_ID": "PCode"}, inplace=True)
