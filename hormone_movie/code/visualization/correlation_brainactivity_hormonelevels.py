@@ -91,14 +91,14 @@ calculate_region_correlations(merged_male, 'male')
 
 # Convert to DataFrame and save
 region_corr_df = pd.DataFrame(region_corr_results)
-region_corr_df.to_csv(f"{base_path}/regionwise_correlation_results.csv", index=False)
+region_corr_df.to_csv(f"{base_path}/results/regionwise_correlation_results.csv", index=False)
 print("Region-wise correlation results saved.")
 
 ##### Brain maps
 n_roi = 436
 
 # Create output directory for brain maps
-brainmap_output_path = os.path.join(base_path, "brain_maps")
+brainmap_output_path = os.path.join(base_path,"results","brain_maps")
 os.makedirs(brainmap_output_path, exist_ok=True)
 
 def create_img_for_glassbrain_plot(stat_to_plot, atlas_path, n_roi):
