@@ -128,14 +128,12 @@ for mv_str in movies:
 
     comp_load = pd.read_csv(comp_loadings)
     comp_load.rename(columns={"Region": "region"}, inplace=True)
-
     comp_load, region_to_id_f = assign_roi_ids(comp_load)
-    comp_load["sig_p"] = (comp_load["p_val"] < 0.05).astype(int)
 
+    comp_load["sig_p"] = (comp_load["p_val"] < 0.05).astype(int)
     comp_load["sig_p_for_similar"] = np.where(res_tc_corr["corr_sig"], comp_load["sig_p"], 0)
 
     roi_values = fill_glassbrain(n_roi,comp_load,"sig_p_for_similar")
-
 
     # Create image
     img = create_img_for_glassbrain_plot(roi_values, atlas_path, n_roi)
@@ -153,3 +151,29 @@ for mv_str in movies:
     
     print(f"Saved brain map: {output_file}")
 
+    # fourth one 
+
+    #comp_load = pd.read_csv(comp_loadings)
+    #comp_load.rename(columns={"Region": "region"}, inplace=True)
+    #comp_load, region_to_id_f = assign_roi_ids(comp_load)
+
+    comp_load["load_diff"] = comp_load["mean_female"] - comp_load["mean_male"]
+    comp_load["load_diff_for_similar"] = np.where(res_tc_corr["corr_sig"], comp_load["load_diff"], 0)
+
+    roi_values = fill_glassbrain(n_roi,comp_load,"load_diff_for_similar")
+
+    # Create image
+    img = create_img_for_glassbrain_plot(roi_values, atlas_path, n_roi)
+
+    # Define output filename
+    title = f"Load Difference {mv_str}"
+    output_file = os.path.join(brainmap_output_path, f"{mv_str}_load_difference.png")
+
+    cmap = cm.RdBu_r  # Diverging colormap with blue (negative) and red (positive)
+                
+    # Plot and save glass brain
+    plot_glass_brain(img, threshold=0, vmax=1, vmin=-1,display_mode='lyrz', colorbar=True, cmap = cmap, title=title, plot_abs=False)
+    plt.savefig(output_file, bbox_inches='tight',dpi=300)
+    plt.close()
+    
+    print(f"Saved brain map: {output_file}")
