@@ -45,6 +45,17 @@ def create_img_for_glassbrain_plot(stat_to_plot, atlas_path, n_roi):
     img_nii = nib.Nifti1Image(new_img, atlas_img.affine)
     return img_nii
 
+def fill_glassbrain(n_r,res_df,column):
+    # Initialize array for all ROIs
+    roi_values = np.full(n_r, np.nan)
+
+    # Fill in corr (convert Region to 0-based index)
+    for _, row in res_df.iterrows():
+        region_index = int(row['ROI_ID']) - 1  
+        if 0 <= region_index < n_r:
+            roi_values[region_index] = row[column]
+    return roi_values
+
 # Paths
 base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
 atlas_path = f"{base_path}/data/Susanne_Schaefer_436.nii"
@@ -72,14 +83,7 @@ for mv_str in movies:
     brainmap_output_path = os.path.join(base_path,"results","compare_tc_corr","brain_maps")
     os.makedirs(brainmap_output_path, exist_ok=True)
 
-    # Initialize array for all ROIs
-    roi_values = np.full(n_roi, np.nan)
-
-    # Fill in corr (convert Region to 0-based index)
-    for _, row in res_tc_corr.iterrows():
-        region_index = int(row['ROI_ID']) - 1  
-        if 0 <= region_index < n_roi:
-            roi_values[region_index] = row["corr"]
+    roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr")
 
     # Create image
     img = create_img_for_glassbrain_plot(roi_values, atlas_path, n_roi)
@@ -94,5 +98,28 @@ for mv_str in movies:
     plot_glass_brain(img, threshold=0, vmax=1, vmin=-1,display_mode='lyrz', colorbar=True, cmap = cmap, title=title, plot_abs=False)
     plt.savefig(output_file, bbox_inches='tight',dpi=300)
     plt.close()
-
+    
     print(f"Saved brain map: {output_file}")
+
+    # second one 
+
+    res_tc_corr["non_sig"] = (~res_tc_corr["corr_sig"]).astype(int)
+
+    roi_values = fill_glassbrain(n_roi,res_tc_corr,"non_sig")
+
+    # Create image
+    img = create_img_for_glassbrain_plot(roi_values, atlas_path, n_roi)
+
+        # Define output filename
+    title = f"Non sig Time Course Correlation {mv_str}"
+    output_file = os.path.join(brainmap_output_path, f"{mv_str}_non_sig_time_course_correlation.png")
+
+    cmap = cm.RdBu_r  # Diverging colormap with blue (negative) and red (positive)
+                
+    # Plot and save glass brain
+    plot_glass_brain(img, threshold=0, vmax=1, vmin=-1,display_mode='lyrz', colorbar=True, cmap = cmap, title=title, plot_abs=False)
+    plt.savefig(output_file, bbox_inches='tight',dpi=300)
+    plt.close()
+    
+    print(f"Saved brain map: {output_file}")
+
