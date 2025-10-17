@@ -12,42 +12,42 @@ base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_mov
 atlas_path = f"{base_path}/data/Susanne_Schaefer_436.nii"
 
 mv_str = "dd"
-PC1_loadings_female_path = f"{base_path}/results/results_PCA/{mv_str}/PC1_loadings_female_allROI.csv"
-PC1_loadings_male_path = f"{base_path}/results/results_PCA/{mv_str}/PC1_loadings_male_allROI.csv"
 
-hormone_path = f"{base_path}/data/Hormone_data.csv"
-complete_path = f"{base_path}/data/complete_participants.csv" # Participants which completed all movies
-exclude_path = f"{base_path}/results/excluded_subjects.csv" # Participants excluded due to outliers
+tc_comp_res_corr = f"{base_path}/results/compare_time_courses_tt_corr/sep_PCAs/results_sex_movie_ttest_{mv_str}.csv"
+
+#hormone_path = f"{base_path}/data/Hormone_data.csv"
+#complete_path = f"{base_path}/data/complete_participants.csv" # Participants which completed all movies
+#exclude_path = f"{base_path}/results/excluded_subjects.csv" # Participants excluded due to outliers
 
 # Check if files exist
-for path in [atlas_path, PC1_loadings_female_path, PC1_loadings_male_path, hormone_path, complete_path, exclude_path]:
+for path in [atlas_path, tc_comp_res_corr]:
     if not os.path.exists(path):
         raise FileNotFoundError(f"File not found: {path}")
 
 # Load datasets
-PC1_loadings_female = pd.read_csv(PC1_loadings_female_path)
-PC1_loadings_male = pd.read_csv(PC1_loadings_male_path)
-PC1_loadings_female.rename(columns={"Subject_ID": "PCode"}, inplace=True)
-PC1_loadings_male.rename(columns={"Subject_ID": "PCode"}, inplace=True)
+res_tc_corr = pd.read_csv(tc_comp_res_corr)
+#PC1_loadings_male = pd.read_csv(PC1_loadings_male_path)
+#PC1_loadings_female.rename(columns={"Subject_ID": "PCode"}, inplace=True)
+#PC1_loadings_male.rename(columns={"Subject_ID": "PCode"}, inplace=True)
 
-hormone_df = pd.read_csv(hormone_path, sep="\t", encoding="ISO-8859-1")
-complete_df = pd.read_csv(complete_path)
-exclude_df = pd.read_csv(exclude_path, sep=',')
+#hormone_df = pd.read_csv(hormone_path, sep="\t", encoding="ISO-8859-1")
+#complete_df = pd.read_csv(complete_path)
+#exclude_df = pd.read_csv(exclude_path, sep=',')
 
 # Filter hormone data to include only participants in complete list
-valid_subjects = complete_df['subject'].unique()
+#valid_subjects = complete_df['subject'].unique()
 
 # Remove subjects marked as outliers
-excluded_subjects = exclude_df['PCode'].unique()
-valid_subjects = [subject for subject in valid_subjects if subject not in excluded_subjects]
+#excluded_subjects = exclude_df['PCode'].unique()
+#valid_subjects = [subject for subject in valid_subjects if subject not in excluded_subjects]
 
 # Filter hormone data to include only valid participants
-hormone_df = hormone_df[hormone_df['PCode'].isin(valid_subjects)]
+#hormone_df = hormone_df[hormone_df['PCode'].isin(valid_subjects)]
 
-print(f"Number of participants included: {len(valid_subjects)}")
+#print(f"Number of participants included: {len(valid_subjects)}")
 
 # Select only the relevant columns for the correlation analysis
-hormone_subset = hormone_df[['PCode', 'Cortisol_µg/dl_Mean', 'Estradiol_pg/ml_Mean',
+#hormone_subset = hormone_df[['PCode', 'Cortisol_µg/dl_Mean', 'Estradiol_pg/ml_Mean',
                              'Progesterone_pg/ml_Mean', 'Testosterone_pg/ml_Mean']]
 
 # Merge PC1 loadings with hormone data using the 'PCode' 

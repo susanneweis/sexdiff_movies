@@ -196,7 +196,11 @@ def main():
         fem = build_region_series_from_long(female_csv, region_col, value_col)
         mal = build_region_series_from_long(male_csv,   region_col, value_col)
 
-        regions = sorted(set(fem.keys()).intersection(mal.keys()))
+        zwi_df = pd.read_csv(female_csv)
+
+        regions = zwi_df["Region"].drop_duplicates()
+        #regions = sorted(set(fem.keys()).intersection(mal.keys()))
+        
         print(f"Found {len(regions)} regions.")
 
         rows = []
