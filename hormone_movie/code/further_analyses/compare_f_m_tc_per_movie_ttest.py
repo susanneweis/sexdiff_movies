@@ -178,7 +178,7 @@ def main():
 
     for curr_mov in movies:
    
-        outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses_hac/sep_PCAs"
+        outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results/compare_time_courses_tt_corr/sep_PCAs"
         os.makedirs(outpath, exist_ok=True)
         out_csv = f"/{outpath}/results_sex_movie_ttest_{curr_mov}.csv"
 
