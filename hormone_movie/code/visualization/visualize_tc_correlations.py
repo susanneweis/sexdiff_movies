@@ -127,10 +127,10 @@ for mv_str in movies:
     comp_load["sig_p"] = (comp_load["p_val"] < 0.05).astype(int)
     comp_load["sig_p_for_similar"] = np.where(res_tc_corr["corr_sig"], comp_load["sig_p"], 0)
 
-    roi_values = fill_glassbrain(n_roi,comp_load,"sig_p_for_similar")
+    roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr")
 
-    title = f"Sig Diff in Loadings {mv_str}"
-    output_file = os.path.join(brainmap_output_path, f"{mv_str}_sig_diff_loadings.png")
+    title = f"Correlations {mv_str}"
+    output_file = os.path.join(brainmap_output_path, f"{mv_str}_correlations.png")
 
     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
