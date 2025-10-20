@@ -10,7 +10,9 @@ def main():
     pca_base_path = f"{base_path}/results/results_PCA"
     out_path = f"{base_path}/results/results_indiviudal_exp"
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    # movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    movies = ["s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+
     movies_properties = {
         "dd": {"min_timepoint": 6, "max_timepoint": 463},
         "s": {"min_timepoint": 6, "max_timepoint": 445},
@@ -24,6 +26,7 @@ def main():
     results = []
 
     for curr_mov in movies:
+
         bold_data = f"BOLD_Schaefer400_subcor36_mean_task-{curr_mov}_MOVIES_INM7.csv" 
         bold_df = pd.read_csv(f"{movie_path}/{bold_data}")
 
