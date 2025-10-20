@@ -3,11 +3,10 @@ import os
 
 def main(): 
     # Define paths
-    base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/data"
-    #renamed ! 
-    fmri_path = f"{base_path}/fMRIdata"
-    hormone_data_path = f"{base_path}//Dataset_movie_project_completeness.csv"
-    phenotype_path = f"{base_path}/movies_phenotype_results.csv"
+    base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
+    fmri_path = f"{base_path}/data/fMRIdata"
+    hormone_data_path = f"{base_path}/data/participant_sex.csv"
+    phenotype_path = f"{base_path}/data/movies_phenotype_results.csv"
 
     # Load hormone and phenotype data
     hormone_df = pd.read_csv(hormone_data_path, sep=";")
