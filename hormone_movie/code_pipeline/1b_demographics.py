@@ -6,9 +6,10 @@ import matplotlib.ticker as ticker
 def main():
     # Define file paths
     base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
-    hormone_path = f"{base_path}/Hormone_data.csv"
-    complete_path = f"{base_path}/complete_participants.csv"
-    results_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results"
+    hormone_path = f"{base_path}/data_pipeline/Hormone_data.csv"
+    complete_path = f"{base_path}/results_pipeline/complete_participants.csv"
+
+    results_path = f"{base_path}/results_pipeline"
     exclude_path = f"{results_path}/excluded_subjects.csv"
     demographic_path = f"{results_path}/demographics_table.csv"
     hist_path = f"{results_path}/cycle_day_histogram_females.png"
@@ -16,7 +17,9 @@ def main():
     # Load datasets
     hormone_df = pd.read_csv(hormone_path, sep="\t", encoding="windows-1252")
     complete_df = pd.read_csv(complete_path)
-    exclude_df = pd.read_csv(exclude_path)
+
+    # Exclude for now, becomes relevant when hormones are included
+    # exclude_df = pd.read_csv(exclude_path)
 
     # Clean column names
     hormone_df.rename(columns={
@@ -26,7 +29,10 @@ def main():
 
     # Filter valid subjects
     valid_subjects = complete_df['subject'].unique()
-    excluded_subjects = exclude_df['PCode'].unique()
+    
+    # Exclude for now, becomes relevant when hormones are included
+    # excluded_subjects = exclude_df['PCode'].unique()
+    excluded_subjects = []
     valid_subjects = [subj for subj in valid_subjects if subj not in excluded_subjects]
     hormone_df = hormone_df[hormone_df['PCode'].isin(valid_subjects)]
 
