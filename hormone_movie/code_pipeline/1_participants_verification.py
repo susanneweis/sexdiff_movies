@@ -1,12 +1,53 @@
 import pandas as pd
 import os
 
+
+# Function to check the validity of a subject for a given movie
+def check_subject_validity(subject, df, movie_params, hormone_df, phenotypes, excluded_subjects, movie):
+    valid_subject = True
+    subject_data = df[df["subject"] == subject]
+
+    # Check if required timepoints are available
+    available_timepoints = set(subject_data["timepoint"])
+    required_timepoints = set(range(movie_params["min_timepoint"], movie_params["max_timepoint"] + 1))
+    if not required_timepoints.issubset(available_timepoints):
+        missing_tps = required_timepoints - available_timepoints
+        excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
+        excluded_subjects[subject]["movies"].add(movie)
+        excluded_subjects[subject]["reasons"].add(f"Missing timepoints: {sorted(missing_tps)}")
+        valid_subject = False
+
+    # Check for missing ROI data
+    if subject_data.iloc[:, 2:].isna().any().any():  # Check if any ROI data is NaN
+        excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
+        excluded_subjects[subject]["movies"].add(movie)
+        excluded_subjects[subject]["reasons"].add("Missing data in brain regions")
+        valid_subject = False
+
+    # Check if subject is in hormone dataset - for now, ignore this 
+    # if subject not in hormone_df["PCode"].values:
+    #     excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
+    #     excluded_subjects[subject]["movies"].add(movie)
+    #     excluded_subjects[subject]["reasons"].add("Not found in hormone dataset")
+    #     valid_subject = False
+
+    # Check if subject is in phenotype dataset
+    if subject not in phenotypes["subject_ID"].values:
+        excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
+        excluded_subjects[subject]["movies"].add(movie)
+        excluded_subjects[subject]["reasons"].add("Not found in phenotype dataset")
+        valid_subject = False
+
+    return valid_subject
+
 def main(): 
     # Define paths
     base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
-    fmri_path = f"{base_path}/data/fMRIdata"
-    hormone_data_path = f"{base_path}/data/participant_sex.csv"
-    phenotype_path = f"{base_path}/data/movies_phenotype_results.csv"
+    fmri_path = f"{base_path}/data_pipeline/fMRIdata"
+    hormone_data_path = f"{base_path}/data_pipeline/participant_sex.csv"
+    phenotype_path = f"{base_path}/data_pipeline/movies_phenotype_results.csv"
+    complete_path = f"{base_path}/results_pipeline/complete_participants.csv"
+    exclusion_log_path = f"{base_path}/results_pipeline/excluded_participants_log.csv"
 
     # Load hormone and phenotype data
     hormone_df = pd.read_csv(hormone_data_path, sep=";")
@@ -34,44 +75,6 @@ def main():
     excluded_subjects = {}
     complete_subjects = set()
 
-    # Function to check the validity of a subject for a given movie
-    def check_subject_validity(subject, df, movie_params):
-        valid_subject = True
-        subject_data = df[df["subject"] == subject]
-
-        # Check if required timepoints are available
-        available_timepoints = set(subject_data["timepoint"])
-        required_timepoints = set(range(movie_params["min_timepoint"], movie_params["max_timepoint"] + 1))
-        if not required_timepoints.issubset(available_timepoints):
-            missing_tps = required_timepoints - available_timepoints
-            excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
-            excluded_subjects[subject]["movies"].add(movie)
-            excluded_subjects[subject]["reasons"].add(f"Missing timepoints: {sorted(missing_tps)}")
-            valid_subject = False
-
-        # Check for missing ROI data
-        if subject_data.iloc[:, 2:].isna().any().any():  # Check if any ROI data is NaN
-            excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
-            excluded_subjects[subject]["movies"].add(movie)
-            excluded_subjects[subject]["reasons"].add("Missing data in brain regions")
-            valid_subject = False
-
-        # Check if subject is in hormone dataset
-        if subject not in hormone_df["PCode"].values:
-            excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
-            excluded_subjects[subject]["movies"].add(movie)
-            excluded_subjects[subject]["reasons"].add("Not found in hormone dataset")
-            valid_subject = False
-
-        # Check if subject is in phenotype dataset
-        if subject not in phenotypes["subject_ID"].values:
-            excluded_subjects.setdefault(subject, {"movies": set(), "reasons": set()})
-            excluded_subjects[subject]["movies"].add(movie)
-            excluded_subjects[subject]["reasons"].add("Not found in phenotype dataset")
-            valid_subject = False
-
-        return valid_subject
-
     # Process each movie dataset
     for movie, params in movies.items():
         print(f"\n--- Checking Movie: {movie} ---")
@@ -93,7 +96,6 @@ def main():
             print(f"Warning: {movie} contains {actual_rois} ROIs instead of {expected_rois}.")
 
         valid_subjects = set()
-        required_timepoints = set(range(params["min_timepoint"], params["max_timepoint"] + 1))
         actual_subjects = set(df["subject"].unique())
 
         # First check if the subject is in the BOLD dataset, then exclude immediately if not
@@ -105,7 +107,7 @@ def main():
 
         # Check valid subjects and exclude if necessary
         for subject in actual_subjects:
-            if check_subject_validity(subject, df, params):
+            if check_subject_validity(subject, df, params, hormone_df, phenotypes, excluded_subjects, movie):
                 valid_subjects.add(subject)
 
         complete_subjects.update(valid_subjects)
@@ -123,7 +125,6 @@ def main():
     complete_subjects = complete_subjects - set(excluded_subjects.keys())
 
     # Save valid participants (those in complete_subjects)
-    complete_path = f"{base_path}/complete_participants.csv"
     pd.DataFrame(list(complete_subjects), columns=["subject"]).to_csv(complete_path, index=False)
     print(f"\n List of valid participants saved to: {complete_path}")
 
@@ -136,7 +137,6 @@ def main():
             ", ".join(sorted(data["reasons"]))
         ])
     exclusion_df = pd.DataFrame(excluded_data, columns=["subject", "movies", "reason"])
-    exclusion_log_path = f"{base_path}/excluded_participants_log.csv"
     exclusion_df.to_csv(exclusion_log_path, index=False)
     print(f" Exclusion log saved to: {exclusion_log_path}")
 
