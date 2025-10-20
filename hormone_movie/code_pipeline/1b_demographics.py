@@ -5,7 +5,7 @@ import matplotlib.ticker as ticker
 
 def main():
     # Define file paths
-    base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/data"
+    base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
     hormone_path = f"{base_path}/Hormone_data.csv"
     complete_path = f"{base_path}/complete_participants.csv"
     results_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie/results"

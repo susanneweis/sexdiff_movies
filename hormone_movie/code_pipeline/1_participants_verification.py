@@ -44,13 +44,13 @@ def main():
     # Define paths
     base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
     fmri_path = f"{base_path}/data_pipeline/fMRIdata"
-    hormone_data_path = f"{base_path}/data_pipeline/participant_sex.csv"
-    phenotype_path = f"{base_path}/data_pipeline/movies_phenotype_results.csv"
+    hormone_data_path = f"{base_path}/data_pipeline/Hormone_data.csv"
+    phenotype_path = f"{base_path}/data_pipeline/Participant_sex_info.csv"
     complete_path = f"{base_path}/results_pipeline/complete_participants.csv"
     exclusion_log_path = f"{base_path}/results_pipeline/excluded_participants_log.csv"
 
     # Load hormone and phenotype data
-    hormone_df = pd.read_csv(hormone_data_path, sep=";")
+    hormone_df = pd.read_csv(hormone_data_path, sep="\t", encoding="windows-1252")
     phenotypes = pd.read_csv(phenotype_path, sep=";")
 
     # Ensure subject IDs are in uppercase for consistency
