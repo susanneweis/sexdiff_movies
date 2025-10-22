@@ -17,6 +17,11 @@ def extract_movie_part(movie):
         return None
     if movie_abbrev is None:
         raise ValueError(f"Could not extract movie abbreviation from: {movie}")
+    
+# Standardize data using StandardScaler (zero mean, unit variance for each feature)
+def standardize_data(matrix):
+    scaler = StandardScaler() 
+    return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
 
 def main(): 
 
@@ -164,11 +169,6 @@ def main():
         explained_variance_1_male_allROIs = []
         explained_variance_2_male_allROIs = []
 
-        # Standardize data using StandardScaler (zero mean, unit variance for each feature)
-        def standardize_data(matrix):
-            scaler = StandardScaler() 
-            return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
-
         # Create a dictionary to store the standardized matrices for each brain region
         standardized_matrices = {}
         # Create a dictionary to store the combined matrices for each brain region
@@ -308,6 +308,10 @@ def main():
         pd.DataFrame(explained_variance_1_male_allROIs, columns=["Region", "explained_variance_1"]).to_csv(f"{output_dir}/explained_variance_1_male_allROI.csv", index=False)
         pd.DataFrame(explained_variance_2_male_allROIs, columns=["Region", "explained_variance_2"]).to_csv(f"{output_dir}/explained_variance_2_male_allROI.csv", index=False)
         print(f"PCA analysis completed. The results have been saved to {output_dir}")
+
+
+
+    # from here PCA on combined movies        
 
 
 # Execute script
