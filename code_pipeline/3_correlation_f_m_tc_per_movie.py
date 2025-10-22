@@ -1,21 +1,3 @@
-#!/usr/bin/env python3
-"""
-Compare female vs male time courses per region and per movie segment
-using a HAC/Newey–West one-sample t-test on the absolute difference |y_f - y_m|.
-
-Significant (q_hac_abs True) => the average separation between female and male
-time courses across the segment is > 0 beyond what temporal autocorrelation allows.
-
-Outputs:
-  - results_sex_movie_phasecc__movie-<label>.csv   (per movie)
-  - results_sex_movie_phasecc__ALL_MOVIES.csv      (combined)
-
-Columns per row (region):
-  movie, region, seg_start_idx_1b, seg_end_idx_1b, n_samples,
-  p_hac_abs, q_hac_abs, sig_hac_abs,
-  hac_abs_mean, hac_abs_t, hac_abs_se, hac_abs_N, hac_abs_L
-"""
-
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -26,28 +8,6 @@ from scipy.stats import ttest_1samp
 from scipy.stats import pearsonr
 
 
-# =============================
-# CONFIG (keep your paths/fields the same)
-# =============================
-female_csv = "female_long.csv"   # path to long-format female time courses
-male_csv   = "male_long.csv"     # path to long-format male time courses
-TR         = 2.0                 # sampling interval (seconds) - not used by HAC, kept for consistency
-region_col = "region"
-value_col  = "PC score 1"
-
-# base name for outputs (one-per-movie + a combined file)
-out_base   = "results_sex_movie_phasecc"
-
-# Movie segments (1-based inclusive -> will be converted to 0-based slices)
-MOVIES = {
-    "dd":     (1,   458),
-    "s":      (459, 898),
-    "dps":    (899, 1372),
-    "fg":     (1373,1958),
-    "dmw":    (1959,2475),
-    "lib":    (2476,2924),
-    "tgtbtu": (2925,3431),
-}
 
 # =============================
 # FDR helper
@@ -164,26 +124,49 @@ def zscore(x):
 # =============================
 
 def main():
-# def analyze_per_movie_segments(
-#     female_csv, male_csv, movies_dict, TR=2.0,
-#     region_col="region", value_col="PC score 1", out_base="results_sex_movie_phasecc"
-# ):
+        
+    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
+    data_path = f"{base_path}/data_pipeline"
+    results_path = f"{base_path}/results_pipeline"
+
+    movies_properties = {
+        "dd": {"min_timepoint": 6, "max_timepoint": 463},
+        "s": {"min_timepoint": 6, "max_timepoint": 445},
+        "dps": {"min_timepoint": 6, "max_timepoint": 479},
+        "fg": {"min_timepoint": 6, "max_timepoint": 591},
+        "dmw": {"min_timepoint": 6, "max_timepoint": 522},
+        "lib": {"min_timepoint": 6, "max_timepoint": 454},
+        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512}
+    }
+
+    # will need this when extracting single movies from concatenated PCA
+    MOVIES = {}
+    start = 1  # starting frame index
+
+    for movie, props in movies_properties.items():
+        # calculate number of frames for this movie
+        n_frames = props["max_timepoint"] - props["min_timepoint"] + 1
+        end = start + n_frames - 1
+        MOVIES[movie] = (start, end)
+        start = end + 1  # next movie starts right after the current one
+
+    # base name for outputs (one-per-movie + a combined file)
+    out_base   = "results_corr_f_m_tc"
 
     TR = 0.98
     # for real make n_perm much larger, e.g. 5000
-    n_perm=100
-    seed = 7
+    #n_perm=100
+    # seed = 7
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
 
     for curr_mov in movies:
-   
-        outpath = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/zwi_results/compare_time_courses_tt_corr/sep_PCAs"
+        outpath = f"{results_path}/compare_time_courses_corr/sep_PCAs"
         os.makedirs(outpath, exist_ok=True)
-        out_csv = f"/{outpath}/results_sex_movie_ttest_{curr_mov}.csv"
+        out_csv = f"/{outpath}/results_compare_time_courses_corr_{curr_mov}.csv"
 
         # CSVs
-        path = f"/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/results_pipeline/results_PCA/{curr_mov}" 
+        path = f"{results_path}/results_PCA/{curr_mov}" 
         csv_f = "PC1_scores_female_allROI.csv"
         csv_m = "PC1_scores_male_allROI.csv" 
         
@@ -193,8 +176,11 @@ def main():
         region_col = "Region"
         value_col = "PC_score_1"
 
-        fem = build_region_series_from_long(female_csv, region_col, value_col)
-        mal = build_region_series_from_long(male_csv,   region_col, value_col)
+        fem_data = pd.read_csv(female_csv)
+        fem_data = fem_data[[region_col, value_col]].copy()
+
+        mal_data = pd.read_csv(male_csv)
+        mal_data = mal_data[[region_col, value_col]].copy()
 
         zwi_df = pd.read_csv(female_csv)
 
@@ -207,8 +193,8 @@ def main():
         length_warnings = []
 
         for reg in regions:
-            y_f = fem[reg]
-            y_m = mal[reg]
+            y_f = fem_data.loc[fem_data["Region"] == reg, "PC_score_1"]
+            y_m = mal_data.loc[mal_data["Region"] == reg, "PC_score_1"]
 
             if y_f.size != y_m.size:
                 length_warnings.append((r, y_f.size, y_m.size))
