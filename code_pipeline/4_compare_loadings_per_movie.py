@@ -25,7 +25,6 @@ def fdr_bh(pvals, alpha=0.05):
 
 def main():
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    data_path = f"{base_path}/data_pipeline"
     results_path = f"{base_path}/results_pipeline"
     outpath = f"{results_path}/compare_loadings/sep_PCAs"
     os.makedirs(outpath, exist_ok=True)
