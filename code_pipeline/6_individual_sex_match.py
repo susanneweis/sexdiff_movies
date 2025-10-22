@@ -8,12 +8,15 @@ def main():
     data_path = f"{base_path}/data_pipeline"
     results_path = f"{base_path}/results_pipeline" 
 
-    movie_path =  f"{data_path}/data/fMRIdata" 
-    pca_base_path = f"{results_path}results_PCA"
+    movie_path =  f"{data_path}/fMRIdata" 
+    pca_base_path = f"{results_path}/results_PCA"
+
+    complete_participants_path = f"{results_path}/complete_participants.csv"
 
     outpath = f"{results_path}/results_individual_exp"
     os.makedirs(outpath, exist_ok=True)
 
+    # movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
     movies = ["s", "dps", "fg", "dmw", "lib", "tgtbtu"]
 
     movies_properties = {
@@ -43,6 +46,9 @@ def main():
         subject_col = "subject"
         regions = typical_fem["Region"].drop_duplicates().tolist()
 
+        complete_subjects = set(pd.read_csv(complete_participants_path)["subject"].astype(str))
+        bold_df = bold_df[bold_df["subject"].isin(complete_subjects)].copy()
+
         for subj, sub_df in bold_df.groupby(subject_col, sort=False):
 
             sub = sub_df.set_index("timepoint")
@@ -62,8 +68,8 @@ def main():
                 results.append({"subject": subj, "region": region, "correlation_female": rf, "correlation_male": rm})
 
         out_df = pd.DataFrame(results, columns=["subject", "region", "correlation_female", "correlation_male"])
-        os.makedirs(out_path, exist_ok=True)
-        out_csv = f"{out_path}/indiviudal_exp_{curr_mov}.csv"
+        os.makedirs(outpath, exist_ok=True)
+        out_csv = f"{outpath}/indiviudal_exp_{curr_mov}.csv"
         out_df.to_csv(out_csv, index=False)
         print(f"Saved: {out_csv}")
 
