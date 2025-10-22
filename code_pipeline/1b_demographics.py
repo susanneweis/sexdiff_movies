@@ -5,11 +5,10 @@ import matplotlib.ticker as ticker
 
 def main():
     # Define file paths
-    base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie"
+    base_path = "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies"
     hormone_path = f"{base_path}/data_pipeline/Hormone_data.csv"
-    complete_path = f"{base_path}/results_pipeline/complete_participants.csv"
-
     results_path = f"{base_path}/results_pipeline"
+    complete_path = f"{results_path}/complete_participants.csv"
     exclude_path = f"{results_path}/excluded_subjects.csv"
     demographic_path = f"{results_path}/demographics_table.csv"
     hist_path = f"{results_path}/cycle_day_histogram_females.png"
