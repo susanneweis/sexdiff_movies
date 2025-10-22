@@ -24,7 +24,7 @@ def standardize_data(matrix):
     return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
 # PCA Function
 
-def perform_pca(matrix, region):
+def perform_pca(matrix):
     if matrix.empty:
         return None, None, None # Return None if matrix is empty
                 
@@ -41,15 +41,8 @@ def perform_pca(matrix, region):
     })
                 
     pc_scores_df = pd.DataFrame(pc_scores, columns=[f'PC{i+1}_score' for i in range(2)])
-                
-    # Store explained variance
-    explained_variance_df = pd.DataFrame({
-        "ROI": [region],
-        "PC1_Explained_Variance": [explained_variance[0]],
-        "PC2_Explained_Variance": [explained_variance[1]]
-    })
-                
-    return pc_loadings_df, pc_scores_df, explained_variance_df
+                             
+    return pc_loadings_df, pc_scores_df, explained_variance[0], explained_variance[1], 
 
 def main(): 
 
@@ -269,7 +262,7 @@ def main():
             # end uses later 
 
             # Perform PCA for females
-            pc_loadings_female, pc_scores_female, explained_variance_female = perform_pca(concatenated_matrix_female, region)
+            pc_loadings_female, pc_scores_female, explained_variance_female_1, explained_variance_female_2  = perform_pca(concatenated_matrix_female)
             if pc_loadings_female is not None:
                 for idx, row in pc_loadings_female.iterrows():
                     pc1_loadings_female_allROIs.append([region, row['Subject_ID'], row['PC1_loading']])
@@ -277,12 +270,12 @@ def main():
                 for idx, value in enumerate(pc_scores_female['PC1_score']):
                     pc1_scores_female_allROIs.append([region, value])
                 for idx, value in enumerate(pc_scores_female['PC2_score']):
-                    pc2_scores_female_allROIs.append([region, value])
-                explained_variance_1_female_allROIs.append([region, explained_variance_female.iloc[0, 1]])
-                explained_variance_2_female_allROIs.append([region, explained_variance_female.iloc[0, 2]])
+                    pc2_scores_female_allROIs.append([region, value])                   
+                explained_variance_1_female_allROIs.append([region, explained_variance_female_1])
+                explained_variance_2_female_allROIs.append([region, explained_variance_female_2])
             
             # Perform PCA for males
-            pc_loadings_male, pc_scores_male, explained_variance_male = perform_pca(concatenated_matrix_male, region)
+            pc_loadings_male, pc_scores_male, explained_variance_male_1, explained_variance_male_2 = perform_pca(concatenated_matrix_male)
             if pc_loadings_male is not None:
                 for idx, row in pc_loadings_male.iterrows():
                     pc1_loadings_male_allROIs.append([region, row['Subject_ID'], row['PC1_loading']])
@@ -291,8 +284,8 @@ def main():
                     pc1_scores_male_allROIs.append([region, value])
                 for idx, value in enumerate(pc_scores_male['PC2_score']):
                     pc2_scores_male_allROIs.append([region, value])
-                explained_variance_1_male_allROIs.append([region, explained_variance_male.iloc[0, 1]])
-                explained_variance_2_male_allROIs.append([region, explained_variance_male.iloc[0, 2]])
+                explained_variance_1_male_allROIs.append([region, explained_variance_male_1])
+                explained_variance_2_male_allROIs.append([region, explained_variance_male_2])
 
         # Save the PCA results to CSV files for each gender
         pd.DataFrame(pc1_loadings_female_allROIs, columns=["Region", "Subject_ID", "PC_loading_1"]).to_csv(f"{output_dir}/PC1_loadings_female_allROI.csv", index=False)
