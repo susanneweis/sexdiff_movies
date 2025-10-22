@@ -23,9 +23,12 @@ def main():
     # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
-    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies/hormone_movie" 
-    phenotype_path = f"{base_path}/data_pipeline/Participant_sex_info.csv"
-    complete_participants_path = f"{base_path}/results_pipeline/complete_participants.csv"
+    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
+    data_path = f"{base_path}/data_pipeline"
+    results_path = f"{base_path}/results_pipeline"
+
+    phenotype_path = f"{data_path}/Participant_sex_info.csv"
+    complete_participants_path = f"{results_path}/complete_participants.csv"
     # not relevant yet, as currently not considering hormones
     # exclude_path = f"{base_path}/results_pipeline/excluded_subjects.csv"
 
@@ -40,12 +43,10 @@ def main():
         "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512}
     }
 
-
-
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
     for curr_mov in movies:
         dataset = f"BOLD_Schaefer400_subcor36_mean_task-{curr_mov}_MOVIES_INM7.csv"
-        movie_path =  f"{base_path}/data/fMRIdata/{dataset}" # Path to fMRI data
+        movie_path =  f"{data_path}/fMRIdata/{dataset}" # Path to fMRI data
 
         for path in [movie_path, phenotype_path, complete_participants_path]:
         # for path in [movie_path, phenotype_path, complete_participants_path, exclude_path]:           
@@ -54,64 +55,99 @@ def main():
                 raise FileNotFoundError
         print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n")
         #print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n {exclude_path}\n")
-
-
-# MAYBE MOVE whole Pipeline one folder up and change on Remote
-        
             
         # Load phenotype data (assumed to be a CSV with a subject ID and gender columns)
         phenotypes = pd.read_csv(phenotype_path, sep=';')
         phenotypes.columns = ['subject_ID', 'gender']
-        phenotypes['gender'] = phenotypes['gender']
 
         # Load list of complete participants (verified list with participants_verification.py)
         complete_participants = set(pd.read_csv(complete_participants_path)['subject'].astype(str))
 
         # Load list of excluded subjects (hormonal outlier detection with hormone_outlier_detection_SD.py)
-        exclude_df = pd.read_csv(exclude_path, sep=',')
-        excluded_subjects = set(exclude_df['PCode'].astype(str))
+        # not yet relevant here 
+        # exclude_df = pd.read_csv(exclude_path, sep=',')
+        # excluded_subjects = set(exclude_df['PCode'].astype(str))
 
         # Get valid subjects and exclude outliers
         phenotype_subjects = set(phenotypes['subject_ID'].astype(str))
         valid_subjects = complete_participants.intersection(phenotype_subjects)
-        valid_subjects = valid_subjects.difference(excluded_subjects)
+        # not yet relevant here
+        # valid_subjects = valid_subjects.difference(excluded_subjects)
 
         print(f"Number of included valid subjects after exclusion: {len(valid_subjects)}")
 
+        # for each movie seperately 
         all_data = [] # List to store all movie data
-        # Loop through each movie in the dataset list
-        for movie in dataset_list:    
-            movie_path =  f"{base_path}//data/fMRIdata/{movie}.csv" # Path to current movie data
-            movie_abbrev = extract_movie_part(movie) # Extract movie abbrevation
-            properties = movies_properties[movie_abbrev] # Get timepoint properties for the movie
-            
-            # Load fMRI data
-            movie_data = pd.read_csv(movie_path)
-            if "Unnamed: 0" in movie_data.columns:
-                movie_data = movie_data.drop(columns=["Unnamed: 0"]) # Drop unnecessary columns
-                
-            # Define column names and brain regions
-            subject_column, time_column = "subject", "timepoint"
-            brain_regions = movie_data.columns[2:]  # Extract all brain region columns (assuming the first two columns are not brain regions) 
 
-            # Filter timepoints based on movie properties
-            movie_data = movie_data[
-                (movie_data["timepoint"] >= properties["min_timepoint"]) & 
-                (movie_data["timepoint"] <= properties["max_timepoint"])
-            ] 
-            print(f"movie properties {movie_abbrev}", movie_data["timepoint"].min(), movie_data["timepoint"].max(),"\n") 
+        # Loop through each movie in the dataset list
+        
+        properties = movies_properties[curr_mov] # Get timepoint properties for the movie
             
-            # Filter subjects based on the valid subject list
-            movie_data = movie_data[movie_data["subject"].isin(valid_subjects)]
-            movie_data["movie"] = movie_abbrev  # Add movie identifier to the data
-            all_data.append(movie_data)     # Append to the list of all movie data
+        # Load fMRI data
+        movie_data = pd.read_csv(movie_path)
+        if "Unnamed: 0" in movie_data.columns:
+            movie_data = movie_data.drop(columns=["Unnamed: 0"]) # Drop unnecessary columns
+                
+        # Define column names and brain regions
+        subject_column, time_column = "subject", "timepoint"
+        brain_regions = movie_data.columns[2:]  # Extract all brain region columns (assuming the first two columns are not brain regions) 
+
+        # Filter timepoints based on movie properties
+        movie_data = movie_data[
+            (movie_data["timepoint"] >= properties["min_timepoint"]) & 
+            (movie_data["timepoint"] <= properties["max_timepoint"])
+        ] 
+        print(f"movie properties {curr_mov}", movie_data["timepoint"].min(), movie_data["timepoint"].max(),"\n") 
+            
+        # Filter subjects based on the valid subject list
+        movie_data = movie_data[movie_data["subject"].isin(valid_subjects)]
+        movie_data["movie"] = curr_mov  # Add movie identifier to the data
+        all_data.append(movie_data)     # Append to the list of all movie data
 
         # Define the output directory
-        if hostname == "cpu44":
-            output_dir =r_rootdir # Remote root directory
-        else:
-            output_dir = f"{base_path}/results/results_PCA" # Local results directory
-            os.makedirs(output_dir, exist_ok=True) # Create the output directory if it doesn't exist
+        # if hostname == "cpu44":
+        #   output_dir =r_rootdir # Remote root directory
+        #else:
+        output_dir = f"{results_path}/results_PCA/{curr_mov}" # Local results directory
+        os.makedirs(output_dir, exist_ok=True) # Create the output directory if it doesn't exist
+
+
+        # use this for concatenated data
+        # all_data = [] # List to store all movie data
+
+        # # Loop through each movie in the dataset list
+        # for movie in dataset_list:    
+        #     movie_path =  f"{base_path}//data/fMRIdata/{movie}.csv" # Path to current movie data
+        #     movie_abbrev = extract_movie_part(movie) # Extract movie abbrevation
+        #     properties = movies_properties[movie_abbrev] # Get timepoint properties for the movie
+            
+        #     # Load fMRI data
+        #     movie_data = pd.read_csv(movie_path)
+        #     if "Unnamed: 0" in movie_data.columns:
+        #         movie_data = movie_data.drop(columns=["Unnamed: 0"]) # Drop unnecessary columns
+                
+        #     # Define column names and brain regions
+        #     subject_column, time_column = "subject", "timepoint"
+        #     brain_regions = movie_data.columns[2:]  # Extract all brain region columns (assuming the first two columns are not brain regions) 
+
+        #     # Filter timepoints based on movie properties
+        #     movie_data = movie_data[
+        #         (movie_data["timepoint"] >= properties["min_timepoint"]) & 
+        #         (movie_data["timepoint"] <= properties["max_timepoint"])
+        #     ] 
+        #     print(f"movie properties {movie_abbrev}", movie_data["timepoint"].min(), movie_data["timepoint"].max(),"\n") 
+            
+        #     # Filter subjects based on the valid subject list
+        #     movie_data = movie_data[movie_data["subject"].isin(valid_subjects)]
+        #     movie_data["movie"] = movie_abbrev  # Add movie identifier to the data
+        #     all_data.append(movie_data)     # Append to the list of all movie data
+
+        # # Define the output directory
+        # if hostname == "cpu44":
+        #     output_dir =r_rootdir # Remote root directory
+        # else:
+        #     output_dir = f"{base_path}/results/results_PCA" # Local results directory
+        #     os.makedirs(output_dir, exist_ok=True) # Create the output directory if it doesn't exist
 
         # Prepare lists for PCA results by gender 
         pc1_loadings_female_allROIs = []
@@ -141,38 +177,69 @@ def main():
         # Perform PCA on each brain region
         for region in brain_regions:        
             region_matrices = []  # List to store matrices from all movies for this region
-            
-            for movie_data, movie in zip(all_data, dataset_list):  # Iterate through all movies   
-                movie_abbrev = extract_movie_part(movie) # Extract movie abbreviation
+              
+            region_data = movie_data[[subject_column, time_column, region]]
+            formatted_matrix = region_data.pivot(index=time_column, columns=subject_column, values=region)
                 
-                # Extract and format data for the current region and movie
-                region_data = movie_data[[subject_column, time_column, region]]
-                formatted_matrix = region_data.pivot(index=time_column, columns=subject_column, values=region)
+            standardized_matrix = standardize_data(formatted_matrix)  # Standardize data (excluding movie)
                 
-                # Add movie_abbrevation to matrix 
-                formatted_matrix.insert(0, "movie_abbrev", movie_abbrev)  # Insert movie abbreviation as first column
-                standardized_matrix = standardize_data(formatted_matrix.drop(columns=["movie_abbrev"]))  # Standardize data (excluding movie)
-                standardized_matrix.insert(0, "movie_abbrev", movie_abbrev)  # Reinsert movie abbreviation
+            # # Store the standardized matrix for later merging
+            # region_matrices.append(standardized_matrix)
                 
-                # Store the standardized matrix for later merging
-                region_matrices.append(standardized_matrix)
-                
-            # Concatenate matrices for the region across all movies (stacked by timepoints)
-            combined_matrix = pd.concat(region_matrices, axis=0)
-            concatenated_matrices[region] = combined_matrix
+            # # Concatenate matrices for the region across all movies (stacked by timepoints)
+            # combined_matrix = pd.concat(region_matrices, axis=0)
+            # concatenated_matrices[region] = combined_matrix
             
             # Separate subjects by gender for PCA
             female_subjects = phenotypes[phenotypes['gender'] == 2]['subject_ID']
             male_subjects = phenotypes[phenotypes['gender'] == 1]['subject_ID']
             
             # Ensure the subjects exist in the standardized matrix
-            female_subjects = female_subjects[female_subjects.isin(combined_matrix.columns)]
-            male_subjects = male_subjects[male_subjects.isin(combined_matrix.columns)]
+            female_subjects = female_subjects[female_subjects.isin(standardized_matrix.columns)]
+            male_subjects = male_subjects[male_subjects.isin(standardized_matrix.columns)]
 
             # Perform PCA separatley for males and females
-            concatenated_matrix_female = combined_matrix.loc[:, female_subjects]
-            concatenated_matrix_male = combined_matrix.loc[:, male_subjects]
+            # keep the original naming for further reference
+
+            concatenated_matrix_female = standardized_matrix.loc[:, female_subjects]
+            concatenated_matrix_male = standardized_matrix.loc[:, male_subjects]
+
+     
+            # this will be needed later for connected matrix
+
+            # for movie_data, movie in zip(all_data, dataset_list):  # Iterate through all movies   
+            #     movie_abbrev = extract_movie_part(movie) # Extract movie abbreviation
+                
+            #     # Extract and format data for the current region and movie
+            #     region_data = movie_data[[subject_column, time_column, region]]
+            #     formatted_matrix = region_data.pivot(index=time_column, columns=subject_column, values=region)
+                
+            #     # Add movie_abbrevation to matrix 
+            #     formatted_matrix.insert(0, "movie_abbrev", movie_abbrev)  # Insert movie abbreviation as first column
+            #     standardized_matrix = standardize_data(formatted_matrix.drop(columns=["movie_abbrev"]))  # Standardize data (excluding movie)
+            #     standardized_matrix.insert(0, "movie_abbrev", movie_abbrev)  # Reinsert movie abbreviation
+                
+            #     # Store the standardized matrix for later merging
+            #     region_matrices.append(standardized_matrix)
+                
+            # # Concatenate matrices for the region across all movies (stacked by timepoints)
+            # combined_matrix = pd.concat(region_matrices, axis=0)
+            # concatenated_matrices[region] = combined_matrix
             
+            # # Separate subjects by gender for PCA
+            # female_subjects = phenotypes[phenotypes['gender'] == 2]['subject_ID']
+            # male_subjects = phenotypes[phenotypes['gender'] == 1]['subject_ID']
+            
+            # # Ensure the subjects exist in the standardized matrix
+            # female_subjects = female_subjects[female_subjects.isin(combined_matrix.columns)]
+            # male_subjects = male_subjects[male_subjects.isin(combined_matrix.columns)]
+
+            # # Perform PCA separatley for males and females
+            # concatenated_matrix_female = combined_matrix.loc[:, female_subjects]
+            # concatenated_matrix_male = combined_matrix.loc[:, male_subjects]
+
+            # end uses later 
+
             # PCA Function
             def perform_pca(matrix):
                 if matrix.empty:
