@@ -22,6 +22,34 @@ def extract_movie_part(movie):
 def standardize_data(matrix):
     scaler = StandardScaler() 
     return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
+# PCA Function
+
+def perform_pca(matrix, region):
+    if matrix.empty:
+        return None, None, None # Return None if matrix is empty
+                
+    pca = PCA(n_components=2) # Apply PCA with 2 components (PC1 and PC2)
+    pc_scores = pca.fit_transform(matrix) # Transform the data to get the PCA scores
+    explained_variance = pca.explained_variance_ratio_ # Variance explained by each component
+
+    # Calculate PCA loadings
+    pc_loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+    pc_loadings_df = pd.DataFrame({
+        "Subject_ID": matrix.columns,
+        "PC1_loading": pc_loadings[:, 0],
+        "PC2_loading": pc_loadings[:, 1]
+    })
+                
+    pc_scores_df = pd.DataFrame(pc_scores, columns=[f'PC{i+1}_score' for i in range(2)])
+                
+    # Store explained variance
+    explained_variance_df = pd.DataFrame({
+        "ROI": [region],
+        "PC1_Explained_Variance": [explained_variance[0]],
+        "PC2_Explained_Variance": [explained_variance[1]]
+    })
+                
+    return pc_loadings_df, pc_scores_df, explained_variance_df
 
 def main(): 
 
@@ -240,36 +268,8 @@ def main():
 
             # end uses later 
 
-            # PCA Function
-            def perform_pca(matrix):
-                if matrix.empty:
-                    return None, None, None # Return None if matrix is empty
-                
-                pca = PCA(n_components=2) # Apply PCA with 2 components (PC1 and PC2)
-                pc_scores = pca.fit_transform(matrix) # Transform the data to get the PCA scores
-                explained_variance = pca.explained_variance_ratio_ # Variance explained by each component
-
-                # Calculate PCA loadings
-                pc_loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
-                pc_loadings_df = pd.DataFrame({
-                    "Subject_ID": matrix.columns,
-                    "PC1_loading": pc_loadings[:, 0],
-                    "PC2_loading": pc_loadings[:, 1]
-                })
-                
-                pc_scores_df = pd.DataFrame(pc_scores, columns=[f'PC{i+1}_score' for i in range(2)])
-                
-                # Store explained variance
-                explained_variance_df = pd.DataFrame({
-                    "ROI": [region],
-                    "PC1_Explained_Variance": [explained_variance[0]],
-                    "PC2_Explained_Variance": [explained_variance[1]]
-                })
-                
-                return pc_loadings_df, pc_scores_df, explained_variance_df
-
             # Perform PCA for females
-            pc_loadings_female, pc_scores_female, explained_variance_female = perform_pca(concatenated_matrix_female)
+            pc_loadings_female, pc_scores_female, explained_variance_female = perform_pca(concatenated_matrix_female, region)
             if pc_loadings_female is not None:
                 for idx, row in pc_loadings_female.iterrows():
                     pc1_loadings_female_allROIs.append([region, row['Subject_ID'], row['PC1_loading']])
@@ -282,7 +282,7 @@ def main():
                 explained_variance_2_female_allROIs.append([region, explained_variance_female.iloc[0, 2]])
             
             # Perform PCA for males
-            pc_loadings_male, pc_scores_male, explained_variance_male = perform_pca(concatenated_matrix_male)
+            pc_loadings_male, pc_scores_male, explained_variance_male = perform_pca(concatenated_matrix_male, region)
             if pc_loadings_male is not None:
                 for idx, row in pc_loadings_male.iterrows():
                     pc1_loadings_male_allROIs.append([region, row['Subject_ID'], row['PC1_loading']])
