@@ -70,6 +70,7 @@ def main():
                     mean_male=float(np.mean(m_vals)) if len(m_vals) else np.nan,
                     t_stat=float(t_stat),
                     p_val=float(p_val),
+                    ttest_sig = p_val <= 0.05
                 )
             else:
                 row = dict(
