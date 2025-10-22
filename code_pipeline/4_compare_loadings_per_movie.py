@@ -36,7 +36,7 @@ def main():
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
     for curr_mov in movies:
             
-        out_csv = f"/{outpath}/results_comp_l_{curr_mov}.csv"
+        out_csv = f"/{outpath}/results_comp_loadings_{curr_mov}.csv"
 
         # CSVs
         path = f"{results_path}/results_PCA/{curr_mov}" 
