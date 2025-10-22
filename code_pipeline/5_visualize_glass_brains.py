@@ -96,6 +96,8 @@ def main():
         res_tc_corr, region_to_id_f = assign_roi_ids(res_tc_corr)
 
         ##### Brain maps
+
+        # Correlations 
         n_roi = res_tc_corr["region"].nunique()
 
         roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr")
@@ -103,6 +105,26 @@ def main():
         # Define output filename
         title = f"Female vs. Male Time Course Correlations {mv_str}"
         output_file = os.path.join(outpath, f"{mv_str}_tc_correlations.png")
+
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+
+        # High Correlations
+        
+        res_tc_corr["corr_high"] = res_tc_corr["corr"].where(res_tc_corr["corr"] > 0.9, 0)
+        
+        roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_high")
+        title = f"Female vs. Male Time Course Correlations > 0.9 {mv_str}"
+        output_file = os.path.join(outpath, f"{mv_str}_high_corr.png")
+        
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+
+        # Low Correlations
+        
+        res_tc_corr["corr_low"] = (res_tc_corr["corr"] < 0.1).astype(int)
+    
+        roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_low")
+        title = f"Female vs. Male Time Course Correlations < 0.1 {mv_str}"
+        output_file = os.path.join(outpath, f"{mv_str}_low_corr.png")
 
         create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
@@ -146,16 +168,6 @@ def main():
 
     #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
-    #     #fifth one
-        
-    #     res_tc_corr["corr_high"] = res_tc_corr["corr"].where(res_tc_corr["corr"] > 0.9, 0)
-        
-    #     roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_high")
-
-    #     title = f" Correlation > 0.9 {mv_str}"
-    #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_high_corr.png")
-
-    #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
     #     #sixth one
         
@@ -168,16 +180,7 @@ def main():
 
     #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
-    #     #seventh one
-        
-    #     res_tc_corr["corr_small"] = (res_tc_corr["corr"].abs() < 0.1).astype(int)
-    
-    #     roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_small")
 
-    #     title = f" Abs(Correlation) < 0.1 {mv_str}"
-    #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_low_corr.png")
-
-    #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
 
 # Execute script
