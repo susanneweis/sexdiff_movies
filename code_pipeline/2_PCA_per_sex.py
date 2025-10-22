@@ -56,7 +56,7 @@ def main():
         #print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n {exclude_path}\n")
 
 
-
+# MAYBE MOVE whole Pipeline one folder up and change on Remote
         
             
         # Load phenotype data (assumed to be a CSV with a subject ID and gender columns)
