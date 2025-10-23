@@ -92,6 +92,15 @@ def main():
 
         # Load data
         ind_brain = pd.read_csv(ind_brain_path)
+
+        subjects = ind_brain["subject"].astype(str).drop_duplicates().tolist()
+
+        # the following is worng - need to look through subjects and extract df for each subject
+        sub_brain = {
+            s: ind_brain.loc[ind_brain["subject"] == s, ["region", "correlation_female", "correlation_male"]].reset_index(drop=True)
+            for s in subjects
+        }
+
         #res_tc_corr, region_to_id_f = assign_roi_ids(res_tc_corr)
 
         ind_brain, region_to_id_f = assign_roi_ids(ind_brain)
