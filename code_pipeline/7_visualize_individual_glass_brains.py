@@ -78,6 +78,12 @@ def main():
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
     atlas_path = f"{base_path}/data_pipeline/Susanne_Schaefer_436.nii"
     results_path = f"{base_path}/results_pipeline"
+    data_path = f"{base_path}/data_pipeline"
+
+    sex_mapping = {1: 'male', 2: 'female'}
+
+    subs_sex = pd.read_csv(f"{data_path}/Participant_sex_info.csv", sep = ";")
+    subs_sex['gender'] = subs_sex['gender'].replace(sex_mapping)
     
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
 
@@ -96,19 +102,19 @@ def main():
         for subj in subjects:
             sub_brain = ind_brain.loc[ind_brain["subject"] == subj, ["region", "correlation_female", "correlation_male"]].reset_index(drop=True)
             sub_brain["fem-mal"] = sub_brain["correlation_female"] - sub_brain["correlation_male"]
-            #res_tc_corr, region_to_id_f = assign_roi_ids(res_tc_corr)
+            fem_mal_score = sub_brain["fem-mal"].mean()
 
+            sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
             sub_brain, region_to_id_f = assign_roi_ids(sub_brain)
 
             ##### Brain maps
 
-            # Correlations 
             n_roi = sub_brain["region"].nunique()
 
             roi_values = fill_glassbrain(n_roi,sub_brain,"fem-mal")
 
             # Define output filename
-            title = f" Individual Expression {mv_str} {subj}"
+            title = f"Femaleness {mv_str} {subj} {sub_sex}. Score: {fem_mal_score:.2f}"
             output_file = f"{outpath}/{mv_str}_ind_expression{mv_str}_{subj}.png"
             # output_file = os.path.join(outpath, f"{mv_str}_ind_expression{mv_str}_{subj}.png")
 
