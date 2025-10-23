@@ -95,100 +95,98 @@ def main():
 
         subjects = ind_brain["subject"].astype(str).drop_duplicates().tolist()
 
-        # the following is worng - need to look through subjects and extract df for each subject
-        sub_brain = {
-            s: ind_brain.loc[ind_brain["subject"] == s, ["region", "correlation_female", "correlation_male"]].reset_index(drop=True)
-            for s in subjects
-        }
+        for subj in subjects:
+            sub_brain = ind_brain.loc[ind_brain["subject"] == subj, ["region", "correlation_female", "correlation_male"]].reset_index(drop=True)
+            sub_brain["fem-mal"] = sub_brain["correlation_female"] - sub_brain["correlation_male"]
+            #res_tc_corr, region_to_id_f = assign_roi_ids(res_tc_corr)
 
-        #res_tc_corr, region_to_id_f = assign_roi_ids(res_tc_corr)
+            sub_brain, region_to_id_f = assign_roi_ids(sub_brain)
 
-        ind_brain, region_to_id_f = assign_roi_ids(ind_brain)
+# 
+            ##### Brain maps
 
-        ##### Brain maps
+            # Correlations 
+            n_roi = res_tc_corr["region"].nunique()
 
-        # Correlations 
-        n_roi = res_tc_corr["region"].nunique()
+            roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr")
 
-        roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr")
+            # Define output filename
+            title = f"Female vs. Male Time Course Correlations {mv_str}"
+            output_file = os.path.join(outpath, f"{mv_str}_tc_correlations.png")
 
-        # Define output filename
-        title = f"Female vs. Male Time Course Correlations {mv_str}"
-        output_file = os.path.join(outpath, f"{mv_str}_tc_correlations.png")
+            create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+            # High Correlations
+            
+            res_tc_corr["corr_high"] = res_tc_corr["corr"].where(res_tc_corr["corr"] > 0.9, 0)
+            
+            roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_high")
+            title = f"Female vs. Male Time Course Correlations > 0.9 {mv_str}"
+            output_file = os.path.join(outpath, f"{mv_str}_high_corr.png")
+            
+            create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
-        # High Correlations
+            # Low Correlations
+            
+            res_tc_corr["corr_low"] = (res_tc_corr["corr"] < 0.1).astype(int)
         
-        res_tc_corr["corr_high"] = res_tc_corr["corr"].where(res_tc_corr["corr"] > 0.9, 0)
+            roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_low")
+            title = f"Female vs. Male Time Course Correlations < 0.1 {mv_str}"
+            output_file = os.path.join(outpath, f"{mv_str}_low_corr.png")
+
+            create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+
+        #     # second one 
         
-        roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_high")
-        title = f"Female vs. Male Time Course Correlations > 0.9 {mv_str}"
-        output_file = os.path.join(outpath, f"{mv_str}_high_corr.png")
-        
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
-        # Low Correlations
-        
-        res_tc_corr["corr_low"] = (res_tc_corr["corr"] < 0.1).astype(int)
-    
-        roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_low")
-        title = f"Female vs. Male Time Course Correlations < 0.1 {mv_str}"
-        output_file = os.path.join(outpath, f"{mv_str}_low_corr.png")
+        #     res_tc_corr["non_sig"] = (~res_tc_corr["corr_sig"]).astype(int)
+        #     roi_values = fill_glassbrain(n_roi,res_tc_corr,"non_sig")
 
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        #     title = f"Non sig Time Course Correlation {mv_str}"
+        #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_non_sig_time_course_correlation.png")
 
-    #     # second one 
-    
+        #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
-    #     res_tc_corr["non_sig"] = (~res_tc_corr["corr_sig"]).astype(int)
-    #     roi_values = fill_glassbrain(n_roi,res_tc_corr,"non_sig")
+        #     # third one 
+        # # there might be an error here
 
-    #     title = f"Non sig Time Course Correlation {mv_str}"
-    #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_non_sig_time_course_correlation.png")
+        #     comp_load = pd.read_csv(comp_loadings)
+        #     comp_load.rename(columns={"Region": "region"}, inplace=True)
+        #     comp_load, region_to_id_f = assign_roi_ids(comp_load)
 
-    #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        #     comp_load["sig_p"] = (comp_load["p_val"] < 0.05).astype(int)
+        #     comp_load["sig_p_for_similar"] = np.where(res_tc_corr["corr_sig"], comp_load["sig_p"], 0)
 
-    #     # third one 
-    # # there might be an error here
+        #     roi_values = fill_glassbrain(n_roi,comp_load,"sig_p_for_similar")
 
-    #     comp_load = pd.read_csv(comp_loadings)
-    #     comp_load.rename(columns={"Region": "region"}, inplace=True)
-    #     comp_load, region_to_id_f = assign_roi_ids(comp_load)
+        #     title = f"Sig load diff for similar tc {mv_str}"
+        #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_similar_tc_diff_load.png")
 
-    #     comp_load["sig_p"] = (comp_load["p_val"] < 0.05).astype(int)
-    #     comp_load["sig_p_for_similar"] = np.where(res_tc_corr["corr_sig"], comp_load["sig_p"], 0)
+        #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
-    #     roi_values = fill_glassbrain(n_roi,comp_load,"sig_p_for_similar")
+        #     # fourth one 
 
-    #     title = f"Sig load diff for similar tc {mv_str}"
-    #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_similar_tc_diff_load.png")
+        #     comp_load["load_diff"] = comp_load["mean_female"] - comp_load["mean_male"]
+        #     comp_load["load_diff_for_similar"] = np.where(res_tc_corr["corr_sig"], comp_load["load_diff"], 0)
 
-    #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        #     roi_values = fill_glassbrain(n_roi,comp_load,"load_diff_for_similar")
+            
+        #     title = f"Load Difference {mv_str}"
+        #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_load_difference.png")
 
-    #     # fourth one 
-
-    #     comp_load["load_diff"] = comp_load["mean_female"] - comp_load["mean_male"]
-    #     comp_load["load_diff_for_similar"] = np.where(res_tc_corr["corr_sig"], comp_load["load_diff"], 0)
-
-    #     roi_values = fill_glassbrain(n_roi,comp_load,"load_diff_for_similar")
-        
-    #     title = f"Load Difference {mv_str}"
-    #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_load_difference.png")
-
-    #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
 
-    #     #sixth one
-        
-    #     res_tc_corr["corr_neg"] = (res_tc_corr["corr"] < 0).astype(int)
-        
-    #     roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_neg")
+        #     #sixth one
+            
+        #     res_tc_corr["corr_neg"] = (res_tc_corr["corr"] < 0).astype(int)
+            
+        #     roi_values = fill_glassbrain(n_roi,res_tc_corr,"corr_neg")
 
-    #     title = f" Correlation < 0 {mv_str}"
-    #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_corr_neg.png")
+        #     title = f" Correlation < 0 {mv_str}"
+        #     output_file = os.path.join(brainmap_output_path, f"{mv_str}_corr_neg.png")
 
-    #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        #     create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
 
 
