@@ -87,7 +87,7 @@ def main():
 
     femaleness = []
     
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
 
     for mv_str in movies:
         
@@ -103,10 +103,13 @@ def main():
 
         for subj in subjects:
             sub_brain = ind_brain.loc[ind_brain["subject"] == subj, ["region", "correlation_female", "correlation_male"]].reset_index(drop=True)
-            sub_brain["fem-mal"] = sub_brain["correlation_female"] - sub_brain["correlation_male"]
+
+            diff = np.arctanh(sub_brain["correlation_female"]) - np.arctanh(sub_brain["correlation_male"])
+            sub_brain["fem-mal"] = np.tanh(diff)
 
             # change to proper comparisons of correlations
-            fem_mal_score = sub_brain["fem-mal"].mean()
+            mean = np.arctanh(sub_brain["fem-mal"]).mean()
+            fem_mal_score = np.tanh(mean)
 
             sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
             sub_brain, region_to_id_f = assign_roi_ids(sub_brain)

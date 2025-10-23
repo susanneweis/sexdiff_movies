@@ -82,7 +82,7 @@ def main():
     outpath = f"{results_path}/glass_brains/sep_PCAs"
     os.makedirs(outpath, exist_ok=True)
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
 
     for mv_str in movies:
 

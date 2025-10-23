@@ -66,10 +66,12 @@ def main():
         "fg": {"min_timepoint": 6, "max_timepoint": 591},
         "dmw": {"min_timepoint": 6, "max_timepoint": 522},
         "lib": {"min_timepoint": 6, "max_timepoint": 454},
-        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512}
+        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+        "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
+        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
     }
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
     for curr_mov in movies:
         dataset = f"BOLD_Schaefer400_subcor36_mean_task-{curr_mov}_MOVIES_INM7.csv"
         movie_path =  f"{data_path}/fMRIdata/{dataset}" # Path to fMRI data

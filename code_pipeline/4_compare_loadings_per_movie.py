@@ -33,7 +33,7 @@ def main():
     subject_col = "Subject_ID"
     loading_col = "PC_loading_1"
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
     for curr_mov in movies:
             
         out_csv = f"/{outpath}/results_comp_loadings_{curr_mov}.csv"

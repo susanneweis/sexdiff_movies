@@ -68,7 +68,9 @@ def main():
         "fg": {"min_timepoint": 6, "max_timepoint": 591},
         "dmw": {"min_timepoint": 6, "max_timepoint": 522},
         "lib": {"min_timepoint": 6, "max_timepoint": 454},
-        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512}
+        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+        "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
+        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
     }
 
     # Manually exclude subjects

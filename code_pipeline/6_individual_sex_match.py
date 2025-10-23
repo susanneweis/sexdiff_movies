@@ -16,8 +16,8 @@ def main():
     outpath = f"{results_path}/results_individual_exp"
     os.makedirs(outpath, exist_ok=True)
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
-  
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
+
     movies_properties = {
         "dd": {"min_timepoint": 6, "max_timepoint": 463},
         "s": {"min_timepoint": 6, "max_timepoint": 445},
@@ -25,7 +25,9 @@ def main():
         "fg": {"min_timepoint": 6, "max_timepoint": 591},
         "dmw": {"min_timepoint": 6, "max_timepoint": 522},
         "lib": {"min_timepoint": 6, "max_timepoint": 454},
-        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512}
+        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+        "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
+        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
     }
 
     results = []
