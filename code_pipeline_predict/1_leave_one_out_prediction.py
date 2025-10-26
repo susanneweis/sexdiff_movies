@@ -25,6 +25,8 @@ def main():
     # make this nicer later
     complete_path = f"{base_path}/results_pipeline"
     results_path = f"{base_path}/results_pipeline_predict"
+    ind_path = f"{results_path}/individual_expressions"
+    os.makedirs(ind_path, exist_ok=True)
 
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
     complete_participants_path = f"{complete_path}/complete_participants.csv"
@@ -223,7 +225,7 @@ def main():
 
         
         out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness"])
-        out_csv = f"{results_path}/individual_expression_{subj}.csv"
+        out_csv = f"{ind_path}/individual_expression_{subj}.csv"
         out_df.to_csv(out_csv, index=False)
         print(f"Saved: {out_csv}")
 
