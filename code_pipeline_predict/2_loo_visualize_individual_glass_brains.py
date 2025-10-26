@@ -103,6 +103,7 @@ def main():
         subjects = lol_results["subject"].astype(str).drop_duplicates().tolist()
 
         for subj in subjects:
+            # figure out how to use sex directly 
             sub_brain = lol_results.loc[lol_results["subject"] == subj, ["sex","movie","region","correlation_female","correlation_male","femaleness"]].reset_index(drop=True)
 
             # use diff for now but later can use femaleness directly
