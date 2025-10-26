@@ -13,7 +13,7 @@ def main():
     results_path = f"{base_path}/results_pipeline_predict"
     
     # Change this later 
-    ind_expr_path = f"{results_path}/individual_expression_all_zwi.csv"
+    ind_expr_path = f"{results_path}/individual_expression_all.csv"
     ind_expr = pd.read_csv(ind_expr_path)
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
