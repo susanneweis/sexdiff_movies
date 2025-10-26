@@ -197,9 +197,9 @@ def main():
                 rf, p = pearsonr(subj_movie_data[region], pc_scores_female["PC1_score"])
                 rm, p = pearsonr(subj_movie_data[region], pc_scores_male["PC1_score"])
 
-                # error ! replace by  diff = np.arctanh(sub_brain["correlation_female"]) - np.arctanh(sub_brain["correlation_male"])
-
-                diff = rf - rm
+                diff = np.arctanh(sub_brain["correlation_female"]) - np.arctanh(sub_brain["correlation_male"])
+                diff = np.tanh(diff)
+                
                 sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
 
                 loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff})
