@@ -199,7 +199,7 @@ def main():
                 rf, p = pearsonr(subj_movie_data[region], pc_scores_female["PC1_score"])
                 rm, p = pearsonr(subj_movie_data[region], pc_scores_male["PC1_score"])
 
-                diff = np.arctanh(sub_brain["correlation_female"]) - np.arctanh(sub_brain["correlation_male"])
+                diff = np.arctanh(rf) - np.arctanh(rm)
                 diff = np.tanh(diff)
                 
                 sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
