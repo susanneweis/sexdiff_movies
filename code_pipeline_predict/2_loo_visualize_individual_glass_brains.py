@@ -87,6 +87,8 @@ def main():
 
     
     # "subject","sex","movie","region","correlation_female","correlation_male","femaleness"
+
+    # Change this later !!!!
     lol_res_path = f"{results_path}/individual_expression_all.csv"
     lol_results = pd.read_csv(lol_res_path)
 
@@ -100,11 +102,13 @@ def main():
         outpath = f"{results_path}/glass_brains/individual_expressions/{mv_str}"
         os.makedirs(outpath, exist_ok=True)
 
-        subjects = lol_results["subject"].astype(str).drop_duplicates().tolist()
+        mv_data = lol_results.loc[lol_results["movie"] == mv_str, ["subject","sex","region","correlation_female","correlation_male","femaleness"]].reset_index(drop=True)
 
+        subjects = mv_data["subject"].astype(str).drop_duplicates().tolist()
+        
         for subj in subjects:
             # figure out how to use sex directly 
-            sub_brain = lol_results.loc[lol_results["subject"] == subj, ["sex","movie","region","correlation_female","correlation_male","femaleness"]].reset_index(drop=True)
+            sub_brain = mv_data.loc[mv_data["subject"] == subj, ["sex","region","correlation_female","correlation_male","femaleness"]].reset_index(drop=True)
 
             # use diff for now but later can use femaleness directly
             diff = np.arctanh(sub_brain["correlation_female"]) - np.arctanh(sub_brain["correlation_male"])

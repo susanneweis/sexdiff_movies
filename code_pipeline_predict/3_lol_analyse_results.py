@@ -22,6 +22,8 @@ def main():
 
     subjects = ind_expr["subject"].astype(str).drop_duplicates().tolist()
 
+    # ERRROR - all Subjects are male - also, femaleness_scores.csv already produced in 2_loo_visualization
+
     for subj in subjects:
         sub_res = ind_expr.loc[ind_expr["subject"] == subj, ["sex","movie","femaleness"]].reset_index(drop=True)
         sub_sex = ind_expr["sex"].astype(str).drop_duplicates().tolist()
