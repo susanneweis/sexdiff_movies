@@ -11,6 +11,9 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import socket
 import re
+from scipy.stats import pearsonr
+from compute_PCA import perform_pca
+from compute_PCA import standardize_data
 
 def main(): 
     # Local setup for testing 
@@ -27,6 +30,10 @@ def main():
     complete_participants_path = f"{complete_path}/complete_participants.csv"
     # not relevant yet, as currently not considering hormones
     # exclude_path = f"{base_path}/results_pipeline/excluded_subjects.csv"
+
+    sex_mapping = {1: 'male', 2: 'female'}
+    subs_sex = pd.read_csv(f"{data_path}/Participant_sex_info.csv", sep = ";")
+    subs_sex['gender'] = subs_sex['gender'].replace(sex_mapping)
 
     # Define movie timepoint parameters
     movies_properties = {
@@ -63,7 +70,11 @@ def main():
 
     print(f"Number of included valid subjects after exclusion: {len(valid_subjects)}")
 
+    loo_results_all = []
+
     for subj in valid_subjects:
+
+        loo_results_subj = []
 
         movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
         for curr_mov in movies:
@@ -102,6 +113,7 @@ def main():
             # take current subject out of PCA
             others = valid_subjects - {subj} 
             # Filter subjects based on the valid subject list
+            subj_movie_data = movie_data.loc[movie_data["subject"] == subj].copy()
             movie_data = movie_data[movie_data["subject"].isin(others)]
             movie_data["movie"] = curr_mov  # Add movie identifier to the data
             all_data.append(movie_data)     # Append to the list of all movie data
@@ -182,6 +194,15 @@ def main():
                     explained_variance_1_male_allROIs.append([region, explained_variance_male_1])
                     explained_variance_2_male_allROIs.append([region, explained_variance_male_2])
 
+                rf, p = pearsonr(subj_movie_data[region], pc_scores_female["PC1_score"])
+                rm, p = pearsonr(subj_movie_data[region], pc_scores_male["PC1_score"])
+
+                diff = rf - rm
+                sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
+
+                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff})
+                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff})
+            
             # make anotherfolder for the excluded subject
             # Save the PCA results to CSV files for each gender
             pd.DataFrame(pc1_loadings_female_allROIs, columns=["Region", "Subject_ID", "PC_loading_1"]).to_csv(f"{output_dir}/PC1_loadings_female_allROI.csv", index=False)
@@ -197,6 +218,17 @@ def main():
             pd.DataFrame(explained_variance_1_male_allROIs, columns=["Region", "explained_variance_1"]).to_csv(f"{output_dir}/explained_variance_1_male_allROI.csv", index=False)
             pd.DataFrame(explained_variance_2_male_allROIs, columns=["Region", "explained_variance_2"]).to_csv(f"{output_dir}/explained_variance_2_male_allROI.csv", index=False)
             print(f"PCA analysis completed. The results have been saved to {output_dir}")
+
+        
+        out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness"])
+        out_csv = f"{results_path}/individual_expression_{subj}.csv"
+        out_df.to_csv(out_csv, index=False)
+        print(f"Saved: {out_csv}")
+
+    out_df = pd.DataFrame(loo_results_all, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness"])
+    out_csv = f"{results_path}/individual_expression_all.csv"
+    out_df.to_csv(out_csv, index=False)
+    print(f"Saved: {out_csv}")
 
 # Execute script
 if __name__ == "__main__":
