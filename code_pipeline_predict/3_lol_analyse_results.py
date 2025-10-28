@@ -18,7 +18,7 @@ def main():
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
     subjects = ind_expr["subject"].astype(str).drop_duplicates().tolist()
-    regions = ind_expr["s"].astype(str).drop_duplicates().tolist()
+    regions = ind_expr["region"].astype(str).drop_duplicates().tolist()
     
     # res_summary = []
 
@@ -32,30 +32,34 @@ def main():
     movie_class_summary = []
     for curr_mov in movies:
         mv_class = ind_expr.loc[ind_expr["movie"] == curr_mov, ["sex","class_corr"]].reset_index(drop=True)
-        mv_class_fem = ind_expr.loc[mv_class["sex"] == "female", ["class_corr"]].reset_index(drop=True)
-        mv_class_mal = ind_expr.loc[mv_class["sex"] == "male", ["class_corr"]].reset_index(drop=True)
+        mv_class_fem = mv_class.loc[mv_class["sex"] == "female", ["class_corr"]].reset_index(drop=True)
+        mv_class_mal = mv_class.loc[mv_class["sex"] == "male", ["class_corr"]].reset_index(drop=True)
+        count_true_fem = mv_class_fem["class_corr"].sum()
+        count_true_mal = mv_class_mal["class_corr"].sum()
+        nr_fem = len(mv_class_fem)
+        nr_mal = len(mv_class_mal)
+
+        movie_class_summary.append({"movie": curr_mov, "female": count_true_fem/nr_fem, "male": count_true_mal/nr_mal})
+
+    movie_class_summary_df = pd.DataFrame(movie_class_summary)
+    movie_class_summary_df.to_csv(f"{results_path}/correct_classification_per_movie.csv", index=False)
+
+    region_class_summary = []
+    for curr_reg in regions:
+        reg_class = ind_expr.loc[ind_expr["region"] == curr_reg, ["sex","class_corr"]].reset_index(drop=True)
+        reg_class_fem = reg_class.loc[reg_class["sex"] == "female", ["class_corr"]].reset_index(drop=True)
+        reg_class_mal = reg_class.loc[reg_class["sex"] == "male", ["class_corr"]].reset_index(drop=True)
+        count_true_fem_r = reg_class_fem["class_corr"].sum()
+        count_true_mal_r = reg_class_mal["class_corr"].sum()
+        nr_fem = len(reg_class_fem)
+        nr_mal = len(reg_class_mal)
+
+        region_class_summary.append({"region": curr_reg, "female": count_true_fem_r/nr_fem, "male": count_true_mal_r/nr_mal})
+
+    region_class_summary_df = pd.DataFrame(region_class_summary)
+    region_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region.csv", index=False)
 
 
-
-
-    # region_class_summary = []
-
-    # ERRROR - all Subjects are male - also, femaleness_scores.csv already produced in 2_loo_visualization
-
-    # for subj in subjects:
-    #     sub_res = ind_expr.loc[ind_expr["subject"] == subj, ["sex","movie","femaleness"]].reset_index(drop=True)
-    #     sub_sex = ind_expr["sex"].astype(str).drop_duplicates().tolist()
-    #     sub_sex = sub_sex[0]
-
-    #     for mv_str in movies: 
-    #         sub_res_mov = sub_res.loc[sub_res["movie"] == mv_str, ["sex","femaleness"]].reset_index(drop=True)
-    #         mean_score = sub_res_mov["femaleness"].mean()
-
-
-    #         res_summary.append({"subject": subj, "sex": sub_sex, "movie": mv_str,  "femaleness": mean_score})
-
-    # res_sum_df = pd.DataFrame(res_summary)
-    # res_sum_df.to_csv(f"{results_path}/individual_expressions_summary.csv", index=False)
 
 # Execute script
 if __name__ == "__main__":

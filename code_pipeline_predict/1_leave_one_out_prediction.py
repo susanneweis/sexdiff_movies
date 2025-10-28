@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import nibabel as nib
 import os
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr
@@ -14,6 +13,7 @@ import re
 from scipy.stats import pearsonr
 from compute_PCA import perform_pca
 from compute_PCA import standardize_data
+import statsmodels.api as sm
 
 def main(): 
     # Local setup for testing 
@@ -201,11 +201,24 @@ def main():
 
                 diff = np.arctanh(rf) - np.arctanh(rm)
                 diff = np.tanh(diff)
+
+                # standardize
+                y = (subj_movie_data[region] - np.mean(subj_movie_data[region])) / np.std(subj_movie_data[region])
+                xf = (pc_scores_female["PC1_score"] - np.mean(pc_scores_female["PC1_score"])) / np.std(pc_scores_female["PC1_score"])
+                xm = (pc_scores_male["PC1_score"] - np.mean(pc_scores_male["PC1_score"])) / np.std(pc_scores_male["PC1_score"])
+
+                # design matrix
+                X = np.column_stack([xf, xm])
+                X = sm.add_constant(X)
+                model = sm.OLS(y, X).fit()
+
+                beta_f, beta_m = model.params[1], model.params[2]
+                fem_similarity = (beta_f - beta_m) / (abs(beta_f) + abs(beta_m))
                 
                 sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
 
-                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff})
-                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff})
+                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
+                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
             
             # make anotherfolder for the excluded subject
             # Save the PCA results to CSV files for each gender
