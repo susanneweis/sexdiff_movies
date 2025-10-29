@@ -237,12 +237,12 @@ def main():
             print(f"PCA analysis completed. The results have been saved to {output_dir}")
 
         
-        out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness"])
+        out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity"])
         out_csv = f"{ind_path}/individual_expression_{subj}.csv"
         out_df.to_csv(out_csv, index=False)
         print(f"Saved: {out_csv}")
 
-    out_df = pd.DataFrame(loo_results_all, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness"])
+    out_df = pd.DataFrame(loo_results_all, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity"])
     out_csv = f"{results_path}/individual_expression_all.csv"
     out_df.to_csv(out_csv, index=False)
     print(f"Saved: {out_csv}")
