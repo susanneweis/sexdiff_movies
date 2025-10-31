@@ -1,30 +1,18 @@
 import pandas as pd
-import numpy as np
 import os
-import matplotlib.pyplot as plt
-from scipy.stats import spearmanr
-from nilearn.plotting import plot_glass_brain
-from matplotlib import cm
-import sys
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-import socket
-import re
-from scipy.stats import pearsonr
 from compute_PCA import perform_pca
 from compute_PCA import standardize_data
-import statsmodels.api as sm
 
 def main(): 
     # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    data_path = f"{base_path}/data_pipeline_predict"
+    data_path = f"{base_path}/data_pipeline_sTOPF"
 
     # make this nicer later
-    results_path = f"{base_path}/results_pipeline_predict"
-    ind_path = f"{results_path}/individual_expressions"
+    results_path = f"{base_path}/results_pipeline_sTOPF"
+    ind_path = f"{results_path}/Individual_Expressions"
     os.makedirs(ind_path, exist_ok=True)
 
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
@@ -70,11 +58,7 @@ def main():
 
     print(f"Number of included valid subjects after exclusion: {len(valid_subjects)}")
 
-    loo_results_all = []
-
     for subj in valid_subjects:
-
-        loo_results_subj = []
 
         for curr_mov in movies:
             dataset = f"BOLD_Schaefer400_subcor36_mean_task-{curr_mov}_MOVIES_INM7.csv"
@@ -145,26 +129,27 @@ def main():
                 
                 region_data = movie_data[["subject", "timepoint", region]]
                 formatted_matrix = region_data.pivot(index="timepoint", columns= "subject", values=region)
-                
-                # FRAGE - nicht lieber einzeln standardisieren
-                standardized_matrix = standardize_data(formatted_matrix)  # Standardize data (excluding movie)
-                
+             
                 # Separate subjects by gender for PCA
                 female_subjects = phenotypes[phenotypes['gender'] == 2]['subject_ID']
                 male_subjects = phenotypes[phenotypes['gender'] == 1]['subject_ID']
                 
                 # Ensure the subjects exist in the standardized matrix
-                female_subjects = female_subjects[female_subjects.isin(standardized_matrix.columns)]
-                male_subjects = male_subjects[male_subjects.isin(standardized_matrix.columns)]
+                female_subjects = female_subjects[female_subjects.isin(formatted_matrix.columns)]
+                male_subjects = male_subjects[male_subjects.isin(formatted_matrix.columns)]
 
                 # Perform PCA separatley for males and females
                 # keep the original naming for further reference
 
-                concatenated_matrix_female = standardized_matrix.loc[:, female_subjects]
-                concatenated_matrix_male = standardized_matrix.loc[:, male_subjects]
+                matrix_female = formatted_matrix.loc[:, female_subjects]
+                matrix_male = formatted_matrix.loc[:, male_subjects]
+
+                # standardize seperately
+                standardized_matrix_female = standardize_data(matrix_female)  # Standardize data (excluding movie)
+                standardized_matrix_male = standardize_data(matrix_male)  # Standardize data (excluding movie)
 
                 # Perform PCA for females
-                pc_loadings_female, pc_scores_female, explained_variance_female_1, explained_variance_female_2  = perform_pca(concatenated_matrix_female)
+                pc_loadings_female, pc_scores_female, explained_variance_female_1, explained_variance_female_2  = perform_pca(standardized_matrix_female)
                 if pc_loadings_female is not None:
                     for idx, row in pc_loadings_female.iterrows():
                         pc1_loadings_female_allROIs.append([region, row['Subject_ID'], row['PC1_loading']])
@@ -177,7 +162,7 @@ def main():
                     explained_variance_2_female_allROIs.append([region, explained_variance_female_2])
                 
                 # Perform PCA for males
-                pc_loadings_male, pc_scores_male, explained_variance_male_1, explained_variance_male_2 = perform_pca(concatenated_matrix_male)
+                pc_loadings_male, pc_scores_male, explained_variance_male_1, explained_variance_male_2 = perform_pca(standardized_matrix_male)
                 if pc_loadings_male is not None:
                     for idx, row in pc_loadings_male.iterrows():
                         pc1_loadings_male_allROIs.append([region, row['Subject_ID'], row['PC1_loading']])
@@ -189,31 +174,6 @@ def main():
                     explained_variance_1_male_allROIs.append([region, explained_variance_male_1])
                     explained_variance_2_male_allROIs.append([region, explained_variance_male_2])
 
-                rf, p = pearsonr(subj_movie_data[region], pc_scores_female["PC1_score"])
-                rm, p = pearsonr(subj_movie_data[region], pc_scores_male["PC1_score"])
-
-                diff = np.arctanh(rf) - np.arctanh(rm)
-                diff = np.tanh(diff)
-
-                # standardize
-                y = (subj_movie_data[region] - np.mean(subj_movie_data[region])) / np.std(subj_movie_data[region])
-                xf = (pc_scores_female["PC1_score"] - np.mean(pc_scores_female["PC1_score"])) / np.std(pc_scores_female["PC1_score"])
-                xm = (pc_scores_male["PC1_score"] - np.mean(pc_scores_male["PC1_score"])) / np.std(pc_scores_male["PC1_score"])
-
-                # design matrix
-                X = np.column_stack([xf, xm])
-                X = sm.add_constant(X)
-                model = sm.OLS(y, X).fit()
-
-                beta_f, beta_m = model.params[1], model.params[2]
-                fem_similarity = (beta_f - beta_m) / (abs(beta_f) + abs(beta_m))
-                
-                sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
-
-                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
-                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
-            
-            # make anotherfolder for the excluded subject
             # Save the PCA results to CSV files for each gender
             pd.DataFrame(pc1_loadings_female_allROIs, columns=["Region", "Subject_ID", "PC_loading_1"]).to_csv(f"{output_dir}/PC1_loadings_female_allROI.csv", index=False)
             pd.DataFrame(pc2_loadings_female_allROIs, columns=["Region", "Subject_ID", "PC_loading_2"]).to_csv(f"{output_dir}/PC2_loadings_female_allROI.csv", index=False)
@@ -228,17 +188,6 @@ def main():
             pd.DataFrame(explained_variance_1_male_allROIs, columns=["Region", "explained_variance_1"]).to_csv(f"{output_dir}/explained_variance_1_male_allROI.csv", index=False)
             pd.DataFrame(explained_variance_2_male_allROIs, columns=["Region", "explained_variance_2"]).to_csv(f"{output_dir}/explained_variance_2_male_allROI.csv", index=False)
             print(f"PCA analysis completed. The results have been saved to {output_dir}")
-
-        
-        out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity"])
-        out_csv = f"{ind_path}/individual_expression_{subj}.csv"
-        out_df.to_csv(out_csv, index=False)
-        print(f"Saved: {out_csv}")
-
-    out_df = pd.DataFrame(loo_results_all, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity"])
-    out_csv = f"{results_path}/individual_expression_all.csv"
-    out_df.to_csv(out_csv, index=False)
-    print(f"Saved: {out_csv}")
 
 # Execute script
 if __name__ == "__main__":
