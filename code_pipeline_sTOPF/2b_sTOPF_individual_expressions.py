@@ -1,18 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
-import matplotlib.pyplot as plt
-from scipy.stats import spearmanr
-from nilearn.plotting import plot_glass_brain
-from matplotlib import cm
-import sys
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-import socket
-import re
 from scipy.stats import pearsonr
-from compute_PCA import perform_pca
-from compute_PCA import standardize_data
 import statsmodels.api as sm
 
 def main(): 
@@ -22,7 +11,7 @@ def main():
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
     data_path = f"{base_path}/data_pipeline_sTOPF"
 
-    ### change later 
+    ### change!!!!
     results_path = f"{base_path}/results_pipeline_predict"
     ind_path = f"{results_path}/individual_expressions"
     os.makedirs(ind_path, exist_ok=True)
@@ -104,24 +93,26 @@ def main():
             # if hostname == "cpu44":
             #   output_dir =r_rootdir # Remote root directory
             #else:
-            output_dir = f"{results_path}/results_PCA/{curr_mov}/{subj}" # Local results directory
-            os.makedirs(output_dir, exist_ok=True) # Create the output directory if it doesn't exist
+
+            pca_path = f"{results_path}/results_PCA/{curr_mov}/{subj}"
+            pca_scores_female = pd.read_csv(f"{pca_path}/PC1_scores_female_allROI.csv")
+            pca_scores_male=  pd.read_csv(f"{pca_path}/PC1_scores_male_allROI.csv")
 
             for region in brain_regions:        
                 
-                region_data = subj_movie_data[["subject", "timepoint", region]]
-                
+                pca_fem = pca_scores_female.loc[pca_scores_female["Region"] == region, "PC_score_1"]
+                pca_mal = pca_scores_female.loc[pca_scores_male["Region"] == region, "PC_score_1"]
 
-                rf, p = pearsonr(subj_movie_data[region], pc_scores_female["PC1_score"])
-                rm, p = pearsonr(subj_movie_data[region], pc_scores_male["PC1_score"])
+                rf, p = pearsonr(subj_movie_data[region], pca_fem)
+                rm, p = pearsonr(subj_movie_data[region], pca_mal)
 
                 diff = np.arctanh(rf) - np.arctanh(rm)
                 diff = np.tanh(diff)
 
                 # standardize
                 y = (subj_movie_data[region] - np.mean(subj_movie_data[region])) / np.std(subj_movie_data[region])
-                xf = (pc_scores_female["PC1_score"] - np.mean(pc_scores_female["PC1_score"])) / np.std(pc_scores_female["PC1_score"])
-                xm = (pc_scores_male["PC1_score"] - np.mean(pc_scores_male["PC1_score"])) / np.std(pc_scores_male["PC1_score"])
+                xf = (pca_fem - np.mean(pca_fem)) / np.std(pca_fem)
+                xm = (pca_mal - np.mean(pca_mal)) / np.std(pca_mal)
 
                 # design matrix
                 X = np.column_stack([xf, xm])
@@ -136,8 +127,6 @@ def main():
                 loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
                 loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
             
-
-        
         out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity"])
         out_csv = f"{ind_path}/individual_expression_{subj}.csv"
         out_df.to_csv(out_csv, index=False)
