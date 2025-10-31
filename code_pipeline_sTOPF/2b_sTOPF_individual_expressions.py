@@ -12,7 +12,7 @@ def main():
     data_path = f"{base_path}/data_pipeline_sTOPF"
 
     ### change!!!!
-    results_path = f"{base_path}/results_pipeline_predict"
+    results_path = f"{base_path}/results_pipeline_sTOPF"
     ind_path = f"{results_path}/individual_expressions"
     os.makedirs(ind_path, exist_ok=True)
 
