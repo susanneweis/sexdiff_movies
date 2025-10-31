@@ -12,9 +12,7 @@ def main():
 
     # make this nicer later
     results_path = f"{base_path}/results_pipeline_sTOPF"
-    ind_path = f"{results_path}/Individual_Expressions"
-    os.makedirs(ind_path, exist_ok=True)
-
+ 
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
     complete_participants_path = f"{data_path}/complete_participants.csv"
     # not relevant yet, as currently not considering hormones
