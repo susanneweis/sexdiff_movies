@@ -101,7 +101,7 @@ def main():
             for region in brain_regions:        
                 
                 pca_fem = pca_scores_female.loc[pca_scores_female["Region"] == region, "PC_score_1"]
-                pca_mal = pca_scores_female.loc[pca_scores_male["Region"] == region, "PC_score_1"]
+                pca_mal = pca_scores_male.loc[pca_scores_male["Region"] == region, "PC_score_1"]
 
                 rf, p = pearsonr(subj_movie_data[region], pca_fem)
                 rm, p = pearsonr(subj_movie_data[region], pca_mal)
