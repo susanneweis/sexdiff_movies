@@ -75,7 +75,7 @@ def main():
     # Load list of complete participants (verified list with participants_verification.py)
     complete_participants = set(pd.read_csv(complete_participants_path)['subject'].astype(str))
 
-    
+
     excluded_participants = set(pd.read_csv(excluded_participants_path)['subject'].astype(str))
 
     # Load list of excluded subjects (hormonal outlier detection with hormone_outlier_detection_SD.py)
@@ -159,7 +159,6 @@ def main():
             # Perform PCA on each brain region
             for region in brain_regions:        
                 
-                print(region)
                 region_data = movie_data[["subject", "timepoint", region]]
                 formatted_matrix = region_data.pivot(index="timepoint", columns= "subject", values=region)
 
