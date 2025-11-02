@@ -1,7 +1,5 @@
 import pandas as pd
 import os
-from compute_PCA import perform_pca
-from compute_PCA import standardize_data
 
 def main(): 
     # Local setup for testing 
@@ -127,24 +125,25 @@ def main():
                 
                 region_data = movie_data[["subject", "timepoint", region]]
                 formatted_matrix = region_data.pivot(index="timepoint", columns= "subject", values=region)
-             
+
+                standardized_matrix = standardize_data(formatted_matrix)  # Standardize data (excluding movie)
+                
                 # Separate subjects by gender for PCA
                 female_subjects = phenotypes[phenotypes['gender'] == 2]['subject_ID']
                 male_subjects = phenotypes[phenotypes['gender'] == 1]['subject_ID']
                 
                 # Ensure the subjects exist in the standardized matrix
-                female_subjects = female_subjects[female_subjects.isin(formatted_matrix.columns)]
-                male_subjects = male_subjects[male_subjects.isin(formatted_matrix.columns)]
+                female_subjects = female_subjects[female_subjects.isin(standardized_matrix.columns)]
+                male_subjects = male_subjects[male_subjects.isin(standardized_matrix.columns)]
 
                 # Perform PCA separatley for males and females
                 # keep the original naming for further reference
 
-                matrix_female = formatted_matrix.loc[:, female_subjects]
-                matrix_male = formatted_matrix.loc[:, male_subjects]
+                # Perform PCA separatley for males and females
+                # keep the original naming for further reference
 
-                # standardize seperately
-                standardized_matrix_female = standardize_data(matrix_female)  # Standardize data (excluding movie)
-                standardized_matrix_male = standardize_data(matrix_male)  # Standardize data (excluding movie)
+                standardized_matrix_female = standardized_matrix.loc[:, female_subjects]
+                standardized_matrix_male = standardized_matrix.loc[:, male_subjects]
 
                 # Perform PCA for females
                 pc_loadings_female, pc_scores_female, explained_variance_female_1, explained_variance_female_2  = perform_pca(standardized_matrix_female)
