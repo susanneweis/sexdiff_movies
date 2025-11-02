@@ -1,5 +1,35 @@
 import pandas as pd
+import numpy as np
 import os
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# Standardize data using StandardScaler (zero mean, unit variance for each feature)
+def standardize_data(matrix):
+    scaler = StandardScaler() 
+    return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
+
+# PCA Function
+
+def perform_pca(matrix):
+    if matrix.empty:
+        return None, None, None # Return None if matrix is empty
+                
+    pca = PCA(n_components=2) # Apply PCA with 2 components (PC1 and PC2)
+    pc_scores = pca.fit_transform(matrix) # Transform the data to get the PCA scores
+    explained_variance = pca.explained_variance_ratio_ # Variance explained by each component
+
+    # Calculate PCA loadings
+    pc_loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+    pc_loadings_df = pd.DataFrame({
+        "Subject_ID": matrix.columns,
+        "PC1_loading": pc_loadings[:, 0],
+        "PC2_loading": pc_loadings[:, 1]
+    })
+                
+    pc_scores_df = pd.DataFrame(pc_scores, columns=[f'PC{i+1}_score' for i in range(2)])
+                             
+    return pc_loadings_df, pc_scores_df, explained_variance[0], explained_variance[1], 
 
 def main(): 
     # Local setup for testing 
