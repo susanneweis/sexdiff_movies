@@ -18,6 +18,8 @@ def main():
 
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
     complete_participants_path = f"{data_path}/complete_participants.csv"
+    excluded_participants_path = f"{data_path}/excluded_participants.csv"
+
     # not relevant yet, as currently not considering hormones
     # exclude_path = f"{base_path}/results_pipeline/excluded_subjects.csv"
 
@@ -46,6 +48,7 @@ def main():
 
     # Load list of complete participants (verified list with participants_verification.py)
     complete_participants = set(pd.read_csv(complete_participants_path)['subject'].astype(str))
+    excluded_participants = set(pd.read_csv(excluded_participants_path)['subject'].astype(str))
 
     # Load list of excluded subjects (hormonal outlier detection with hormone_outlier_detection_SD.py)
     # not yet relevant here 
@@ -55,6 +58,8 @@ def main():
     # Get valid subjects and exclude outliers
     phenotype_subjects = set(phenotypes['subject_ID'].astype(str))
     valid_subjects = complete_participants.intersection(phenotype_subjects)
+    valid_subjects = valid_subjects.difference(excluded_participants)
+
     # not yet relevant here
     # valid_subjects = valid_subjects.difference(excluded_subjects)
 
