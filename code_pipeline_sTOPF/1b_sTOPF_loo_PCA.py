@@ -6,8 +6,10 @@ from sklearn.preprocessing import StandardScaler
 
 # Standardize data using StandardScaler (zero mean, unit variance for each feature)
 def standardize_data(matrix):
-    scaler = StandardScaler() 
-    return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
+    # scaler = StandardScaler() 
+    # return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
+    standardized = (matrix - matrix.mean(axis=0)) / matrix.std(axis=0)
+    return standardized
 
 # PCA Function
 
