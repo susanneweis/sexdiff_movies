@@ -6,10 +6,10 @@ from sklearn.preprocessing import StandardScaler
 
 # Standardize data using StandardScaler (zero mean, unit variance for each feature)
 def standardize_data(matrix):
-    # scaler = StandardScaler() 
-    # return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
-    standardized = (matrix - matrix.mean(axis=0)) / matrix.std(axis=0)
-    return standardized
+    #scaler = StandardScaler() 
+    #return matrix.apply(lambda x: scaler.fit_transform(x.values.reshape(-1, 1)).flatten(), axis=0)
+    matrix = (matrix - matrix.mean(axis=0)) / matrix.std(axis=0)
+    return matrix
 
 # PCA Function
 
@@ -45,6 +45,8 @@ def main():
  
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
     complete_participants_path = f"{data_path}/complete_participants.csv"
+    excluded_participants_path = f"{data_path}/excluded_participants.csv"
+
     # not relevant yet, as currently not considering hormones
     # exclude_path = f"{base_path}/results_pipeline/excluded_subjects.csv"
 
@@ -73,6 +75,9 @@ def main():
     # Load list of complete participants (verified list with participants_verification.py)
     complete_participants = set(pd.read_csv(complete_participants_path)['subject'].astype(str))
 
+    
+    excluded_participants = set(pd.read_csv(excluded_participants_path)['subject'].astype(str))
+
     # Load list of excluded subjects (hormonal outlier detection with hormone_outlier_detection_SD.py)
     # not yet relevant here 
     # exclude_df = pd.read_csv(exclude_path, sep=',')
@@ -81,8 +86,7 @@ def main():
     # Get valid subjects and exclude outliers
     phenotype_subjects = set(phenotypes['subject_ID'].astype(str))
     valid_subjects = complete_participants.intersection(phenotype_subjects)
-    # not yet relevant here
-    # valid_subjects = valid_subjects.difference(excluded_subjects)
+    valid_subjects = valid_subjects.difference(excluded_participants)
 
     print(f"Number of included valid subjects after exclusion: {len(valid_subjects)}")
 
@@ -122,7 +126,7 @@ def main():
             # take current subject out of PCA
             others = valid_subjects - {subj} 
             # Filter subjects based on the valid subject list
-            subj_movie_data = movie_data.loc[movie_data["subject"] == subj].copy()
+            #subj_movie_data = movie_data.loc[movie_data["subject"] == subj].copy()
             movie_data = movie_data[movie_data["subject"].isin(others)]
             movie_data["movie"] = curr_mov  # Add movie identifier to the data
 
@@ -155,6 +159,7 @@ def main():
             # Perform PCA on each brain region
             for region in brain_regions:        
                 
+                print(region)
                 region_data = movie_data[["subject", "timepoint", region]]
                 formatted_matrix = region_data.pivot(index="timepoint", columns= "subject", values=region)
 
