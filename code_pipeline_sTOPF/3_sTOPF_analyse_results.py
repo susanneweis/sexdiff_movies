@@ -134,6 +134,23 @@ def main():
     mv_reg_class_summary_df = pd.DataFrame(mv_reg_class_summary)
     mv_reg_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_per_movie.csv", index=False)
 
+    ind_expr = pd.read_csv(ind_expr_path)
+    
+    # Aggregate per subject+movie
+    out = (
+        ind_expr.groupby(["subject", "sex", "movie"], as_index=False)
+        .agg(
+            mean_femaleness=("femaleness", "mean"),                 # NaNs ignored by default
+            mean_fem_similarity=("fem_similarity", "mean"),                 # NaNs ignored by default
+            neg_perc =("femaleness", lambda s: (s < 0).sum()/436) # NaNs don't count as negative
+        )
+        .sort_values(["subject", "movie"])
+    )
+
+    # Save result
+    out.to_csv(f"{results_path}/subject_movie_summary.csv", index=False)
+
+
 # Execute script
 if __name__ == "__main__":
     main()

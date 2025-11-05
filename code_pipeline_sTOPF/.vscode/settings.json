@@ -1,4 +1,5 @@
 {
   "python.defaultInterpreterPath": "/Users/sweis/.venvs/hormone_env",
-  "python-envs.pythonProjects": []
+  "python-envs.pythonProjects": [],
+  "git.ignoreLimitWarning": true
 }

@@ -12,7 +12,6 @@ def standardize_data(matrix):
     #return matrix
 
 # PCA Function
-
 def perform_pca(matrix):
     if matrix.empty:
         return None, None, None # Return None if matrix is empty
@@ -40,7 +39,6 @@ def main():
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
     data_path = f"{base_path}/data_pipeline_sTOPF"
 
-    # make this nicer later
     results_path = f"{base_path}/results_pipeline_sTOPF"
  
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
@@ -74,7 +72,6 @@ def main():
 
     # Load list of complete participants (verified list with participants_verification.py)
     complete_participants = set(pd.read_csv(complete_participants_path)['subject'].astype(str))
-
 
     excluded_participants = set(pd.read_csv(excluded_participants_path)['subject'].astype(str))
 
