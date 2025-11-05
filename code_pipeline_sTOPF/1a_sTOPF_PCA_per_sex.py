@@ -2,10 +2,8 @@
 import pandas as pd
 import numpy as np
 import os
-import sys
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-import socket
 import re
 
 # Function to extract the movie name from the filename
