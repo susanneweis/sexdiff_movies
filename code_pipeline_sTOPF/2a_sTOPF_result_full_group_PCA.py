@@ -10,7 +10,6 @@ def main():
         
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
     results_path = f"{base_path}/results_pipeline_sTOPF"
-    data_path = f"{base_path}/data_pipeline_sTOPF"
 
     movies_properties = {
         "dd": {"min_timepoint": 6, "max_timepoint": 463},
