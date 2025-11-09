@@ -126,11 +126,20 @@ def main():
 
                 beta_f, beta_m = model.params[1], model.params[2]
                 fem_similarity = (beta_f - beta_m) / (abs(beta_f) + abs(beta_m))
+
+                # mutual information
+                df_y = pd.DataFrame(y)
+                df_xf = pd.DataFrame(xf)
+                df_xm = pd.DataFrame(xm)
+
+                mi_f = mutual_info_regression(df_y, df_xf, random_state=42)
+                mi_m = mutual_info_regression(df_y, df_xm, random_state=42)
+
                 
                 sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
 
-                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
-                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity})
+                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity, "fem_mi": mi_f, "mal_mi": mi_m})
+                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity, "fem_mi": mi_f, "mal_mi", mi_m})
             
         out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity"])
         out_csv = f"{ind_path}/individual_expression_{subj}.csv"
