@@ -4,6 +4,7 @@ from pathlib import Path
 import os
 from scipy.stats import ttest_1samp
 from scipy.stats import pearsonr
+from sklearn.feature_selection import mutual_info_regression
 
 
 def main():
@@ -40,7 +41,7 @@ def main():
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
 
     for curr_mov in movies:
-        outpath = f"{results_path}/compare_time_courses_corr/sep_PCAs"
+        outpath = f"{results_path}/compare_time_courses_corr"
         os.makedirs(outpath, exist_ok=True)
         out_csv = f"/{outpath}/results_compare_time_courses_corr_{curr_mov}.csv"
 
@@ -87,6 +88,10 @@ def main():
             r, p_r = pearsonr(y_f, y_m)
             corr_sig = p_r <= 0.05
 
+            df_yf = pd.DataFrame(y_f)
+            df_ym = pd.DataFrame(y_m)
+            mi = mutual_info_regression(df_yf, df_ym, random_state=42)
+
             rows.append(dict(
                 region=reg,
                 n_samples=int(len(y_f)),
@@ -97,7 +102,8 @@ def main():
                 t_sig_corr = ttest_sig_corr,
                 corr = r, 
                 corr_p = p_r,  
-                corr_sig = corr_sig
+                corr_sig = corr_sig,
+                mutual_inf = mi[0]
             ))
 
             out = pd.DataFrame(rows)
