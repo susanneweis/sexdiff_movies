@@ -8,6 +8,9 @@ def main():
     ind_ex_data = pd.read_csv(ind_ex_path)
     subs = ind_ex_data["subject"].unique().tolist()
 
+    quant = 10
+    quantile = quant*0.01
+
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
 
     results = []
@@ -17,7 +20,7 @@ def main():
         cmp_tc_path = f"{results_path}/compare_time_courses/results_compare_time_courses_{curr_mov}.csv" 
         cmp_tc_data = pd.read_csv(cmp_tc_path)
 
-        thresh = cmp_tc_data["mutual_inf"].quantile(0.10)
+        thresh = cmp_tc_data["mutual_inf"].quantile(quantile)
         diff_regs = cmp_tc_data.loc[cmp_tc_data["mutual_inf"] <= thresh, "region"].tolist()
 
         for curr_sub in subs:
@@ -43,29 +46,33 @@ def main():
 
 
     out_df = pd.DataFrame(results, columns=["subject", "sex", "movie", "percent fem", "classification", "classification correct"])
-    out_csv = f"{results_path}/classification_subjects_movies.csv"
+    out_csv = f"{results_path}/classification_subjects_movies_top_{quant}perc.csv"
     out_df.to_csv(out_csv, index=False)
 
-    in_df = f"{results_path}/classification_subjects_movies.csv"
+    in_df = f"{results_path}/classification_subjects_movies_top_{quant}perc.csv"
     sub_mov_class = pd.read_csv(in_df)
 
     subs = sub_mov_class["subject"].unique().tolist()
 
     overall_res = []
 
+    act_mv = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+
     for curr_sub in subs: 
         curr_sub_all_class = sub_mov_class[sub_mov_class["subject"] == curr_sub]
-        sub_sex = curr_sub_data["sex"].unique()[0]
+        sub_sex = curr_sub_all_class["sex"].unique()[0]
+
+        curr_sub_all_class = curr_sub_all_class[curr_sub_all_class["movie"].isin(act_mv)]
 
         perc_female = (curr_sub_all_class["classification"] == "female").mean() * 100
-        overall_class = "female" if perc_female > 0.5 else "male"
+        overall_class = "female" if perc_female > 50 else "male"
 
         overall_class_corr = 1 if sub_sex == overall_class else 0
 
         overall_res.append({"subject": curr_sub, "sex": sub_sex, "percent fem": perc_female, "overall classification": overall_class, "overall classification correct": overall_class_corr})
 
     out_df = pd.DataFrame(overall_res, columns=["subject", "sex", "percent fem", "overall classification", "overall classification correct"])
-    out_csv = f"{results_path}/classification_subjects_across_movies.csv"
+    out_csv = f"{results_path}/classification_subjects_across_movies_top_{quant}perc.csv"
     out_df.to_csv(out_csv, index=False)
 
 
