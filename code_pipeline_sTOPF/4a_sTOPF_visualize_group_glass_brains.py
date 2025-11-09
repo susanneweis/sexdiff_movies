@@ -88,9 +88,7 @@ def main():
 
     for mv_str in movies:
 
-        # change this later - remove sep_PCAs
-        # also maybe compare fem_ality for this to so that all values are -1 to 1
-        tc_corr = f"{results_path}/compare_time_courses_corr/sep_PCAs/results_compare_time_courses_corr_{mv_str}.csv"
+        tc_corr = f"{results_path}/compare_time_courses_corr/results_compare_time_courses_corr_{mv_str}.csv"
 
         # Load datasets
         res_tc_corr = pd.read_csv(tc_corr)
