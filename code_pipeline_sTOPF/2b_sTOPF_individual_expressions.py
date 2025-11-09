@@ -139,8 +139,8 @@ def main():
                 
                 sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
 
-                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity, "fem_mi": mi_f, "mal_mi": mi_m})
-                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity, "fem_mi": mi_f, "mal_mi": mi_m})
+                loo_results_all.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity, "fem_mi": mi_f[0], "mal_mi": mi_m[0]})
+                loo_results_subj.append({"subject": subj, "sex": sub_sex, "movie": curr_mov, "region": region, "correlation_female": rf, "correlation_male": rm, "femaleness": diff, "fem_similarity": fem_similarity, "fem_mi": mi_f[0], "mal_mi": mi_m[0]})
             
         out_df = pd.DataFrame(loo_results_subj, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity","fem_mi","mal_mi"])
         out_csv = f"{ind_path}/individual_expression_{subj}.csv"
