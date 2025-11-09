@@ -43,7 +43,7 @@ def main():
     for curr_mov in movies:
         outpath = f"{results_path}/compare_time_courses"
         os.makedirs(outpath, exist_ok=True)
-        out_csv = f"/{outpath}/results_compare_time_courses_corr_{curr_mov}.csv"
+        out_csv = f"/{outpath}/results_compare_time_courses_{curr_mov}.csv"
 
         # CSVs
         path = f"{results_path}/results_PCA_all/{curr_mov}" 
