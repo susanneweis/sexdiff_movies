@@ -1,18 +1,4 @@
 import pandas as pd
-import numpy as np
-import nibabel as nib
-import os
-import matplotlib.pyplot as plt
-from scipy.stats import spearmanr
-from nilearn.plotting import plot_glass_brain
-from matplotlib import cm
-
-###
-###
-### SIMPLIFY ! COUNT all only once and create function instead of repeating!!
-###
-###
-
 
 def main():
 
