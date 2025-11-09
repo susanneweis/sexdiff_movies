@@ -117,7 +117,7 @@ def main():
                 sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
                 sub_brain, region_to_id_f = assign_roi_ids(sub_brain)
 
-                ##### Brain maps
+                ##### Brain maps Femaleness
 
                 n_roi = sub_brain["region"].nunique()
 
@@ -129,6 +129,22 @@ def main():
                 # output_file = os.path.join(outpath, f"{mv_str}_ind_expression{mv_str}_{subj}.png")
 
                 create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+
+                ##### Brain maps MI
+
+                n_roi = sub_brain["region"].nunique()
+
+                roi_values = fill_glassbrain(n_roi,sub_brain,"fem_mi")
+
+                # Define output filename
+                title = f"Female MI {mv_str} {subj} {sub_sex}. Score: {fem_mi:.2f}"
+                output_file = f"{outpath}/{mv_str}_ind_expression_mi_{mv_str}_{subj}.png"
+                # output_file = os.path.join(outpath, f"{mv_str}_ind_expression{mv_str}_{subj}.png")
+
+                create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+
+
+
 
 # Execute script
 if __name__ == "__main__":
