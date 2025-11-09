@@ -41,7 +41,7 @@ def main():
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
 
     for curr_mov in movies:
-        outpath = f"{results_path}/compare_time_courses_corr"
+        outpath = f"{results_path}/compare_time_courses"
         os.makedirs(outpath, exist_ok=True)
         out_csv = f"/{outpath}/results_compare_time_courses_corr_{curr_mov}.csv"
 
