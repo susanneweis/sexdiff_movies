@@ -130,6 +130,17 @@ def main():
 
         create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
 
+        # Mutual Information
+        
+        res_tc_corr["corr_low"] = (res_tc_corr["corr"] < 0.1).astype(int)
+    
+        roi_values = fill_glassbrain(n_roi,res_tc_corr,"mutual_inf")
+        title = f"Female vs. Male Time Course Mutual Information {mv_str}"
+        output_file = os.path.join(outpath, f"{mv_str}_mi.png")
+
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+
+
 # Execute script
 if __name__ == "__main__":
     main()
