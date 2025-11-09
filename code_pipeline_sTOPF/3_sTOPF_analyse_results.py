@@ -45,66 +45,50 @@ def main():
     )
     ind_expr.to_csv(f"{results_path}/correct_classification_mi.csv", index=False)
 
-
-
-
     movie_class_summary = []
+
     for curr_mov in movies:
+        
         mv_class = ind_expr.loc[ind_expr["movie"] == curr_mov, ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
 
-        mv_class_fem = mv_class.loc[mv_class["sex"] == "female", ["class_corr"]].reset_index(drop=True)
-        mv_class_mal = mv_class.loc[mv_class["sex"] == "male", ["class_corr"]].reset_index(drop=True)
-        count_true_fem = mv_class_fem["class_corr"].sum()
-        count_true_mal = mv_class_mal["class_corr"].sum()
+        mv_class_fem = mv_class.loc[mv_class["sex"] == "female", ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
+        mv_class_mal = mv_class.loc[mv_class["sex"] == "male", ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
         nr_fem = len(mv_class_fem)
         nr_mal = len(mv_class_mal)
 
-        mv_class_fem_sim = mv_class.loc[mv_class["sex"] == "female", ["class_corr_sim"]].reset_index(drop=True)
-        mv_class_mal_sim = mv_class.loc[mv_class["sex"] == "male", ["class_corr_sim"]].reset_index(drop=True)
-        count_true_fem_sim = mv_class_fem_sim["class_corr_sim"].sum()
-        count_true_mal_sim = mv_class_mal_sim["class_corr_sim"].sum()
-        nr_fem_sim = len(mv_class_fem_sim)
-        nr_mal_sim = len(mv_class_mal_sim)
+        count_true_fem = mv_class_fem["class_corr"].sum()
+        count_true_mal = mv_class_mal["class_corr"].sum()
 
-        mv_class_fem_mi = mv_class.loc[mv_class["sex"] == "female", ["class_corr_mi"]].reset_index(drop=True)
-        mv_class_mal_mi = mv_class.loc[mv_class["sex"] == "male", ["class_corr_mi"]].reset_index(drop=True)
-        count_true_fem_mi = mv_class_fem_mi["class_corr_mi"].sum()
-        count_true_mal_mi = mv_class_mal_mi["class_corr_mi"].sum()
-        nr_fem_mi = len(mv_class_fem_mi)
-        nr_mal_mi = len(mv_class_mal_mi)
+        count_true_fem_sim = mv_class_fem["class_corr_sim"].sum()
+        count_true_mal_sim = mv_class_mal["class_corr_sim"].sum()
+    
+        count_true_fem_mi = mv_class_fem["class_corr_mi"].sum()
+        count_true_mal_mi = mv_class_mal["class_corr_mi"].sum()
 
-        movie_class_summary.append({"movie": curr_mov, "female corr femaleness": count_true_fem/nr_fem, "male corr femaleness": count_true_mal/nr_mal, "female corr fem_sim": count_true_fem_sim/nr_fem_sim, "male corr fem_sim": count_true_mal_sim/nr_mal_sim, "female corr fem_sim": count_true_fem_mi/nr_fem_mi, "male corr fem_mi": count_true_mal_mi/nr_mal_mi})
+        movie_class_summary.append({"movie": curr_mov, "female corr femaleness": count_true_fem/nr_fem, "male corr femaleness": count_true_mal/nr_mal, "female corr fem_sim": count_true_fem_sim/nr_fem, "male corr fem_sim": count_true_mal_sim/nr_mal, "female corr fem_sim": count_true_fem_mi/nr_fem, "male corr fem_mi": count_true_mal_mi/nr_mal})
 
     movie_class_summary_df = pd.DataFrame(movie_class_summary)
     movie_class_summary_df.to_csv(f"{results_path}/correct_classification_per_movie.csv", index=False)
-
 
     region_class_summary = []
     for curr_reg in regions:
         reg_class = ind_expr.loc[ind_expr["region"] == curr_reg, ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
 
-        reg_class_fem = reg_class.loc[reg_class["sex"] == "female", ["class_corr"]].reset_index(drop=True)
-        reg_class_mal = reg_class.loc[reg_class["sex"] == "male", ["class_corr"]].reset_index(drop=True)
-        count_true_fem_r = reg_class_fem["class_corr"].sum()
-        count_true_mal_r = reg_class_mal["class_corr"].sum()
+        reg_class_fem = reg_class.loc[reg_class["sex"] == "female", ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
+        reg_class_mal = reg_class.loc[reg_class["sex"] == "male", ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
         nr_fem = len(reg_class_fem)
         nr_mal = len(reg_class_mal)
 
-        reg_class_fem_sim = reg_class.loc[reg_class["sex"] == "female", ["class_corr_sim"]].reset_index(drop=True)
-        reg_class_mal_sim = reg_class.loc[reg_class["sex"] == "male", ["class_corr_sim"]].reset_index(drop=True)
-        count_true_fem_r_sim = reg_class_fem_sim["class_corr_sim"].sum()
-        count_true_mal_r_sim = reg_class_mal_sim["class_corr_sim"].sum()
-        nr_fem_sim = len(reg_class_fem_sim)
-        nr_mal_sim = len(reg_class_mal_sim)
+        count_true_fem_r = reg_class_fem["class_corr"].sum()
+        count_true_mal_r = reg_class_mal["class_corr"].sum()
 
-        reg_class_fem_mi = reg_class.loc[reg_class["sex"] == "female", ["class_corr_mi"]].reset_index(drop=True)
-        reg_class_mal_mi = reg_class.loc[reg_class["sex"] == "male", ["class_corr_mi"]].reset_index(drop=True)
-        count_true_fem_r_mi = reg_class_fem_mi["class_corr_mi"].sum()
-        count_true_mal_r_mi = reg_class_mal_mi["class_corr_mi"].sum()
-        nr_fem_mi = len(reg_class_fem_mi)
-        nr_mal_mi = len(reg_class_mal_mi)
+        count_true_fem_r_sim = reg_class_fem["class_corr_sim"].sum()
+        count_true_mal_r_sim = reg_class_mal["class_corr_sim"].sum()
 
-        region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem_sim, "male corr fem_sim": count_true_mal_r_sim/nr_mal_sim, "female corr fem_mi": count_true_fem_r_mi/nr_fem_mi, "male corr fem_mi": count_true_mal_r_mi/nr_mal_mi})
+        count_true_fem_r_mi = reg_class_fem["class_corr_mi"].sum()
+        count_true_mal_r_mi = reg_class_mal["class_corr_mi"].sum()
+
+        region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr fem_mi": count_true_fem_r_mi/nr_fem, "male corr fem_mi": count_true_mal_r_mi/nr_mal})
 
     region_class_summary_df = pd.DataFrame(region_class_summary)
     region_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region.csv", index=False)
@@ -113,31 +97,23 @@ def main():
     act_mv_region_class_summary = []
     for curr_reg in regions:
         reg_class = ind_expr.loc[ind_expr["region"] == curr_reg, ["sex","movie","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
-
         reg_class = reg_class[reg_class["movie"].isin(act_movies)]
 
-        reg_class_fem = reg_class.loc[reg_class["sex"] == "female", ["class_corr"]].reset_index(drop=True)
-        reg_class_mal = reg_class.loc[reg_class["sex"] == "male", ["class_corr"]].reset_index(drop=True)
-        count_true_fem_r = reg_class_fem["class_corr"].sum()
-        count_true_mal_r = reg_class_mal["class_corr"].sum()
+        reg_class_fem = reg_class.loc[reg_class["sex"] == "female", ["sex","movie","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
+        reg_class_mal = reg_class.loc[reg_class["sex"] == "male", ["sex","movie","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
         nr_fem = len(reg_class_fem)
         nr_mal = len(reg_class_mal)
 
-        reg_class_fem_sim = reg_class.loc[reg_class["sex"] == "female", ["class_corr_sim"]].reset_index(drop=True)
-        reg_class_mal_sim = reg_class.loc[reg_class["sex"] == "male", ["class_corr_sim"]].reset_index(drop=True)
-        count_true_fem_r_sim = reg_class_fem_sim["class_corr_sim"].sum()
-        count_true_mal_r_sim = reg_class_mal_sim["class_corr_sim"].sum()
-        nr_fem_sim = len(reg_class_fem_sim)
-        nr_mal_sim = len(reg_class_mal_sim)
+        count_true_fem_r = reg_class_fem["class_corr"].sum()
+        count_true_mal_r = reg_class_mal["class_corr"].sum()
 
-        reg_class_fem_mi= reg_class.loc[reg_class["sex"] == "female", ["class_corr_mi"]].reset_index(drop=True)
-        reg_class_mal_mi = reg_class.loc[reg_class["sex"] == "male", ["class_corr_mi"]].reset_index(drop=True)
-        count_true_fem_r_mi = reg_class_fem_mi["class_corr_mi"].sum()
-        count_true_mal_r_mi = reg_class_mal_mi["class_corr_mi"].sum()
-        nr_fem_mi = len(reg_class_fem_mi)
-        nr_mal_mi = len(reg_class_mal_mi)
+        count_true_fem_r_sim = reg_class_fem["class_corr_sim"].sum()
+        count_true_mal_r_sim = reg_class_mal["class_corr_sim"].sum()
+    
+        count_true_fem_r_mi = reg_class_fem["class_corr_mi"].sum()
+        count_true_mal_r_mi = reg_class_mal["class_corr_mi"].sum()
 
-        act_mv_region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem_sim, "male corr fem_sim": count_true_mal_r_sim/nr_mal_sim, "female corr fem_mi": count_true_fem_r_mi/nr_fem_mi, "male corr fem_mi": count_true_mal_r_mi/nr_mal_mi})
+        act_mv_region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr fem_mi": count_true_fem_r_mi/nr_fem, "male corr fem_mi": count_true_mal_r_mi/nr_mal})
 
     act_mv_region_class_summary_df = pd.DataFrame(act_mv_region_class_summary)
     act_mv_region_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_no_rest.csv", index=False)
@@ -150,28 +126,21 @@ def main():
 
             reg_class = ind_expr.loc[ind_expr["movie"] == curr_mov, ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
 
-            reg_class_fem = reg_class.loc[reg_class["sex"] == "female", ["class_corr"]].reset_index(drop=True)
-            reg_class_mal = reg_class.loc[reg_class["sex"] == "male", ["class_corr"]].reset_index(drop=True)
-            count_true_fem_r = reg_class_fem["class_corr"].sum()
-            count_true_mal_r = reg_class_mal["class_corr"].sum()
+            reg_class_fem = reg_class.loc[reg_class["sex"] == "female", ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
+            reg_class_mal = reg_class.loc[reg_class["sex"] == "male", ["sex","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)
             nr_fem = len(reg_class_fem)
             nr_mal = len(reg_class_mal)
 
-            reg_class_fem_sim = reg_class.loc[reg_class["sex"] == "female", ["class_corr_sim"]].reset_index(drop=True)
-            reg_class_mal_sim = reg_class.loc[reg_class["sex"] == "male", ["class_corr_sim"]].reset_index(drop=True)
-            count_true_fem_r_sim = reg_class_fem_sim["class_corr_sim"].sum()
-            count_true_mal_r_sim = reg_class_mal_sim["class_corr_sim"].sum()
-            nr_fem_sim = len(reg_class_fem_sim)
-            nr_mal_sim = len(reg_class_mal_sim)
+            count_true_fem_r = reg_class_fem["class_corr"].sum()
+            count_true_mal_r = reg_class_mal["class_corr"].sum()
 
-            reg_class_fem_mi = reg_class.loc[reg_class["sex"] == "female", ["class_corr_mi"]].reset_index(drop=True)
-            reg_class_mal_mi = reg_class.loc[reg_class["sex"] == "male", ["class_corr_mi"]].reset_index(drop=True)
-            count_true_fem_r_mi = reg_class_fem_mi["class_corr_mi"].sum()
-            count_true_mal_r_mi = reg_class_mal_mi["class_corr_mi"].sum()
-            nr_fem_mi = len(reg_class_fem_mi)
-            nr_mal_mi = len(reg_class_mal_mi)
+            count_true_fem_r_sim = reg_class_fem["class_corr_sim"].sum()
+            count_true_mal_r_sim = reg_class_mal["class_corr_sim"].sum()
 
-            mv_reg_class_summary.append({"region": curr_reg, "movie": curr_mov, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem_sim, "male corr fem_sim": count_true_mal_r_sim/nr_mal_sim,  "female corr fem_mi": count_true_fem_r_mi/nr_fem_mi, "male corr fem_mi": count_true_mal_r_mi/nr_mal_mi})
+            count_true_fem_r_mi = reg_class_fem["class_corr_mi"].sum()
+            count_true_mal_r_mi = reg_class_mal["class_corr_mi"].sum()
+
+            mv_reg_class_summary.append({"region": curr_reg, "movie": curr_mov, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal,  "female corr fem_mi": count_true_fem_r_mi/nr_fem, "male corr fem_mi": count_true_mal_r_mi/nr_mal})
 
     mv_reg_class_summary_df = pd.DataFrame(mv_reg_class_summary)
     mv_reg_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_per_movie.csv", index=False)
