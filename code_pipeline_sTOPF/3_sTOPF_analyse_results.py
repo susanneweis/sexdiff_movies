@@ -51,7 +51,7 @@ def main():
         count_true_fem_mi = mv_class_fem["class_corr_mi"].sum()
         count_true_mal_mi = mv_class_mal["class_corr_mi"].sum()
 
-        movie_class_summary.append({"movie": curr_mov, "female corr femaleness": count_true_fem/nr_fem, "male corr femaleness": count_true_mal/nr_mal, "female corr fem_sim": count_true_fem_sim/nr_fem, "male corr fem_sim": count_true_mal_sim/nr_mal, "female corr fem_sim": count_true_fem_mi/nr_fem, "male corr fem_mi": count_true_mal_mi/nr_mal})
+        movie_class_summary.append({"movie": curr_mov, "female corr femaleness": count_true_fem/nr_fem, "male corr femaleness": count_true_mal/nr_mal, "female corr fem_sim": count_true_fem_sim/nr_fem, "male corr fem_sim": count_true_mal_sim/nr_mal, "female corr mi": count_true_fem_mi/nr_fem, "male corr mi": count_true_mal_mi/nr_mal})
 
     movie_class_summary_df = pd.DataFrame(movie_class_summary)
     movie_class_summary_df.to_csv(f"{results_path}/correct_classification_per_movie.csv", index=False)
@@ -74,7 +74,7 @@ def main():
         count_true_fem_r_mi = reg_class_fem["class_corr_mi"].sum()
         count_true_mal_r_mi = reg_class_mal["class_corr_mi"].sum()
 
-        region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr fem_mi": count_true_fem_r_mi/nr_fem, "male corr fem_mi": count_true_mal_r_mi/nr_mal})
+        region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr mi": count_true_fem_r_mi/nr_fem, "male corr mi": count_true_mal_r_mi/nr_mal})
 
     region_class_summary_df = pd.DataFrame(region_class_summary)
     region_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region.csv", index=False)
@@ -99,7 +99,7 @@ def main():
         count_true_fem_r_mi = reg_class_fem["class_corr_mi"].sum()
         count_true_mal_r_mi = reg_class_mal["class_corr_mi"].sum()
 
-        act_mv_region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr fem_mi": count_true_fem_r_mi/nr_fem, "male corr fem_mi": count_true_mal_r_mi/nr_mal})
+        act_mv_region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr mi": count_true_fem_r_mi/nr_fem, "male corr mi": count_true_mal_r_mi/nr_mal})
 
     act_mv_region_class_summary_df = pd.DataFrame(act_mv_region_class_summary)
     act_mv_region_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_no_rest.csv", index=False)
@@ -126,7 +126,7 @@ def main():
             count_true_fem_r_mi = reg_class_fem["class_corr_mi"].sum()
             count_true_mal_r_mi = reg_class_mal["class_corr_mi"].sum()
 
-            mv_reg_class_summary.append({"region": curr_reg, "movie": curr_mov, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal,  "female corr fem_mi": count_true_fem_r_mi/nr_fem, "male corr fem_mi": count_true_mal_r_mi/nr_mal})
+            mv_reg_class_summary.append({"region": curr_reg, "movie": curr_mov, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal,  "female corr mi": count_true_fem_r_mi/nr_fem, "male corr mi": count_true_mal_r_mi/nr_mal})
 
     mv_reg_class_summary_df = pd.DataFrame(mv_reg_class_summary)
     mv_reg_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_per_movie.csv", index=False)
