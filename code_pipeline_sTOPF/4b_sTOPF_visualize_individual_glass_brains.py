@@ -56,7 +56,7 @@ def fill_glassbrain(n_r,res_df,column):
             roi_values[region_index] = row[column]
     return roi_values
 
-def create_glassbrains(vals, at_path, nrois, title_str,o_file):
+def create_glassbrains(vals, at_path, nrois, title_str,o_file,min,max):
     
      # Create image
     img = create_img_for_glassbrain_plot(vals, at_path, nrois)
@@ -66,7 +66,7 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file):
     cmap = cm.RdBu_r  # Diverging colormap with blue (negative) and red (positive)
                 
     # Plot and save glass brain
-    plot_glass_brain(img, threshold=0, vmax=1, vmin=-1,display_mode='lyrz', colorbar=True, cmap = cmap, title=title_str, plot_abs=False)
+    plot_glass_brain(img, threshold=0, vmax=max, vmin=min,display_mode='lyrz', colorbar=True, cmap = cmap, title=title_str, plot_abs=False)
     plt.savefig(o_file, bbox_inches='tight',dpi=300)
     plt.close()
     
@@ -105,7 +105,7 @@ def main():
 
                 ind_brain = pd.read_csv(ind_brain_path)
 
-                sub_brain = ind_brain.loc[ind_brain["movie"] == mv_str, ["region", "correlation_female", "correlation_male"]].reset_index(drop=True)
+                sub_brain = ind_brain.loc[ind_brain["movie"] == mv_str, ["region", "correlation_female", "correlation_male","fem_mi"]].reset_index(drop=True)
 
                 diff = np.arctanh(sub_brain["correlation_female"]) - np.arctanh(sub_brain["correlation_male"])
                 sub_brain["fem-mal"] = np.tanh(diff)
@@ -128,7 +128,7 @@ def main():
                 output_file = f"{outpath}/{mv_str}_ind_expression{mv_str}_{subj}.png"
                 # output_file = os.path.join(outpath, f"{mv_str}_ind_expression{mv_str}_{subj}.png")
 
-                create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+                create_glassbrains(roi_values, atlas_path, n_roi, title,output_file,-1,1)
 
                 ##### Brain maps MI
 
@@ -136,12 +136,16 @@ def main():
 
                 roi_values = fill_glassbrain(n_roi,sub_brain,"fem_mi")
 
+                mean_fem_mi = sub_brain["fem_mi"].mean()
                 # Define output filename
-                title = f"Female MI {mv_str} {subj} {sub_sex}. Score: {fem_mi:.2f}"
+                title = f"Female MI {mv_str} {subj} {sub_sex}. Score: {mean_fem_mi:.2f}"
                 output_file = f"{outpath}/{mv_str}_ind_expression_mi_{mv_str}_{subj}.png"
                 # output_file = os.path.join(outpath, f"{mv_str}_ind_expression{mv_str}_{subj}.png")
 
-                create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+                min_val = sub_brain["fem_mi"].min()
+                max_val = sub_brain["fem_mi"].max()
+
+                create_glassbrains(roi_values, atlas_path, n_roi, title,output_file,min_val,max_val)
 
 
 
