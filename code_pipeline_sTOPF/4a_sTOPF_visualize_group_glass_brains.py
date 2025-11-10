@@ -66,7 +66,7 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file):
     cmap = cm.RdBu_r  # Diverging colormap with blue (negative) and red (positive)
                 
     # Plot and save glass brain
-    plot_glass_brain(img, threshold=0, vmax=1, vmin=-1,display_mode='lyrz', colorbar=True, cmap = cmap, title=title_str, plot_abs=False)
+    plot_glass_brain(img, threshold=0, vmax=1, vmin=0,display_mode='lyrz', colorbar=True, cmap = cmap, title=title_str, plot_abs=False)
     plt.savefig(o_file, bbox_inches='tight',dpi=300)
     plt.close()
     
@@ -88,7 +88,7 @@ def main():
 
     for mv_str in movies:
 
-        tc_corr = f"{results_path}/compare_time_courses_corr/results_compare_time_courses_corr_{mv_str}.csv"
+        tc_corr = f"{results_path}/compare_time_courses/results_compare_time_courses_{mv_str}.csv"
 
         # Load datasets
         res_tc_corr = pd.read_csv(tc_corr)

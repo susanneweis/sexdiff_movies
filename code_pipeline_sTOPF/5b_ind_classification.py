@@ -8,7 +8,7 @@ def main():
     ind_ex_data = pd.read_csv(ind_ex_path)
     subs = ind_ex_data["subject"].unique().tolist()
 
-    quant = 10
+    quant = 20
     quantile = quant*0.01
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
@@ -21,7 +21,7 @@ def main():
         cmp_tc_data = pd.read_csv(cmp_tc_path)
 
         thresh = cmp_tc_data["mutual_inf"].quantile(quantile)
-        diff_regs = cmp_tc_data.loc[cmp_tc_data["mutual_inf"] <= thresh, "region"].tolist()
+        diff_regs = cmp_tc_data.loc[cmp_tc_data["mutual_inf"] < thresh, "region"].tolist()
 
         for curr_sub in subs:
 
