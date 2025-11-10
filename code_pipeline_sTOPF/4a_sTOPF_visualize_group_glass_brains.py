@@ -56,7 +56,7 @@ def fill_glassbrain(n_r,res_df,column):
             roi_values[region_index] = row[column]
     return roi_values
 
-def create_glassbrains(vals, at_path, nrois, title_str,o_file):
+def create_glassbrains(vals, at_path, nrois, title_str,o_file, min, max):
     
      # Create image
     img = create_img_for_glassbrain_plot(vals, at_path, nrois)
@@ -66,7 +66,7 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file):
     cmap = cm.RdBu_r  # Diverging colormap with blue (negative) and red (positive)
                 
     # Plot and save glass brain
-    plot_glass_brain(img, threshold=0, vmax=1, vmin=0,display_mode='lyrz', colorbar=True, cmap = cmap, title=title_str, plot_abs=False)
+    plot_glass_brain(img, threshold=0, vmax=max, vmin=min,display_mode='lyrz', colorbar=True, cmap = cmap, title=title_str, plot_abs=False)
     plt.savefig(o_file, bbox_inches='tight',dpi=300)
     plt.close()
     
@@ -106,7 +106,7 @@ def main():
         title = f"Female vs. Male Time Course Correlations {mv_str}"
         output_file = os.path.join(outpath, f"{mv_str}_tc_correlations.png")
 
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file, -1, 1)
 
         # High Correlations
         
@@ -116,7 +116,7 @@ def main():
         title = f"Female vs. Male Time Course Correlations > 0.9 {mv_str}"
         output_file = os.path.join(outpath, f"{mv_str}_high_corr.png")
         
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file, 0, 1)
 
         # Low Correlations
         
@@ -126,7 +126,7 @@ def main():
         title = f"Female vs. Male Time Course Correlations < 0.1 {mv_str}"
         output_file = os.path.join(outpath, f"{mv_str}_low_corr.png")
 
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file, 0, 1)
 
         # Mutual Information
             
@@ -134,7 +134,10 @@ def main():
         title = f"Female vs. Male Time Course Mutual Information {mv_str}"
         output_file = os.path.join(outpath, f"{mv_str}_mi.png")
 
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        min_val = res_tc_corr["mutual_inf"].min()
+        max_val = res_tc_corr["mutual_inf"].max()
+
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file, min_val, max_val)
 
         # Low Mutual Information
         
@@ -145,7 +148,7 @@ def main():
         title = f"Female vs. Male Time Course Low Mutual Information {mv_str}"
         output_file = os.path.join(outpath, f"{mv_str}_mi_low.png")
 
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file, 0, 1)
 
         # High Mutual Information
         
@@ -156,7 +159,7 @@ def main():
         title = f"Female vs. Male Time Course High Mutual Information {mv_str}"
         output_file = os.path.join(outpath, f"{mv_str}_mi_high.png")
 
-        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file)
+        create_glassbrains(roi_values, atlas_path, n_roi, title,output_file, 0, 1)
 
 
 # Execute script
