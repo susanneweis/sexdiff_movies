@@ -41,7 +41,7 @@ def perform_pca(matrix):
                              
     return pc_loadings_df, pc_scores_df, explained_variance[0], explained_variance[1], 
 
-def sTOPF_PCA_per_sex(base_path): 
+def main(base_path): 
 
    # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py

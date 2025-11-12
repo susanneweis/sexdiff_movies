@@ -7,7 +7,7 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import socket
 import re
-from sTOPF_PCA_per_sex_1a import sTOPF_PCA_per_sex
+import _1a_sTOPF_PCA_per_sex
 
 # Setup for paths
 hostname = socket.gethostname()
@@ -62,3 +62,5 @@ for path in [base_path]:
         raise FileNotFoundError
 # print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n {exclude_path}\n")    
 print(f"\n Path and Files found: \n - {base_path}\n")    
+
+1a_sTOPF_PCA_per_sex_1a.main(base_path)
