@@ -1,4 +1,3 @@
-#adjusted version
 import pandas as pd
 import numpy as np
 import os
@@ -42,12 +41,12 @@ def perform_pca(matrix):
                              
     return pc_loadings_df, pc_scores_df, explained_variance[0], explained_variance[1], 
 
-def main(): 
+def sTOPF_PCA_per_sex(base_path): 
 
    # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
-    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
+    # base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
     data_path = f"{base_path}/data_pipeline_sTOPF"
 
     results_path = f"{base_path}/results_pipeline_sTOPF"
