@@ -147,7 +147,7 @@ def main(base_path,nn_mi):
         print(f"Saved: {out_csv}")
 
     out_df = pd.DataFrame(loo_results_all, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity","fem_mi","mal_mi"])
-    out_csv = f"{results_path}/individual_expression_all.csv"
+    out_csv = f"{results_path}/individual_expression_all_nn{nn_mi}.csv"
     out_df.to_csv(out_csv, index=False)
     print(f"Saved: {out_csv}")
 
