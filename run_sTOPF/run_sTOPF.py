@@ -6,8 +6,10 @@ import sys
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import socket
-import re
 import _1a_sTOPF_PCA_per_sex
+import _1b_sTOPF_loo_PCA
+import _2a_sTOPF_results_full_group_PCA
+import _2b_sTOPF_individual_expressions
 
 # Setup for paths
 hostname = socket.gethostname()
@@ -45,8 +47,7 @@ else:
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
 
     # Parameter for Mutual Information Estimation
-    nn_for_mi = 3
-
+    nn_mi = 3
 
     # dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7", "BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 2 movies
     # dataset = "BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7.csv" 
@@ -64,3 +65,6 @@ for path in [base_path]:
 print(f"\n Path and Files found: \n - {base_path}\n")    
 
 _1a_sTOPF_PCA_per_sex.main(base_path)
+_1b_sTOPF_loo_PCA.main(base_path)
+_2a_sTOPF_results_full_group_PCA.main(base_path, nn_mi)
+_2b_sTOPF_individual_expressions.main(base_path, nn_mi)

@@ -7,10 +7,9 @@ from scipy.stats import pearsonr
 from sklearn.feature_selection import mutual_info_regression
 
 
-def main():
+def main(base_path,nn_mi):
         
-    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    results_path = f"{base_path}/results_pipeline_sTOPF"
+    results_path = f"{base_path}/results_run_sTOPF"
 
     movies_properties = {
         "dd": {"min_timepoint": 6, "max_timepoint": 463},
@@ -41,7 +40,7 @@ def main():
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
 
     for curr_mov in movies:
-        outpath = f"{results_path}/compare_time_courses"
+        outpath = f"{results_path}/compare_time_courses_nn{nn_mi}"
         os.makedirs(outpath, exist_ok=True)
         out_csv = f"/{outpath}/results_compare_time_courses_{curr_mov}.csv"
 
@@ -90,7 +89,7 @@ def main():
 
             df_yf = pd.DataFrame(y_f)
             df_ym = pd.DataFrame(y_m)
-            mi = mutual_info_regression(df_yf, df_ym, random_state=42)
+            mi = mutual_info_regression(X=df_yf, y=df_ym, n_neighbors=nn_mi, random_state=42)
 
             rows.append(dict(
                 region=reg,

@@ -5,16 +5,15 @@ from scipy.stats import pearsonr
 import statsmodels.api as sm
 from sklearn.feature_selection import mutual_info_regression
 
-def main(): 
+def main(base_path,nn_mi): 
     # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
-    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    data_path = f"{base_path}/data_pipeline_sTOPF"
+    data_path = f"{base_path}/data_run_sTOPF"
 
     ### change!!!!
-    results_path = f"{base_path}/results_pipeline_sTOPF"
-    ind_path = f"{results_path}/individual_expressions"
+    results_path = f"{base_path}/results_run_sTOPF"
+    ind_path = f"{results_path}/individual_expressions_nn{nn_mi}"
     os.makedirs(ind_path, exist_ok=True)
 
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
@@ -133,8 +132,8 @@ def main():
                 df_xf = pd.DataFrame(xf)
                 df_xm = pd.DataFrame(xm)
 
-                mi_f = mutual_info_regression(df_y, df_xf, random_state=42)
-                mi_m = mutual_info_regression(df_y, df_xm, random_state=42)
+                mi_f = mutual_info_regression(X=df_y, y=df_xf, n_neighbors=nn_mi, random_state=42)
+                mi_m = mutual_info_regression(X=df_y, y=df_xm, n_neighbors=nn_mi, random_state=42)
 
                 
                 sub_sex = subs_sex.loc[subs_sex["subject_ID"] == subj, "gender"].iloc[0]
