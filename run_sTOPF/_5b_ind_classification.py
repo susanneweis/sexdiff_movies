@@ -1,10 +1,9 @@
 import pandas as pd
 
-def main():
-    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    results_path = f"{base_path}/results_pipeline_sTOPF"
+def main(base_path, nn_mi):
+    results_path = f"{base_path}/results_rjn_sTOPF"
 
-    ind_ex_path = f"{results_path}/individual_expression_all.csv"
+    ind_ex_path = f"{results_path}/individual_expression_all_nn{nn_mi}.csv"
     ind_ex_data = pd.read_csv(ind_ex_path)
     subs = ind_ex_data["subject"].unique().tolist()
 
@@ -46,10 +45,10 @@ def main():
 
 
     out_df = pd.DataFrame(results, columns=["subject", "sex", "movie", "percent fem", "classification", "classification correct"])
-    out_csv = f"{results_path}/classification_subjects_movies_top_{quant}perc.csv"
+    out_csv = f"{results_path}/classification_subjects_movies_nn{nn_mi}_top_{quant}perc.csv"
     out_df.to_csv(out_csv, index=False)
 
-    in_df = f"{results_path}/classification_subjects_movies_top_{quant}perc.csv"
+    in_df = f"{results_path}/classification_subjects_movies_nn{nn_mi}_top_{quant}perc.csv"
     sub_mov_class = pd.read_csv(in_df)
 
     subs = sub_mov_class["subject"].unique().tolist()
@@ -72,7 +71,7 @@ def main():
         overall_res.append({"subject": curr_sub, "sex": sub_sex, "percent fem": perc_female, "overall classification": overall_class, "overall classification correct": overall_class_corr})
 
     out_df = pd.DataFrame(overall_res, columns=["subject", "sex", "percent fem", "overall classification", "overall classification correct"])
-    out_csv = f"{results_path}/classification_subjects_across_movies_top_{quant}perc.csv"
+    out_csv = f"{results_path}/classification_subjects_across_movies_nn{nn_mi}_top_{quant}perc.csv"
     out_df.to_csv(out_csv, index=False)
 
 

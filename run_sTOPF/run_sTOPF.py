@@ -13,6 +13,7 @@ import _2b_sTOPF_individual_expressions
 import _3_sTOPF_analyze_results
 import _4a_sTOPF_visualize_group_glass_brains
 import _4b_sTOPF_visualize_individual_glass_brains
+import _5b_ind_classification
 
 # Setup for paths
 hostname = socket.gethostname()
@@ -74,3 +75,4 @@ _2b_sTOPF_individual_expressions.main(base_path, nn_mi)
 _3_sTOPF_analyze_results.main(base_path, nn_mi)
 _4a_sTOPF_visualize_group_glass_brains.main(base_path, nn_mi)
 _4b_sTOPF_visualize_individual_glass_brains.main(base_path, nn_mi)
+_5b_ind_classification.main(base_path, nn_mi)
