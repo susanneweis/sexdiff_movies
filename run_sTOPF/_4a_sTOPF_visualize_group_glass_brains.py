@@ -73,15 +73,14 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file, min, max):
     print(f"Saved brain map: {o_file}")
 
 
-def main():
+def main(base_path,nn_mi):
 
-    base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    results_path = f"{base_path}/results_pipeline_sTOPF"
-    data_path = f"{base_path}/data_pipeline_sTOPF"
+    results_path = f"{base_path}/results_run_sTOPF"
+    data_path = f"{base_path}/data_run_sTOPF"
 
     atlas_path = f"{data_path}/Susanne_Schaefer_436.nii"
     
-    outpath = f"{results_path}/glass_brains/full_group_PCAs"
+    outpath = f"{results_path}/glass_brains_{nn_mi}/full_group_PCAs_nn"
     os.makedirs(outpath, exist_ok=True)
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]

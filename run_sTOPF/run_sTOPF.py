@@ -10,6 +10,9 @@ import _1a_sTOPF_PCA_per_sex
 import _1b_sTOPF_loo_PCA
 import _2a_sTOPF_results_full_group_PCA
 import _2b_sTOPF_individual_expressions
+import _3_sTOPF_analyze_results
+import _4a_sTOPF_visualize_group_glass_brains
+import _4b_sTOPF_visualize_individual_glass_brains
 
 # Setup for paths
 hostname = socket.gethostname()
@@ -68,3 +71,6 @@ _1a_sTOPF_PCA_per_sex.main(base_path)
 _1b_sTOPF_loo_PCA.main(base_path)
 _2a_sTOPF_results_full_group_PCA.main(base_path, nn_mi)
 _2b_sTOPF_individual_expressions.main(base_path, nn_mi)
+_3_sTOPF_analyze_results.main(base_path, nn_mi)
+_4a_sTOPF_visualize_group_glass_brains.main(base_path, nn_mi)
+_4b_sTOPF_visualize_individual_glass_brains.main(base_path, nn_mi)
