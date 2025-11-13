@@ -16,7 +16,7 @@ def main(base_path, nn_mi):
 
     for curr_mov in movies:
 
-        cmp_tc_path = f"{results_path}/compare_time_courses/results_compare_time_courses_{curr_mov}.csv" 
+        cmp_tc_path = f"{results_path}/compare_time_coursess_nn{nn_mi}/results_compare_time_courses_{curr_mov}.csv" 
         cmp_tc_data = pd.read_csv(cmp_tc_path)
 
         thresh = cmp_tc_data["mutual_inf"].quantile(quantile)
