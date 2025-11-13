@@ -89,7 +89,7 @@ def main(base_path,nn_mi):
 
     for mv_str in movies:
         
-        outpath = f"{results_path}/glass_brains_{nn_mi}/individual_expressions/{mv_str}"
+        outpath = f"{results_path}/glass_brains_nn{nn_mi}/individual_expressions/{mv_str}"
         os.makedirs(outpath, exist_ok=True)
 
         #subjects = ind_brain["subject"].astype(str).drop_duplicates().tolist()
