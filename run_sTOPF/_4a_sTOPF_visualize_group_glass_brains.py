@@ -80,14 +80,14 @@ def main(base_path,nn_mi):
 
     atlas_path = f"{data_path}/Susanne_Schaefer_436.nii"
     
-    outpath = f"{results_path}/glass_brains_{nn_mi}/full_group_PCAs_nn"
+    outpath = f"{results_path}/glass_brains_nn{nn_mi}/full_group_PCAs"
     os.makedirs(outpath, exist_ok=True)
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
 
     for mv_str in movies:
 
-        tc_corr = f"{results_path}/compare_time_courses/results_compare_time_courses_{mv_str}.csv"
+        tc_corr = f"{results_path}/compare_time_courses_nn{nn_mi}/results_compare_time_courses_{mv_str}.csv"
 
         # Load datasets
         res_tc_corr = pd.read_csv(tc_corr)
