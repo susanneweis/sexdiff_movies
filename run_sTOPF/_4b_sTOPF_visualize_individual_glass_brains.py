@@ -96,7 +96,7 @@ def main(base_path,nn_mi):
 
         for subj in subs_sex["subject_ID"]:
 
-            ind_brain_path = f"{results_path}/individual_expressions/individual_expression_{subj}.csv"
+            ind_brain_path = f"{results_path}/individual_expressions_nn{nn_mi}/individual_expression_{subj}.csv"
             
             if os.path.exists(ind_brain_path):
 
