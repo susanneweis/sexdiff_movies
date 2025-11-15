@@ -50,9 +50,6 @@ else:
     
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
 
-    # Parameter for Mutual Information Estimation
-    nn_mi = 5
-
     # dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7", "BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 2 movies
     # dataset = "BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7.csv" 
     # base_path =  "/Users/kbauer/Desktop/master thesis/codes/fMRIdata" 
@@ -60,6 +57,9 @@ else:
     # phenotype_path = f"{base_path}/movies_phenotype_results.csv"
     # complete_participants_path = f"{base_path}/complete_participants.csv"
     # exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv"
+
+# Parameter for Mutual Information Estimation
+nn_mi = 20
 
 for path in [base_path]:
     if not os.path.exists(path): 
