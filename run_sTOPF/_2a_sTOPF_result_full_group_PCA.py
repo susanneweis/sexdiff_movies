@@ -7,9 +7,9 @@ from scipy.stats import pearsonr
 from sklearn.feature_selection import mutual_info_regression
 
 
-def main(base_path,nn_mi):
+def main(base_path,proj,nn_mi):
         
-    results_path = f"{base_path}/results_run_sTOPF"
+    results_path = f"{base_path}/results_run_sTOPF_{proj}"
 
     movies_properties = {
         "dd": {"min_timepoint": 6, "max_timepoint": 463},

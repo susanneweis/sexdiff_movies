@@ -5,14 +5,14 @@ from scipy.stats import pearsonr
 import statsmodels.api as sm
 from sklearn.feature_selection import mutual_info_regression
 
-def main(base_path,nn_mi): 
+def main(base_path,proj,nn_mi): 
     # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
-    data_path = f"{base_path}/data_run_sTOPF"
+    data_path = f"{base_path}/data_run_sTOPF_{proj}"
 
     ### change!!!!
-    results_path = f"{base_path}/results_run_sTOPF"
+    results_path = f"{base_path}/results_run_sTOPF_{proj}"
     ind_path = f"{results_path}/individual_expressions_nn{nn_mi}"
     os.makedirs(ind_path, exist_ok=True)
 

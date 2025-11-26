@@ -41,15 +41,15 @@ def perform_pca(matrix):
                              
     return pc_loadings_df, pc_scores_df, explained_variance[0], explained_variance[1], 
 
-def main(base_path): 
+def main(base_path, proj): 
 
    # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
     # base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    data_path = f"{base_path}/data_run_sTOPF"
+    data_path = f"{base_path}/data_run_sTOPF_{proj}"
 
-    results_path = f"{base_path}/results_run_sTOPF"
+    results_path = f"{base_path}/results_run_sTOPF_{proj}"
 
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
     complete_participants_path = f"{data_path}/complete_participants.csv"

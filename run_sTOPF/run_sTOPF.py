@@ -22,9 +22,10 @@ if "cpu" in hostname: # Run on Juseless
     # Arguments 
 
     base_path = sys.argv[1]
+    project_ext = sys.argv[2]
 
     # Parameter for Mutual Information Estimation
-    nn_for_mi = sys.argv[2]
+    nn_for_mi = sys.argv[3]
 
     # wkdir = sys.argv[1] # Project directory
     # r_rootdir = sys.argv[2] # Result root directory
@@ -49,6 +50,7 @@ else:
     # Local setup for testing 
     
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
+    project_ext = "v1"
 
     # dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7", "BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 2 movies
     # dataset = "BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7.csv" 
@@ -59,7 +61,7 @@ else:
     # exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv"
 
 # Parameter for Mutual Information Estimation
-nn_mi = 20
+nn_mi = 3
 
 for path in [base_path]:
     if not os.path.exists(path): 
@@ -68,11 +70,11 @@ for path in [base_path]:
 # print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n {exclude_path}\n")    
 print(f"\n Path and Files found: \n - {base_path}\n")    
 
-_1a_sTOPF_PCA_per_sex.main(base_path)
-_1b_sTOPF_loo_PCA.main(base_path)
-_2a_sTOPF_result_full_group_PCA.main(base_path, nn_mi)
-_2b_sTOPF_individual_expressions.main(base_path, nn_mi)
-_3_sTOPF_analyse_results.main(base_path, nn_mi)
-_4a_sTOPF_visualize_group_glass_brains.main(base_path, nn_mi)
-_4b_sTOPF_visualize_individual_glass_brains.main(base_path, nn_mi)
-_5b_ind_classification.main(base_path, nn_mi)
+_1a_sTOPF_PCA_per_sex.main(base_path, project_ext)
+_1b_sTOPF_loo_PCA.main(base_path, project_ext)
+_2a_sTOPF_result_full_group_PCA.main(base_path, project_ext, nn_mi)
+_2b_sTOPF_individual_expressions.main(base_path, project_ext, nn_mi)
+_3_sTOPF_analyse_results.main(base_path, project_ext, nn_mi)
+_4a_sTOPF_visualize_group_glass_brains.main(base_path, project_ext, nn_mi)
+_4b_sTOPF_visualize_individual_glass_brains.main(base_path, project_ext, nn_mi)
+_5b_ind_classification.main(base_path, project_ext, nn_mi)

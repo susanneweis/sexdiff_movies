@@ -34,18 +34,30 @@ def main():
 
     # HDBSCAN clustering
     # You can tune min_cluster_size etc.
+    # clusterer = hdbscan.HDBSCAN(
+    #     min_cluster_size=10,
+    #     min_samples=None,
+    #     metric='euclidean'
+    # )
     clusterer = hdbscan.HDBSCAN(
-        min_cluster_size=10,
-        min_samples=None,
-        metric='euclidean'
+        min_cluster_size=5,
+        min_samples=1,
+        cluster_selection_epsilon=0.1
     )
     cluster_labels = clusterer.fit_predict(X_scaled)   # -1 = noise
 
     # UMAP to 2D
+    # reducer = umap.UMAP(
+    #     n_components=2,
+    #     n_neighbors=15,
+    #     min_dist=0.1,
+    #     metric='euclidean',
+    #     random_state=42
+    # )
     reducer = umap.UMAP(
         n_components=2,
-        n_neighbors=15,
-        min_dist=0.1,
+        n_neighbors=5,
+        min_dist=0.0,   
         metric='euclidean',
         random_state=42
     )
@@ -87,12 +99,16 @@ def main():
             c=sex_colors.get(sx, 'gray')
         )
 
+    clust_o_file = f"{results_path}/cluter_individual_expression_{nn}_fig1.png" 
+
     plt.title('UMAP projection – color = sex, marker = cluster (HDBSCAN)')
     plt.xlabel('UMAP1')
     plt.ylabel('UMAP2')
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=8)
     plt.tight_layout()
     plt.show()
+    plt.savefig(clust_o_file, bbox_inches='tight',dpi=300)
+    plt.close()
 
     # Plot 2: Color = cluster (for checking structure)
     plt.figure(figsize=(8, 6))
@@ -120,12 +136,17 @@ def main():
             c=[cluster_color_map[c]]
         )
 
+    clust_o_file = f"{results_path}/cluter_individual_expression_{nn}_fig2.png" 
+
     plt.title('UMAP projection – color = HDBSCAN cluster')
     plt.xlabel('UMAP1')
     plt.ylabel('UMAP2')
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize=8)
     plt.tight_layout()
     plt.show()
+
+    plt.savefig(clust_o_file, bbox_inches='tight',dpi=300)
+    plt.close()
 
 
 

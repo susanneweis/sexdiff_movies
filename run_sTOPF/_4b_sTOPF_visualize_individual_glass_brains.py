@@ -73,10 +73,10 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file,min,max):
     print(f"Saved brain map: {o_file}")
 
 
-def main(base_path,nn_mi):
+def main(base_path,proj,nn_mi):
 
-    results_path = f"{base_path}/results_run_sTOPF"
-    data_path = f"{base_path}/data_run_sTOPF"
+    results_path = f"{base_path}/results_run_sTOPF_{proj}"
+    data_path = f"{base_path}/data_run_sTOPF_{proj}"
 
     atlas_path = f"{data_path}/Susanne_Schaefer_436.nii"
     

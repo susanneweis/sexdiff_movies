@@ -1,7 +1,7 @@
 import pandas as pd
 
-def main(base_path, nn_mi):
-    results_path = f"{base_path}/results_run_sTOPF"
+def main(base_path, proj, nn_mi):
+    results_path = f"{base_path}/results_run_sTOPF_{proj}"
 
     ind_ex_path = f"{results_path}/individual_expression_all_nn{nn_mi}.csv"
     ind_ex_data = pd.read_csv(ind_ex_path)
