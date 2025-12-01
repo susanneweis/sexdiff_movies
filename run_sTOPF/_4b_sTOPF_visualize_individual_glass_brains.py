@@ -80,7 +80,7 @@ def main(base_path,proj,nn_mi):
 
     atlas_path = f"{data_path}/Susanne_Schaefer_436.nii"
     
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2", "ss"]
 
     sex_mapping = {1: 'male', 2: 'female'}
 

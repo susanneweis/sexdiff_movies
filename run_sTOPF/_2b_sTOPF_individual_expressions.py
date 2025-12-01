@@ -37,10 +37,11 @@ def main(base_path,proj,nn_mi):
         "lib": {"min_timepoint": 6, "max_timepoint": 454},
         "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
         "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
-        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
+        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499},
+        "ss": {"min_timepoint": 6, "max_timepoint": 642}
     }
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2","ss"]
 
     # Load phenotype data (assumed to be a CSV with a subject ID and gender columns)
     phenotypes = pd.read_csv(phenotype_path, sep=';')
