@@ -10,7 +10,7 @@ from sklearn.feature_selection import mutual_info_regression
 def main(base_path,proj,nn_mi):
         
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
-    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
 
     movies_properties = {
         "dd": {"min_timepoint": 6, "max_timepoint": 463},

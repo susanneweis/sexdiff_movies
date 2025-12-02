@@ -13,7 +13,7 @@ def main(base_path,proj,nn_mi):
 
     ### change!!!!
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
-    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
 
     ind_path = f"{results_out_path}/individual_expressions_nn{nn_mi}"
     os.makedirs(ind_path, exist_ok=True)

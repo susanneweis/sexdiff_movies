@@ -3,7 +3,7 @@ import pandas as pd
 def main(base_path,proj,nn_mi):
 
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
-    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
 
     # Change this later 
     ind_expr_path = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"

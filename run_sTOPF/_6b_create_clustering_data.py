@@ -6,7 +6,7 @@ def main():
     nn = 3
     
     results_path = f"{base_path}/results_run_sTOPF"
-    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
 
     exp_path = f"{results_out_path}/individual_expression_all_nn{nn}.csv" 
 

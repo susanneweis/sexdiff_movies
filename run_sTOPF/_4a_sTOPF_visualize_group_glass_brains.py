@@ -76,7 +76,7 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file, min, max):
 def main(base_path,proj,nn_mi):
 
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
-    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
 
     data_path = f"{base_path}/data_run_sTOPF_{proj}"
 
