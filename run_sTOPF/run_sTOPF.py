@@ -61,7 +61,7 @@ else:
     # exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv"
 
 # Parameter for Mutual Information Estimation
-nn_mi = 15
+nn_mi = 10
 
 for path in [base_path]:
     if not os.path.exists(path): 

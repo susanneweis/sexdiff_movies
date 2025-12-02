@@ -13,7 +13,9 @@ def main(base_path,proj,nn_mi):
 
     ### change!!!!
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
-    ind_path = f"{results_path}/individual_expressions_nn{nn_mi}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+
+    ind_path = f"{results_out_path}/individual_expressions_nn{nn_mi}"
     os.makedirs(ind_path, exist_ok=True)
 
     phenotype_path = f"{data_path}/Participant_sex_info.csv"
@@ -148,7 +150,7 @@ def main(base_path,proj,nn_mi):
         print(f"Saved: {out_csv}")
 
     out_df = pd.DataFrame(loo_results_all, columns=["subject","sex","movie","region","correlation_female","correlation_male","femaleness","fem_similarity","fem_mi","mal_mi"])
-    out_csv = f"{results_path}/individual_expression_all_nn{nn_mi}.csv"
+    out_csv = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"
     out_df.to_csv(out_csv, index=False)
     print(f"Saved: {out_csv}")
 

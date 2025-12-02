@@ -10,6 +10,7 @@ from sklearn.feature_selection import mutual_info_regression
 def main(base_path,proj,nn_mi):
         
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
 
     movies_properties = {
         "dd": {"min_timepoint": 6, "max_timepoint": 463},
@@ -41,7 +42,7 @@ def main(base_path,proj,nn_mi):
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2","ss"]
 
     for curr_mov in movies:
-        outpath = f"{results_path}/compare_time_courses_nn{nn_mi}"
+        outpath = f"{results_out_path}/compare_time_courses_nn{nn_mi}"
         os.makedirs(outpath, exist_ok=True)
         out_csv = f"/{outpath}/results_compare_time_courses_{curr_mov}.csv"
 

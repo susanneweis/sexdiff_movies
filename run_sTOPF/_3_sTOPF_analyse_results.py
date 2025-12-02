@@ -3,9 +3,10 @@ import pandas as pd
 def main(base_path,proj,nn_mi):
 
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
-    
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+
     # Change this later 
-    ind_expr_path = f"{results_path}/individual_expression_all_nn{nn_mi}.csv"
+    ind_expr_path = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"
     ind_expr = pd.read_csv(ind_expr_path)
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2","ss"]
@@ -22,13 +23,13 @@ def main(base_path,proj,nn_mi):
         ((ind_expr["sex"] == "female") & (ind_expr["fem_similarity"] >= 0)) |
         ((ind_expr["sex"] == "male") & (ind_expr["fem_similarity"] < 0))
     )
-    ind_expr.to_csv(f"{results_path}/correct_classification_femaleness.csv", index=False)
+    ind_expr.to_csv(f"{results_out_path}/correct_classification_femaleness.csv", index=False)
 
     ind_expr["class_corr_mi"] = (
         ((ind_expr["sex"] == "female") & (ind_expr["fem_mi"] >= ind_expr["mal_mi"] )) |
         ((ind_expr["sex"] == "male") & (ind_expr["fem_mi"] < ind_expr["mal_mi"]))
     )
-    ind_expr.to_csv(f"{results_path}/correct_classification_mi.csv", index=False)
+    ind_expr.to_csv(f"{results_out_path}/correct_classification_mi.csv", index=False)
 
     movie_class_summary = []
 
@@ -53,7 +54,7 @@ def main(base_path,proj,nn_mi):
         movie_class_summary.append({"movie": curr_mov, "female corr femaleness": count_true_fem/nr_fem, "male corr femaleness": count_true_mal/nr_mal, "female corr fem_sim": count_true_fem_sim/nr_fem, "male corr fem_sim": count_true_mal_sim/nr_mal, "female corr mi": count_true_fem_mi/nr_fem, "male corr mi": count_true_mal_mi/nr_mal})
 
     movie_class_summary_df = pd.DataFrame(movie_class_summary)
-    movie_class_summary_df.to_csv(f"{results_path}/correct_classification_per_movie_nn{nn_mi}.csv", index=False)
+    movie_class_summary_df.to_csv(f"{results_out_path}/correct_classification_per_movie_nn{nn_mi}.csv", index=False)
 
     region_class_summary = []
     for curr_reg in regions:
@@ -76,7 +77,7 @@ def main(base_path,proj,nn_mi):
         region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr mi": count_true_fem_r_mi/nr_fem, "male corr mi": count_true_mal_r_mi/nr_mal})
 
     region_class_summary_df = pd.DataFrame(region_class_summary)
-    region_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_nn{nn_mi}.csv", index=False)
+    region_class_summary_df.to_csv(f"{results_out_path}/correct_classification_per_region_nn{nn_mi}.csv", index=False)
 
     act_movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
     act_mv_region_class_summary = []
@@ -101,7 +102,7 @@ def main(base_path,proj,nn_mi):
         act_mv_region_class_summary.append({"region": curr_reg, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal, "female corr mi": count_true_fem_r_mi/nr_fem, "male corr mi": count_true_mal_r_mi/nr_mal})
 
     act_mv_region_class_summary_df = pd.DataFrame(act_mv_region_class_summary)
-    act_mv_region_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_no_rest_nn{nn_mi}.csv", index=False)
+    act_mv_region_class_summary_df.to_csv(f"{results_out_path}/correct_classification_per_region_no_rest_nn{nn_mi}.csv", index=False)
 
     mv_reg_class_summary = []
     for curr_reg in regions:
@@ -128,7 +129,7 @@ def main(base_path,proj,nn_mi):
             mv_reg_class_summary.append({"region": curr_reg, "movie": curr_mov, "female corr femaleness": count_true_fem_r/nr_fem, "male corr femaleness": count_true_mal_r/nr_mal, "female corr fem_sim": count_true_fem_r_sim/nr_fem, "male corr fem_sim": count_true_mal_r_sim/nr_mal,  "female corr mi": count_true_fem_r_mi/nr_fem, "male corr mi": count_true_mal_r_mi/nr_mal})
 
     mv_reg_class_summary_df = pd.DataFrame(mv_reg_class_summary)
-    mv_reg_class_summary_df.to_csv(f"{results_path}/correct_classification_per_region_per_movie_nn{nn_mi}.csv", index=False)
+    mv_reg_class_summary_df.to_csv(f"{results_out_path}/correct_classification_per_region_per_movie_nn{nn_mi}.csv", index=False)
 
     ind_expr = pd.read_csv(ind_expr_path)
     
@@ -144,7 +145,7 @@ def main(base_path,proj,nn_mi):
     )
 
     # Save result
-    out.to_csv(f"{results_path}/subject_movie_summary_nn{nn_mi}.csv", index=False)
+    out.to_csv(f"{results_out_path}/subject_movie_summary_nn{nn_mi}.csv", index=False)
 
 
 # Execute script

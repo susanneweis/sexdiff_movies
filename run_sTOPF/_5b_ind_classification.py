@@ -2,8 +2,9 @@ import pandas as pd
 
 def main(base_path, proj, nn_mi):
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
 
-    ind_ex_path = f"{results_path}/individual_expression_all_nn{nn_mi}.csv"
+    ind_ex_path = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"
     ind_ex_data = pd.read_csv(ind_ex_path)
     subs = ind_ex_data["subject"].unique().tolist()
 
@@ -16,7 +17,7 @@ def main(base_path, proj, nn_mi):
 
     for curr_mov in movies:
 
-        cmp_tc_path = f"{results_path}/compare_time_courses_nn{nn_mi}/results_compare_time_courses_{curr_mov}.csv" 
+        cmp_tc_path = f"{results_out_path}/compare_time_courses_nn{nn_mi}/results_compare_time_courses_{curr_mov}.csv" 
         cmp_tc_data = pd.read_csv(cmp_tc_path)
 
         thresh = cmp_tc_data["mutual_inf"].quantile(quantile)
@@ -45,10 +46,10 @@ def main(base_path, proj, nn_mi):
 
 
     out_df = pd.DataFrame(results, columns=["subject", "sex", "movie", "percent fem", "classification", "classification correct"])
-    out_csv = f"{results_path}/classification_subjects_movies_nn{nn_mi}_top_{quant}perc.csv"
+    out_csv = f"{results_out_path}/classification_subjects_movies_nn{nn_mi}_top_{quant}perc.csv"
     out_df.to_csv(out_csv, index=False)
 
-    in_df = f"{results_path}/classification_subjects_movies_nn{nn_mi}_top_{quant}perc.csv"
+    in_df = f"{results_out_path}/classification_subjects_movies_nn{nn_mi}_top_{quant}perc.csv"
     sub_mov_class = pd.read_csv(in_df)
 
     subs = sub_mov_class["subject"].unique().tolist()
@@ -71,7 +72,7 @@ def main(base_path, proj, nn_mi):
         overall_res.append({"subject": curr_sub, "sex": sub_sex, "percent fem": perc_female, "overall classification": overall_class, "overall classification correct": overall_class_corr})
 
     out_df = pd.DataFrame(overall_res, columns=["subject", "sex", "percent fem", "overall classification", "overall classification correct"])
-    out_csv = f"{results_path}/classification_subjects_across_movies_nn{nn_mi}_top_{quant}perc.csv"
+    out_csv = f"{results_out_path}/classification_subjects_across_movies_nn{nn_mi}_top_{quant}perc.csv"
     out_df.to_csv(out_csv, index=False)
 
 

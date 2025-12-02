@@ -76,18 +76,20 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file, min, max):
 def main(base_path,proj,nn_mi):
 
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+
     data_path = f"{base_path}/data_run_sTOPF_{proj}"
 
     atlas_path = f"{data_path}/Susanne_Schaefer_436.nii"
     
-    outpath = f"{results_path}/glass_brains_nn{nn_mi}/full_group_PCAs"
+    outpath = f"{results_out_path}/glass_brains_nn{nn_mi}/full_group_PCAs"
     os.makedirs(outpath, exist_ok=True)
 
     movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2", "ss"]
 
     for mv_str in movies:
 
-        tc_corr = f"{results_path}/compare_time_courses_nn{nn_mi}/results_compare_time_courses_{mv_str}.csv"
+        tc_corr = f"{results_out_path}/compare_time_courses_nn{nn_mi}/results_compare_time_courses_{mv_str}.csv"
 
         # Load datasets
         res_tc_corr = pd.read_csv(tc_corr)

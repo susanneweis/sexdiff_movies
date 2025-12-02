@@ -6,7 +6,9 @@ def main():
     nn = 3
     
     results_path = f"{base_path}/results_run_sTOPF"
-    exp_path = f"{results_path}/individual_expression_all_nn{nn}.csv" 
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+
+    exp_path = f"{results_out_path}/individual_expression_all_nn{nn}.csv" 
 
     ind_exp = pd.read_csv(exp_path)
 
@@ -27,7 +29,7 @@ def main():
     cluster_input['sex'] = sex_map['sex']
 
     # Save to file
-    out_f = f"{results_path}/individual_expression_all_nn{nn}_diff_MI_wide.csv" 
+    out_f = f"{results_out_path}/individual_expression_all_nn{nn}_diff_MI_wide.csv" 
     cluster_input.to_csv(out_f)
 
     cluster_input.head()

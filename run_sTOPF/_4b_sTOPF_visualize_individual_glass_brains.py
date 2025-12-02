@@ -76,6 +76,8 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file,min,max):
 def main(base_path,proj,nn_mi):
 
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+
     data_path = f"{base_path}/data_run_sTOPF_{proj}"
 
     atlas_path = f"{data_path}/Susanne_Schaefer_436.nii"
@@ -89,14 +91,14 @@ def main(base_path,proj,nn_mi):
 
     for mv_str in movies:
         
-        outpath = f"{results_path}/glass_brains_nn{nn_mi}/individual_expressions/{mv_str}"
+        outpath = f"{results_out_path}/glass_brains_nn{nn_mi}/individual_expressions/{mv_str}"
         os.makedirs(outpath, exist_ok=True)
 
         #subjects = ind_brain["subject"].astype(str).drop_duplicates().tolist()
 
         for subj in subs_sex["subject_ID"]:
 
-            ind_brain_path = f"{results_path}/individual_expressions_nn{nn_mi}/individual_expression_{subj}.csv"
+            ind_brain_path = f"{results_out_path}/individual_expressions_nn{nn_mi}/individual_expression_{subj}.csv"
             
             if os.path.exists(ind_brain_path):
 

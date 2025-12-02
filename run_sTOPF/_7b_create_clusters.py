@@ -12,7 +12,9 @@ def main():
     nn = 3
     
     results_path = f"{base_path}/results_run_sTOPF"
-    clust_data_path = f"{results_path}/individual_expression_all_nn{nn}_diff_MI_wide.csv" 
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_{nn_mi}"
+
+    clust_data_path = f"{results_out_path}/individual_expression_all_nn{nn}_diff_MI_wide.csv" 
 
     clust_data = pd.read_csv(clust_data_path)
     
@@ -99,7 +101,7 @@ def main():
             c=sex_colors.get(sx, 'gray')
         )
 
-    clust_o_file = f"{results_path}/cluter_individual_expression_{nn}_fig1.png" 
+    clust_o_file = f"{results_out_path}/cluter_individual_expression_{nn}_fig1.png" 
 
     plt.title('UMAP projection – color = sex, marker = cluster (HDBSCAN)')
     plt.xlabel('UMAP1')
@@ -136,7 +138,7 @@ def main():
             c=[cluster_color_map[c]]
         )
 
-    clust_o_file = f"{results_path}/cluter_individual_expression_{nn}_fig2.png" 
+    clust_o_file = f"{results_out_path}/cluter_individual_expression_{nn}_fig2.png" 
 
     plt.title('UMAP projection – color = HDBSCAN cluster')
     plt.xlabel('UMAP1')
