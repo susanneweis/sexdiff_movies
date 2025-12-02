@@ -20,9 +20,9 @@ def main(base_path,proj,nn_mi):
         "dmw": {"min_timepoint": 6, "max_timepoint": 522},
         "lib": {"min_timepoint": 6, "max_timepoint": 454},
         "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+        "ss": {"min_timepoint": 6, "max_timepoint": 642},
         "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
-        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499},
-        "ss": {"min_timepoint": 6, "max_timepoint": 642}
+        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
     }
 
     # will need this when extracting single movies from concatenated PCA
@@ -39,7 +39,7 @@ def main(base_path,proj,nn_mi):
     # base name for outputs (one-per-movie + a combined file)
     out_base   = "results_compare_f_m_tc"
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2","ss"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
 
     for curr_mov in movies:
         outpath = f"{results_out_path}/compare_time_courses_nn{nn_mi}"

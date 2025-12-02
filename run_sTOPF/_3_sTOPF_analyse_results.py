@@ -9,7 +9,7 @@ def main(base_path,proj,nn_mi):
     ind_expr_path = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"
     ind_expr = pd.read_csv(ind_expr_path)
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "rest_run-1", "rest_run-2","ss"]
+    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
     regions = ind_expr["region"].astype(str).drop_duplicates().tolist()
     
     # res_summary = []
