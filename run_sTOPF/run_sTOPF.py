@@ -25,7 +25,7 @@ if "cpu" in hostname: # Run on Juseless
     project_ext = sys.argv[2]
 
     # Parameter for Mutual Information Estimation
-    nn_mi = sys.argv[3]
+    nn_mi = int(sys.argv[3])
 
     # wkdir = sys.argv[1] # Project directory
     # r_rootdir = sys.argv[2] # Result root directory
