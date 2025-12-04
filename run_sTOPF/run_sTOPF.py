@@ -25,7 +25,7 @@ if "cpu" in hostname: # Run on Juseless
     project_ext = sys.argv[2]
 
     # Parameter for Mutual Information Estimation
-    nn_for_mi = sys.argv[3]
+    nn_mi = sys.argv[3]
 
     # wkdir = sys.argv[1] # Project directory
     # r_rootdir = sys.argv[2] # Result root directory
@@ -59,9 +59,10 @@ else:
     # phenotype_path = f"{base_path}/movies_phenotype_results.csv"
     # complete_participants_path = f"{base_path}/complete_participants.csv"
     # exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv"
+    # Parameter for Mutual Information Estimation
+    
+    nn_mi = 10
 
-# Parameter for Mutual Information Estimation
-nn_mi = 10
 
 for path in [base_path]:
     if not os.path.exists(path): 
