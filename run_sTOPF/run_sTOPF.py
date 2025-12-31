@@ -65,16 +65,16 @@ else:
 
 # Define movie timepoint parameters
 mov_prop = {
-    "dd": {"min_timepoint": 6, "max_timepoint": 463},
-    "s": {"min_timepoint": 6, "max_timepoint": 445},
-    "dps": {"min_timepoint": 6, "max_timepoint": 479},
-    "fg": {"min_timepoint": 6, "max_timepoint": 591},
-    "dmw": {"min_timepoint": 6, "max_timepoint": 522},
-    "lib": {"min_timepoint": 6, "max_timepoint": 454},
-    "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
-    "ss": {"min_timepoint": 6, "max_timepoint": 642},
-    "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
-    "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
+    "DD": {"min_timepoint": 6, "max_timepoint": 463},
+    "S": {"min_timepoint": 6, "max_timepoint": 445},
+    "DPS": {"min_timepoint": 6, "max_timepoint": 479},
+    "FG": {"min_timepoint": 6, "max_timepoint": 591},
+    "DMV": {"min_timepoint": 6, "max_timepoint": 522},
+    "LIB": {"min_timepoint": 6, "max_timepoint": 454},
+    "TGTBTU": {"min_timepoint": 6, "max_timepoint": 512},
+    "SS": {"min_timepoint": 6, "max_timepoint": 642},
+    "REST1": {"min_timepoint": 6, "max_timepoint": 499},
+    "REST2": {"min_timepoint": 6, "max_timepoint": 499}
 }
 
 for path in [base_path]:
