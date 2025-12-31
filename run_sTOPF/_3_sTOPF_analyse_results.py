@@ -1,6 +1,6 @@
 import pandas as pd
 
-def main(base_path,proj,nn_mi):
+def main(base_path,proj,nn_mi,movies_properties):
 
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
     results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
@@ -9,7 +9,24 @@ def main(base_path,proj,nn_mi):
     ind_expr_path = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"
     ind_expr = pd.read_csv(ind_expr_path)
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+     # Define movie timepoint parameters
+    #movies_properties = {
+    #    "dd": {"min_timepoint": 6, "max_timepoint": 463},
+    #    "s": {"min_timepoint": 6, "max_timepoint": 445},
+    #    "dps": {"min_timepoint": 6, "max_timepoint": 479},
+    #    "fg": {"min_timepoint": 6, "max_timepoint": 591},
+    #    "dmw": {"min_timepoint": 6, "max_timepoint": 522},
+    #    "lib": {"min_timepoint": 6, "max_timepoint": 454},
+    #    "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+    #    "ss": {"min_timepoint": 6, "max_timepoint": 642},
+    #    "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
+    #    "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
+    #}
+
+    #movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+
+    movies = list(movies_properties.keys())
+
     regions = ind_expr["region"].astype(str).drop_duplicates().tolist()
     
     # res_summary = []
@@ -79,7 +96,9 @@ def main(base_path,proj,nn_mi):
     region_class_summary_df = pd.DataFrame(region_class_summary)
     region_class_summary_df.to_csv(f"{results_out_path}/correct_classification_per_region_nn{nn_mi}.csv", index=False)
 
-    act_movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    #act_movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    act_movies = movies[:-2]
+
     act_mv_region_class_summary = []
     for curr_reg in regions:
         reg_class = ind_expr.loc[ind_expr["region"] == curr_reg, ["sex","movie","class_corr","class_corr_sim","class_corr_mi"]].reset_index(drop=True)

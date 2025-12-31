@@ -5,7 +5,7 @@ from scipy.stats import pearsonr
 import statsmodels.api as sm
 from sklearn.feature_selection import mutual_info_regression
 
-def main(base_path,proj,nn_mi): 
+def main(base_path,proj,nn_mi,movies_properties): 
     # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
@@ -30,20 +30,22 @@ def main(base_path,proj,nn_mi):
     subs_sex['gender'] = subs_sex['gender'].replace(sex_mapping)
 
     # Define movie timepoint parameters
-    movies_properties = {
-        "dd": {"min_timepoint": 6, "max_timepoint": 463},
-        "s": {"min_timepoint": 6, "max_timepoint": 445},
-        "dps": {"min_timepoint": 6, "max_timepoint": 479},
-        "fg": {"min_timepoint": 6, "max_timepoint": 591},
-        "dmw": {"min_timepoint": 6, "max_timepoint": 522},
-        "lib": {"min_timepoint": 6, "max_timepoint": 454},
-        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
-        "ss": {"min_timepoint": 6, "max_timepoint": 642},
-        "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
-        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
-    }
+    #movies_properties = {
+    #    "dd": {"min_timepoint": 6, "max_timepoint": 463},
+    #    "s": {"min_timepoint": 6, "max_timepoint": 445},
+    #    "dps": {"min_timepoint": 6, "max_timepoint": 479},
+    #    "fg": {"min_timepoint": 6, "max_timepoint": 591},
+    #    "dmw": {"min_timepoint": 6, "max_timepoint": 522},
+    #    "lib": {"min_timepoint": 6, "max_timepoint": 454},
+    #    "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+    #    "ss": {"min_timepoint": 6, "max_timepoint": 642},
+    #    "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
+    #    "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
+    #}
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+    #movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+
+    movies = list(movies_properties.keys())
 
     # Load phenotype data (assumed to be a CSV with a subject ID and gender columns)
     phenotypes = pd.read_csv(phenotype_path, sep=';')

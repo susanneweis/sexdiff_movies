@@ -32,7 +32,7 @@ def perform_pca(matrix):
                              
     return pc_loadings_df, pc_scores_df, explained_variance[0], explained_variance[1], 
 
-def main(base_path,proj): 
+def main(base_path,proj,movies_properties): 
     # Local setup for testing 
     # for Juseless Version see Kristina's code: PCA_foreachsex_allROI_latestversion.py
 
@@ -51,21 +51,23 @@ def main(base_path,proj):
     subs_sex = pd.read_csv(f"{data_path}/Participant_sex_info.csv", sep = ";")
     subs_sex['gender'] = subs_sex['gender'].replace(sex_mapping)
 
-    # Define movie timepoint parameters
-    movies_properties = {
-        "dd": {"min_timepoint": 6, "max_timepoint": 463},
-        "s": {"min_timepoint": 6, "max_timepoint": 445},
-        "dps": {"min_timepoint": 6, "max_timepoint": 479},
-        "fg": {"min_timepoint": 6, "max_timepoint": 591},
-        "dmw": {"min_timepoint": 6, "max_timepoint": 522},
-        "lib": {"min_timepoint": 6, "max_timepoint": 454},
-        "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
-        "ss": {"min_timepoint": 6, "max_timepoint": 642},
-        "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
-        "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
-    }
+        # Define movie timepoint parameters
+    #movies_properties = {
+    #    "dd": {"min_timepoint": 6, "max_timepoint": 463},
+    #    "s": {"min_timepoint": 6, "max_timepoint": 445},
+    #    "dps": {"min_timepoint": 6, "max_timepoint": 479},
+    #    "fg": {"min_timepoint": 6, "max_timepoint": 591},
+    #    "dmw": {"min_timepoint": 6, "max_timepoint": 522},
+    #    "lib": {"min_timepoint": 6, "max_timepoint": 454},
+    #    "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+    #    "ss": {"min_timepoint": 6, "max_timepoint": 642},
+    #    "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
+    #    "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
+    #}
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+    #movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+
+    movies = list(movies_properties.keys())
 
     # Load phenotype data (assumed to be a CSV with a subject ID and gender columns)
     phenotypes = pd.read_csv(phenotype_path, sep=';')

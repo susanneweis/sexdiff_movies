@@ -73,7 +73,7 @@ def create_glassbrains(vals, at_path, nrois, title_str,o_file, min, max):
     print(f"Saved brain map: {o_file}")
 
 
-def main(base_path,proj,nn_mi):
+def main(base_path,proj,nn_mi,movies_properties):
 
     results_path = f"{base_path}/results_run_sTOPF_{proj}"
     results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
@@ -85,7 +85,8 @@ def main(base_path,proj,nn_mi):
     outpath = f"{results_out_path}/glass_brains_nn{nn_mi}/full_group_PCAs"
     os.makedirs(outpath, exist_ok=True)
 
-    movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+    # movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
+    movies = list(movies_properties.keys())
 
     for mv_str in movies:
 

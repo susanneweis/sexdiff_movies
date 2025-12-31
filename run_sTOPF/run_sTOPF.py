@@ -63,6 +63,19 @@ else:
     
     nn_mi = 10
 
+# Define movie timepoint parameters
+mov_prop = {
+    "dd": {"min_timepoint": 6, "max_timepoint": 463},
+    "s": {"min_timepoint": 6, "max_timepoint": 445},
+    "dps": {"min_timepoint": 6, "max_timepoint": 479},
+    "fg": {"min_timepoint": 6, "max_timepoint": 591},
+    "dmw": {"min_timepoint": 6, "max_timepoint": 522},
+    "lib": {"min_timepoint": 6, "max_timepoint": 454},
+    "tgtbtu": {"min_timepoint": 6, "max_timepoint": 512},
+    "ss": {"min_timepoint": 6, "max_timepoint": 642},
+    "rest_run-1": {"min_timepoint": 6, "max_timepoint": 499},
+    "rest_run-2": {"min_timepoint": 6, "max_timepoint": 499}
+}
 
 for path in [base_path]:
     if not os.path.exists(path): 
@@ -71,11 +84,11 @@ for path in [base_path]:
 # print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n {exclude_path}\n")    
 print(f"\n Path and Files found: \n - {base_path}\n")    
 
-_1a_sTOPF_PCA_per_sex.main(base_path, project_ext)
-_1b_sTOPF_loo_PCA.main(base_path, project_ext)
-_2a_sTOPF_result_full_group_PCA.main(base_path, project_ext, nn_mi)
-_2b_sTOPF_individual_expressions.main(base_path, project_ext, nn_mi)
-_3_sTOPF_analyse_results.main(base_path, project_ext, nn_mi)
-_4a_sTOPF_visualize_group_glass_brains.main(base_path, project_ext, nn_mi)
-_4b_sTOPF_visualize_individual_glass_brains.main(base_path, project_ext, nn_mi)
-_5b_ind_classification.main(base_path, project_ext, nn_mi)
+_1a_sTOPF_PCA_per_sex.main(base_path, project_ext, mov_prop)
+_1b_sTOPF_loo_PCA.main(base_path, project_ext, mov_prop)
+_2a_sTOPF_result_full_group_PCA.main(base_path, project_ext, nn_mi, mov_prop)
+_2b_sTOPF_individual_expressions.main(base_path, project_ext, nn_mi, mov_prop)
+_3_sTOPF_analyse_results.main(base_path, project_ext, nn_mi, mov_prop)
+_4a_sTOPF_visualize_group_glass_brains.main(base_path, project_ext, nn_mi, mov_prop)
+_4b_sTOPF_visualize_individual_glass_brains.main(base_path, project_ext, nn_mi, mov_prop)
+_5b_ind_classification.main(base_path, project_ext, nn_mi, mov_prop)
