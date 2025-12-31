@@ -111,7 +111,7 @@ def main(base_path, proj, movies_properties):
 
             os.makedirs(output_dir, exist_ok=True) # Create the output directory if it doesn't exist
 
-            dataset = f"BOLD_Schaefer400_subcor36_mean_task-{curr_mov}_MOVIES_INM7.csv"
+            dataset = f"BOLD_Schaefer_436_2025_mean_aggregation_task-{curr_mov}_MOVIES.csv"
             movie_path =  f"{data_path}/fMRIdata/{dataset}" # Path to fMRI data
 
             for path in [movie_path, phenotype_path, complete_participants_path]:
