@@ -235,7 +235,7 @@ def main(base_path, proj, movies_properties):
 
     # from here PCA on combined movies     
     dataset_list = [
-        f"BOLD_Schaefer_436_2025_mean_aggregation_task-{movie}_MOVIES_INM7"
+        f"BOLD_Schaefer_436_2025_mean_aggregation_task-{movie}_MOVIES"
         for movie in movies
     ]
 
@@ -247,12 +247,12 @@ def main(base_path, proj, movies_properties):
         all_data = [] # List to store all movie data
         # Loop through each movie in the dataset list
         for movie in dataset_list:    
-            movie_path =  f"{data_path}/fMRIdata/{movie}.csv" # Path to current movie data
+            movie_path =  f"{data_path}/fMRIdata/{movie}.tsv" # Path to current movie data
             movie_abbrev = extract_movie_part(movie) # Extract movie abbrevation
             properties = movies_properties[movie_abbrev] # Get timepoint properties for the movie
         
             # Load fMRI data
-            movie_data = pd.read_csv(movie_path)
+            movie_data = pd.read_csv(movie_path, sep="\t")
             if "Unnamed: 0" in movie_data.columns:
                 movie_data = movie_data.drop(columns=["Unnamed: 0"]) # Drop unnecessary columns
             
