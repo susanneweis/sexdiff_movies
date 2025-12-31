@@ -121,7 +121,7 @@ def main(base_path,proj,movies_properties):
                 properties = movies_properties[curr_mov] # Get timepoint properties for the movie
                 
                 # Load fMRI data
-                movie_data = pd.read_csv(movie_path)
+                movie_data = pd.read_csv(movie_path, sep="\t")
                 if "Unnamed: 0" in movie_data.columns:
                     movie_data = movie_data.drop(columns=["Unnamed: 0"]) # Drop unnecessary columns
                     
