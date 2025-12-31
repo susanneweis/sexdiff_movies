@@ -235,7 +235,7 @@ def main(base_path, proj, movies_properties):
 
     # from here PCA on combined movies     
     dataset_list = [
-        f"BOLD_Schaefer400_subcor36_mean_task-{movie}_MOVIES_INM7"
+        f"BOLD_Schaefer_436_2025_mean_aggregation_task-{movie}_MOVIES_INM7"
         for movie in movies
     ]
 
