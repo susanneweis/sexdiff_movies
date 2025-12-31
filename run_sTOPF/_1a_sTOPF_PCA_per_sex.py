@@ -77,7 +77,8 @@ def main(base_path, proj, movies_properties):
     movies = list(movies_properties.keys())
 
     # Load phenotype data (assumed to be a CSV with a subject ID and gender columns)
-    phenotypes = pd.read_csv(phenotype_path, sep=';')
+    #phenotypes = pd.read_csv(phenotype_path, sep=';')
+    phenotypes = pd.read_csv(phenotype_path)
 
      # Load list of complete participants (verified list with participants_verification.py)
     complete_participants = set(pd.read_csv(complete_participants_path)['subject'].astype(str))

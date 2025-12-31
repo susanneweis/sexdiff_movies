@@ -50,7 +50,7 @@ else:
     # Local setup for testing 
     
     base_path =  "/Users/sweis/Data/Arbeit/Juseless/data/project/brainvar_sexdiff_movies" 
-    project_ext = "v1"
+    project_ext = "v2"
 
     # dataset_list = ["BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7", "BOLD_Schaefer400_subcor36_mean_task-tgtbtu_MOVIES_INM7"] # only 2 movies
     # dataset = "BOLD_Schaefer400_subcor36_mean_task-dps_MOVIES_INM7.csv" 
@@ -61,7 +61,7 @@ else:
     # exclude_path = f"{base_path}/outlier_results/excluded_subjects.csv"
     # Parameter for Mutual Information Estimation
     
-    nn_mi = 10
+    nn_mi = 3
 
 # Define movie timepoint parameters
 mov_prop = {
