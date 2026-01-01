@@ -26,8 +26,11 @@ def main(base_path,proj,nn_mi,movies_properties):
     # exclude_path = f"{base_path}/results_pipeline/excluded_subjects.csv"
 
     sex_mapping = {1: 'male', 2: 'female'}
-    subs_sex = pd.read_csv(f"{data_path}/Participant_sex_info.csv")
+    subs_sex = pd.read_csv(phenotype_path)
+    phenotypes = subs_sex
+
     subs_sex['gender'] = subs_sex['gender'].replace(sex_mapping)
+    phenotypes.columns = ['subject_ID', 'gender']
 
     # Define movie timepoint parameters
     #movies_properties = {
@@ -46,10 +49,6 @@ def main(base_path,proj,nn_mi,movies_properties):
     #movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
 
     movies = list(movies_properties.keys())
-
-    # Load phenotype data (assumed to be a CSV with a subject ID and gender columns)
-    phenotypes = pd.read_csv(phenotype_path, sep=';')
-    phenotypes.columns = ['subject_ID', 'gender']
 
     # Load list of complete participants (verified list with participants_verification.py)
     complete_participants = set(pd.read_csv(complete_participants_path)['subject'].astype(str))
