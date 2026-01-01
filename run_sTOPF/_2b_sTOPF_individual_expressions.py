@@ -76,13 +76,13 @@ def main(base_path,proj,nn_mi,movies_properties):
         loo_results_subj = []
 
         for curr_mov in movies:
-            dataset = f"BOLD_Schaefer400_subcor36_mean_task-{curr_mov}_MOVIES_INM7.csv"
+            dataset = f"BOLD_Schaefer_436_2025_mean_aggregation_task-{curr_mov}_MOVIES.tsv"
             movie_path =  f"{data_path}/fMRIdata/{dataset}" # Path to fMRI data
 
             properties = movies_properties[curr_mov] # Get timepoint properties for the movie
             
             # Load fMRI data
-            movie_data = pd.read_csv(movie_path)
+            movie_data = pd.read_csv(movie_path, sep="\t")
             if "Unnamed: 0" in movie_data.columns:
                 movie_data = movie_data.drop(columns=["Unnamed: 0"]) # Drop unnecessary columns
                 
