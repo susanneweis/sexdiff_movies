@@ -26,7 +26,7 @@ def main(base_path,proj,nn_mi,movies_properties):
     # exclude_path = f"{base_path}/results_pipeline/excluded_subjects.csv"
 
     sex_mapping = {1: 'male', 2: 'female'}
-    subs_sex = pd.read_csv(f"{data_path}/Participant_sex_info.csv", sep = ";")
+    subs_sex = pd.read_csv(f"{data_path}/Participant_sex_info.csv")
     subs_sex['gender'] = subs_sex['gender'].replace(sex_mapping)
 
     # Define movie timepoint parameters
