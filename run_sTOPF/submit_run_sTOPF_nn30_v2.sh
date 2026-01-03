@@ -26,7 +26,7 @@ transfer_input_files = ${name_py}
 # project dir 
 wkdir=${init_dir}
 project=${proj}
-nn=3
+nn=30
 
 # set up log folder
 logs_dir=${init_dir}/${code_dir}/logs/ #${dataset} #location where log files will be saved
