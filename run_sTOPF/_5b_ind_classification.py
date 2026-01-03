@@ -55,7 +55,7 @@ def main(base_path, proj, nn_mi,movies_properties):
     overall_res = []
 
     # act_mv = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
-    act_movies = movies[:-2]
+    act_mv = movies[:-2]
 
     for curr_sub in subs: 
         curr_sub_all_class = sub_mov_class[sub_mov_class["subject"] == curr_sub]
