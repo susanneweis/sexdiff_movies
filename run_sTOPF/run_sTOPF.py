@@ -84,9 +84,9 @@ for path in [base_path]:
 # print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n {exclude_path}\n")    
 print(f"\n Path and Files found: \n - {base_path}\n")    
 
-#_1a_sTOPF_PCA_per_sex.main(base_path, project_ext, mov_prop)
-#_1b_sTOPF_loo_PCA.main(base_path, project_ext, mov_prop)
-#_2a_sTOPF_result_full_group_PCA.main(base_path, project_ext, nn_mi, mov_prop)
+_1a_sTOPF_PCA_per_sex.main(base_path, project_ext, mov_prop)
+_1b_sTOPF_loo_PCA.main(base_path, project_ext, mov_prop)
+_2a_sTOPF_result_full_group_PCA.main(base_path, project_ext, nn_mi, mov_prop)
 _2b_sTOPF_individual_expressions.main(base_path, project_ext, nn_mi, mov_prop)
 _3_sTOPF_analyse_results.main(base_path, project_ext, nn_mi, mov_prop)
 _4a_sTOPF_visualize_group_glass_brains.main(base_path, project_ext, nn_mi, mov_prop)

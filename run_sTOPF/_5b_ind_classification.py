@@ -1,7 +1,6 @@
 import pandas as pd
 
 def main(base_path, proj, nn_mi,movies_properties):
-    results_path = f"{base_path}/results_run_sTOPF_{proj}"
     results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
 
     ind_ex_path = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"
@@ -34,8 +33,6 @@ def main(base_path, proj, nn_mi,movies_properties):
             sub_mov_reg_data = curr_sub_movie_data[curr_sub_movie_data["region"].isin(diff_regs)]
 
             class_fem = sub_mov_reg_data["fem_mi"] > sub_mov_reg_data["mal_mi"]
-            # Count how often this is True
-            count = class_fem.sum()
 
             # proportion (percentage)
             prop = class_fem.mean()
@@ -57,7 +54,8 @@ def main(base_path, proj, nn_mi,movies_properties):
 
     overall_res = []
 
-    act_mv = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    # act_mv = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu"]
+    act_movies = movies[:-2]
 
     for curr_sub in subs: 
         curr_sub_all_class = sub_mov_class[sub_mov_class["subject"] == curr_sub]
