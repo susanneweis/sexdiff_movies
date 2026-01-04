@@ -6,6 +6,7 @@ import sys
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import socket
+
 import _1a_sTOPF_PCA_per_sex
 import _1b_sTOPF_loo_PCA
 import _2a_sTOPF_result_full_group_PCA
@@ -14,6 +15,7 @@ import _3_sTOPF_analyse_results
 import _4a_sTOPF_visualize_group_glass_brains
 import _4b_sTOPF_visualize_individual_glass_brains
 import _5b_ind_classification
+import _5c_summarize_classifications
 
 # Setup for paths
 hostname = socket.gethostname()
@@ -84,13 +86,14 @@ for path in [base_path]:
 # print(f"\nPath and Files found: \n - {movie_path}\n - {phenotype_path} \n - {complete_participants_path}\n {exclude_path}\n")    
 print(f"\n Path and Files found: \n - {base_path}\n")    
 
-#_1a_sTOPF_PCA_per_sex.main(base_path, project_ext, mov_prop)
-#_1b_sTOPF_loo_PCA.main(base_path, project_ext, mov_prop)
-#_2a_sTOPF_result_full_group_PCA.main(base_path, project_ext, nn_mi, mov_prop)
-#_2b_sTOPF_individual_expressions.main(base_path, project_ext, nn_mi, mov_prop)
-#_3_sTOPF_analyse_results.main(base_path, project_ext, nn_mi, mov_prop)
-#_4a_sTOPF_visualize_group_glass_brains.main(base_path, project_ext, nn_mi, mov_prop)
-#_4b_sTOPF_visualize_individual_glass_brains.main(base_path, project_ext, nn_mi, mov_prop)
-
+_1a_sTOPF_PCA_per_sex.main(base_path, project_ext, mov_prop)
+_1b_sTOPF_loo_PCA.main(base_path, project_ext, mov_prop)
+_2a_sTOPF_result_full_group_PCA.main(base_path, project_ext, nn_mi, mov_prop)
+_2b_sTOPF_individual_expressions.main(base_path, project_ext, nn_mi, mov_prop)
+_3_sTOPF_analyse_results.main(base_path, project_ext, nn_mi, mov_prop)
+_4a_sTOPF_visualize_group_glass_brains.main(base_path, project_ext, nn_mi, mov_prop)
+_4b_sTOPF_visualize_individual_glass_brains.main(base_path, project_ext, nn_mi, mov_prop)
 for top_reg in [10, 20, 30, 40, 50, 60, 70, 75, 80, 90, 100]: 
     _5b_ind_classification.main(base_path, project_ext, nn_mi, mov_prop,top_reg)
+
+_5c_summarize_classifications.main(base_path)
