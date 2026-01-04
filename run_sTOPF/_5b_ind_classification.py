@@ -1,13 +1,19 @@
 import pandas as pd
+import os
 
-def main(base_path, proj, nn_mi,movies_properties):
-    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
+def main(base_path, proj, nn_mi,movies_properties,quant):
+    results_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}"
+    
+    results_out_path = f"{base_path}/results_run_sTOPF_{proj}/results_nn{nn_mi}/ind_classification"
 
-    ind_ex_path = f"{results_out_path}/individual_expression_all_nn{nn_mi}.csv"
+    if not os.path.exists(results_out_path):
+        os.makedirs(results_out_path, exist_ok=True) # Create the output directory if it doesn't exist
+
+    ind_ex_path = f"{results_path}/individual_expression_all_nn{nn_mi}.csv"
     ind_ex_data = pd.read_csv(ind_ex_path)
     subs = ind_ex_data["subject"].unique().tolist()
 
-    quant = 20
+    #quant = 10
     quantile = quant*0.01
 
     #movies = ["dd", "s", "dps", "fg", "dmw", "lib", "tgtbtu", "ss", "rest_run-1", "rest_run-2"]
@@ -18,7 +24,7 @@ def main(base_path, proj, nn_mi,movies_properties):
 
     for curr_mov in movies:
 
-        cmp_tc_path = f"{results_out_path}/compare_time_courses_nn{nn_mi}/results_compare_time_courses_{curr_mov}.csv" 
+        cmp_tc_path = f"{results_path}/compare_time_courses_nn{nn_mi}/results_compare_time_courses_{curr_mov}.csv" 
         cmp_tc_data = pd.read_csv(cmp_tc_path)
 
         thresh = cmp_tc_data["mutual_inf"].quantile(quantile)
@@ -105,16 +111,6 @@ def main(base_path, proj, nn_mi,movies_properties):
     out_df_corr = pd.DataFrame(overall_res_corr, columns=["subject", "sex", "percent fem", "overall classification", "overall classification correct"])
     out_csv_corr = f"{results_out_path}/classification_subjects_across_movies_corr_top_{quant}perc.csv"
     out_df_corr.to_csv(out_csv_corr, index=False)
-
-
-
-
-
-
-
-
-
-
 
 
 # Execute script
