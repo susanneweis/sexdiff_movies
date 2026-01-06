@@ -15,7 +15,6 @@ import _3_sTOPF_analyse_results
 import _4a_sTOPF_visualize_group_glass_brains
 import _4b_sTOPF_visualize_individual_glass_brains
 import _5b_ind_classification
-import _5c_summarize_classifications
 
 # Setup for paths
 hostname = socket.gethostname()
